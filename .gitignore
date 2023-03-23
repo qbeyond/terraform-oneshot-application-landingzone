@@ -35,4 +35,3 @@ terraform.rc
 
 # Don't commit generated files
 .terraform.lock.hcl
-*.yml

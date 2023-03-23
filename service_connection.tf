@@ -1,5 +1,5 @@
 resource "azuread_application" "this" {
-  display_name = "sp-${var.display_name}-devops-01"
+  display_name = "sp-${data.azurerm_subscription.this.display_name}-devops-01"
 }
 
 resource "azuread_service_principal" "this" {
