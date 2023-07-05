@@ -33,6 +33,34 @@ resource "azuredevops_git_repository_file" "pipeline" {
   }
 }
 
+resource "azuredevops_git_repository_file" "main" {
+  repository_id = azuredevops_git_repository.landing_zone.id
+  file          = "main.tf"
+  content       = templatefile("${path.module}/assets/main.tftpl", {})
+  branch              = "refs/heads/${azuredevops_git_repository_branch.init.name}"
+  commit_message      = "Add Terraform.tf"
+  overwrite_on_create = true
+
+  lifecycle {
+    ignore_changes = [commit_message]
+  }
+}
+
+resource "azuredevops_git_repository_file" "locals" {
+  repository_id = azuredevops_git_repository.landing_zone.id
+  file          = "locals.tf"
+  content       = templatefile("${path.module}/assets/locals.tftpl", {
+    location = var.location
+  })
+  branch              = "refs/heads/${azuredevops_git_repository_branch.init.name}"
+  commit_message      = "Add Terraform.tf"
+  overwrite_on_create = true
+
+  lifecycle {
+    ignore_changes = [commit_message]
+  }
+}
+
 resource "azuredevops_git_repository_file" "terraform" {
   repository_id = azuredevops_git_repository.landing_zone.id
   file          = "terraform.tf"
@@ -50,11 +78,10 @@ resource "azuredevops_git_repository_file" "vnet" {
   repository_id = azuredevops_git_repository.landing_zone.id
   file          = "vnet.tf"
   content       = templatefile("${path.module}/assets/vnet.tftpl", {
-    stage = var.stage
-    location          = var.location
+    stage                  = var.stage
     vnet_address_space     = var.alz_vnet_config.vnet_address_space
     snet_address_prefixes  = var.alz_vnet_config.snet_address_prefixes
-    snet_usecase      = var.alz_vnet_config.snet_usecase
+    snet_usecase           = var.alz_vnet_config.snet_usecase
   })
   branch              = "refs/heads/${azuredevops_git_repository_branch.init.name}"
   commit_message      = "Add Vnet.tf"

@@ -1,6 +1,6 @@
 resource "azurerm_resource_group" "spoke_vnet" {
   name     = "rg-Spoke-${stage}-01"
-  location = "${location}"
+  location = local.default_location
 }
 
 resource "azurerm_virtual_network" "spoke" {
@@ -10,6 +10,7 @@ resource "azurerm_virtual_network" "spoke" {
   address_space       = ["${vnet_address_space}"]
 }
 
+#TODO for each snet_address_prefixes
 resource "azurerm_subnet" "spoke" {
   name                 = "snet-${replace(snet_address_prefixes,"/[./]/","-")}-${snet_usecase}"
   resource_group_name  = azurerm_resource_group.spoke_vnet.location

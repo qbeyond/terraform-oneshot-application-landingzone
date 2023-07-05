@@ -55,8 +55,9 @@ variable "stage" {
 
 variable "alz_vnet_config" {
   type = object({
-    vnet_address_space = string
-    snet_usecase = string
+    vnet_address_space   = string
+    snet_usecase         = string
+    #TODO snet_address_prefixes = list(string)
     snet_address_prefixes = string
   })
 }
