@@ -33,6 +33,19 @@ resource "azuredevops_git_repository_file" "pipeline" {
   }
 }
 
+resource "azuredevops_git_repository_file" "terraform" {
+  repository_id = azuredevops_git_repository.landing_zone.id
+  file          = "terraform.tf"
+  content       = templatefile("${path.module}/assets/terraform.tftpl", {})
+  branch              = "refs/heads/${azuredevops_git_repository_branch.init.name}"
+  commit_message      = "Add Terraform.tf"
+  overwrite_on_create = true
+
+  lifecycle {
+    ignore_changes = [commit_message]
+  }
+}
+
 resource "azuredevops_git_repository_file" "vnet" {
   repository_id = azuredevops_git_repository.landing_zone.id
   file          = "vnet.tf"
@@ -44,7 +57,7 @@ resource "azuredevops_git_repository_file" "vnet" {
     snet_usecase      = var.alz_vnet_config.snet_usecase
   })
   branch              = "refs/heads/${azuredevops_git_repository_branch.init.name}"
-  commit_message      = "Add Vnet"
+  commit_message      = "Add Vnet.tf"
   overwrite_on_create = true
 
   lifecycle {

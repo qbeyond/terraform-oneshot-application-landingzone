@@ -10,3 +10,10 @@ terraform_state_config = {
     storage_account_name = "stter<customer>tfstate01"
     backend_service_connection = "sc-azurerm-prd-Management-01-backend"
 }
+location = "westeurope"
+stage = "prd"
+alz_vnet_config = {
+    vnet_address_space = "10-0-0-0-16"
+    snet_usecase = "Storage"
+    snet_address_prefixes = "10-0-0-0-24"
+}
