@@ -42,3 +42,21 @@ variable "terraform_state_config" {
     backend_service_connection = string
   })
 }
+
+variable "location" {
+  type = string
+  description = "Name of the current location"
+}
+
+variable "stage" {
+  type = string
+  description = "Name of the current stage"
+}
+
+variable "alz_vnet_config" {
+  type = object({
+    vnet_address_space = string
+    snet_usecase = string
+    snet_address_prefixes = string
+  })
+}

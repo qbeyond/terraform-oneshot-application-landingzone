@@ -32,3 +32,22 @@ resource "azuredevops_git_repository_file" "pipeline" {
     ignore_changes = [commit_message]
   }
 }
+
+resource "azuredevops_git_repository_file" "vnet" {
+  repository_id = azuredevops_git_repository.landing_zone.id
+  file          = "vnet.tf"
+  content       = templatefile("${path.module}/assets/vnet.tftpl", {
+    stage = var.stage
+    location          = var.location
+    vnet_address_space     = var.alz_vnet_config.vnet_address_space
+    snet_address_prefixes  = var.alz_vnet_config.snet_address_prefixes
+    snet_usecase      = var.alz_vnet_config.snet_usecase
+  })
+  branch              = "refs/heads/${azuredevops_git_repository_branch.init.name}"
+  commit_message      = "Add Vnet"
+  overwrite_on_create = true
+
+  lifecycle {
+    ignore_changes = [commit_message]
+  }
+}
