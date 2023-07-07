@@ -53,11 +53,13 @@ variable "stage" {
   description = "Name of the current stage"
 }
 
-variable "alz_vnet_config" {
+variable "vnet_config" {
   type = object({
-    vnet_address_space   = string
-    snet_usecase         = string
-    #TODO snet_address_prefixes = list(string)
-    snet_address_prefixes = string
+    dns_server = list(string)
+    subnets = list(object({
+      address_prefix = string
+      usecase = string
+    }))
+    address_space   = string
   })
 }

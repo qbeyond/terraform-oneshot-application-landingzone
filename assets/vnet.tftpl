@@ -10,7 +10,6 @@ resource "azurerm_virtual_network" "spoke" {
   address_space       = ["${vnet_address_space}"]
 }
 
-#TODO for each snet_address_prefixes
 resource "azurerm_subnet" "spoke" {
   name                 = "snet-${replace(snet_address_prefixes,"/[./]/","-")}-${snet_usecase}"
   resource_group_name  = azurerm_resource_group.spoke_vnet.location
