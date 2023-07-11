@@ -1,18 +1,19 @@
-resource "azurerm_resource_group" "spoke_vnet" {
-  name     = "rg-Spoke-${stage}-01"
+resource "azurerm_resource_group" "this" {
+  name     = "rg-Network-${var.stage}-01"
   location = local.default_location
 }
 
-resource "azurerm_virtual_network" "spoke" {
-  name                = "vnet-${replace(vnet_address_space,"/[./]/","-")}-$${azurerm_resource_group.spoke_vnet.location}"
-  location            = azurerm_resource_group.spoke_vnet.location
-  resource_group_name = azurerm_resource_group.spoke_vnet.name
-  address_space       = ["${vnet_address_space}"]
+resource "azurerm_virtual_network" "this" {
+  name                = "vnet-%adressSpace%-${local.default_location}"
+  location            = azurerm_resource_group.this.location
+  resource_group_name = azurerm_resource_group.this.name
+  address_space       = ["%addressSpace%"]
 }
 
-resource "azurerm_subnet" "spoke" {
-  name                 = "snet-${replace(snet_address_prefixes,"/[./]/","-")}-${snet_usecase}"
-  resource_group_name  = azurerm_resource_group.spoke_vnet.location
-  virtual_network_name = azurerm_virtual_network.spoke.name
-  address_prefixes     = ["${snet_address_prefixes}"]
+resource "azurerm_subnet" "this" {
+  for_each             = var.vnet_config.subnets
+  name                 = "snet-%address_prefix%-%usecase%"
+  resource_group_name  = azurerm_resource_group.this.name
+  virtual_network_name = azurerm_virtual_network.this.name
+  address_prefixes     = ["%address_prefix%"]
 }

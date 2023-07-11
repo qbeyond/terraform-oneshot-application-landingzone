@@ -91,3 +91,27 @@ resource "azuredevops_git_repository_file" "vnet" {
     ignore_changes = [commit_message]
   }
 }
+
+resource "azuredevops_branch_policy_min_reviewers" "this" {
+  project_id = azuredevops_project.alz.id
+
+  enabled  = true
+  blocking = true
+
+  settings {
+    reviewer_count                         = 1
+    submitter_can_vote                     = false
+    last_pusher_cannot_approve             = true
+    allow_completion_with_rejects_or_waits = false
+    on_push_reset_approved_votes           = true # OR on_push_reset_all_votes = true
+    on_last_iteration_require_vote         = false
+
+    scope {
+      repository_id  = null # All repositories in the project
+      match_type     = "DefaultBranch"
+    }
+  }
+  depends_on = [
+    time_sleep.wait_1_minute
+  ]
+}

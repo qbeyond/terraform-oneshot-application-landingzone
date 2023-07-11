@@ -43,23 +43,7 @@ variable "terraform_state_config" {
   })
 }
 
-variable "location" {
-  type = string
-  description = "Name of the current location"
-}
-
 variable "stage" {
   type = string
   description = "Name of the current stage"
-}
-
-variable "vnet_config" {
-  type = object({
-    dns_server = list(string)
-    subnets = list(object({
-      address_prefix = string
-      usecase = string
-    }))
-    address_space   = string
-  })
 }
