@@ -47,3 +47,19 @@ variable "stage" {
   type = string
   description = "Name of the current stage"
 }
+
+variable "location" {
+  type = string
+  description = "Location of stuff"
+}
+
+variable "vnet_config" {
+  type = object({
+    dns_server = list(string)
+    address_space   = string
+    subnets = map(object({
+      address_prefix = string
+      usecase = string
+    }))
+  })
+}

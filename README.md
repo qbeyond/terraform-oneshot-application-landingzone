@@ -41,6 +41,22 @@ terraform_state_config = {
     storage_account_name = "stter<customer>tfstate01"
     backend_service_connection = "sc-azurerm-prd-Management-01-backend"
 }
+location = "westeurope"
+stage = "prd"
+vnet_config = {
+    dns_server = ["0.0.0.0","1.1.1.1"]
+    address_space = "10.0.0.0/16"
+    subnets = {
+      subnet1 = {
+        address_prefix = "10.0.0.0/24"
+        usecase = "storage"
+      },
+      subnet2 = {
+        address_prefix = "10.0.1.0/24"
+        usecase = "coolerusecase"
+      }
+    }
+}
 ```
 
 ## Requirements

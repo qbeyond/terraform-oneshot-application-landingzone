@@ -6,14 +6,14 @@ locals {
 }
 
 data "azuredevops_team" "default" {
-  project_id = azuredevops_project.this.id
-  name       = "${azuredevops_project.this.name} Team"
+  project_id = data.azuredevops_project.this.id
+  name       = "${data.azuredevops_project.this.name} Team"
 }
 
 data "http" "approval_and_check_alz" {
   provider = http-full
   method = "POST"
-  url = "${var.devops_service_url}/${azuredevops_project.this.id}/_apis/pipelines/checks/configurations?api-version=7.0-preview.1"
+  url = "${var.devops_service_url}/${data.azuredevops_project.this.id}/_apis/pipelines/checks/configurations?api-version=7.0-preview.1"
 
   request_headers = local.request_headers
 
@@ -49,7 +49,7 @@ data "http" "approval_and_check_alz" {
 data "http" "environment_permission_alz" {
   provider = http-full
   method = "PATCH"
-  url = "${var.devops_service_url}/${azuredevops_project.this.id}/_apis/pipelines/pipelinepermissions/environment/${azuredevops_environment.this.id}?api-version=7.0-preview.1"
+  url = "${var.devops_service_url}/${data.azuredevops_project.this.id}/_apis/pipelines/pipelinepermissions/environment/${azuredevops_environment.alz.id}?api-version=7.0-preview.1"
   
   request_headers = local.request_headers
   request_body = jsonencode(
@@ -65,16 +65,16 @@ data "http" "environment_permission_alz" {
 }
 
 resource "azuredevops_resource_authorization" "service_connection_permission_alz" {
-  project_id  = azuredevops_project.this.id
+  project_id  = data.azuredevops_project.this.id
   definition_id = azuredevops_build_definition.this.id
-  resource_id = module.service_connection_alz.service_endpoint.id
+  resource_id = module.service_connection_application.service_endpoint.id
   authorized  = true
 }
 
 data "http" "environment_user_permission_alz" {
   provider = http-full
   method = "PUT"
-  url = "${var.devops_service_url}/_apis/securityroles/scopes/distributedtask.environmentreferencerole/roleassignments/resources/${azuredevops_project.alz.id}_${azuredevops_environment.alz.id}?api-version=7.0-preview.1"
+  url = "${var.devops_service_url}/_apis/securityroles/scopes/distributedtask.environmentreferencerole/roleassignments/resources/${data.azuredevops_project.this.id}_${azuredevops_environment.alz.id}?api-version=7.0-preview.1"
   
   request_headers = local.request_headers
   request_body = jsonencode(

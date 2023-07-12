@@ -1,19 +1,23 @@
+locals {
+  subsciption_logical_name = split("-", "${subscription_name}")[1]
+}
+
 resource "azurerm_resource_group" "this" {
-  name     = "rg-Network-${var.stage}-01"
+  name     = "rg-$${local.subsciption_logical_name}-${stage}-01"
   location = local.default_location
 }
 
 resource "azurerm_virtual_network" "this" {
-  name                = "vnet-%adressSpace%-${local.default_location}"
-  location            = azurerm_resource_group.this.location
+  name                = "vnet-${replace("${vnet_config.address_space}","/[./]/","-")}-$${local.default_location}"
+  location            = local.default_location
   resource_group_name = azurerm_resource_group.this.name
-  address_space       = ["%addressSpace%"]
+  address_space       = [${vnet_config.address_space}]
 }
 
 resource "azurerm_subnet" "this" {
-  for_each             = var.vnet_config.subnets
-  name                 = "snet-%address_prefix%-%usecase%"
+  for_each             = $vnet_config.subnets
+  name                 = "snet-$${replace(each.value["address_prefix"], "/[./]/", "-")}-$${each.value["usecase"]}"
   resource_group_name  = azurerm_resource_group.this.name
   virtual_network_name = azurerm_virtual_network.this.name
-  address_prefixes     = ["%address_prefix%"]
+  address_prefixes     = [each.value["address_prefix"]]
 }
