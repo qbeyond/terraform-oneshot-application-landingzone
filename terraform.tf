@@ -21,8 +21,8 @@ terraform {
 
 provider "azurerm" {
   features {}
-  subscription_id = var.management_subscription_id
-  skip_provider_registration = true
+  subscription_id = var.devops_subscription_id
+  skip_provider_registration = var.skip_provider_registration
 }
 
 provider "azuread" {

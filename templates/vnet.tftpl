@@ -1,5 +1,10 @@
 locals {
   subsciption_logical_name = split("-", "${subscription_name}")[1]
+  subnets = { 
+%{ for usecase, address_prefix in vnet_config.subnets ~}
+    ${usecase} = "${address_prefix}"
+%{ endfor ~}
+  }
 }
 
 resource "azurerm_resource_group" "this" {
@@ -11,13 +16,13 @@ resource "azurerm_virtual_network" "this" {
   name                = "vnet-${replace("${vnet_config.address_space}","/[./]/","-")}-$${local.default_location}"
   location            = local.default_location
   resource_group_name = azurerm_resource_group.this.name
-  address_space       = [${vnet_config.address_space}]
+  address_space       = ["${vnet_config.address_space}"]
 }
 
 resource "azurerm_subnet" "this" {
-  for_each             = $vnet_config.subnets
-  name                 = "snet-$${replace(each.value["address_prefix"], "/[./]/", "-")}-$${each.value["usecase"]}"
+  for_each             = local.subnets
+  name                 = "snet-$${replace(each.value, "/[./]/", "-")}-$${each.key}"
   resource_group_name  = azurerm_resource_group.this.name
   virtual_network_name = azurerm_virtual_network.this.name
-  address_prefixes     = [each.value["address_prefix"]]
+  address_prefixes     = [each.value]
 }
