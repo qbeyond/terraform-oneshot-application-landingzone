@@ -21,4 +21,4 @@ vnet_config = { #optional
       application = ""
     }
 }
-virtual_machine_template = 
+virtual_machine_template = #Optional
