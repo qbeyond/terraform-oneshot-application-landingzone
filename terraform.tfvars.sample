@@ -1,7 +1,7 @@
 subscription_id = ""
 devops_subscription_id = ""
 tenant_id = ""
-#management_group_id = "" 
+management_group_id = "" Optional
 personal_access_token = ""
 devops_service_url = ""
 devops_project_name = ""
@@ -12,13 +12,13 @@ terraform_state_config = {
 }
 location = ""
 stage = ""
-#skip_provider_registration
-
-#vnet_config = {
-#    dns_server = [""]
-#    address_space = ""
-#    subnets = {
-#      databases = "",
-#      application = ""
-#    }
-#}
+skip_provider_registration #optional 
+vnet_config = { #optional 
+    dns_server = [""]
+    address_space = ""
+    subnets = {
+      databases = "",
+      application = ""
+    }
+}
+virtual_machine_template = 

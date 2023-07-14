@@ -52,6 +52,7 @@ resource "azuredevops_git_repository_file" "locals" {
   file          = "locals.tf"
   content       = templatefile("${path.module}/templates/locals.tftpl", {
     location = var.location
+    subscription_name = data.azurerm_subscription.this.display_name
   })
   branch              = "refs/heads/${azuredevops_git_repository_branch.init.name}"
   commit_message      = "Add Terraform.tf"
@@ -81,7 +82,6 @@ resource "azuredevops_git_repository_file" "vnet" {
   file          = "vnet.tf"
   content       = templatefile("${path.module}/templates/vnet.tftpl", {
     vnet_config = var.vnet_config
-    subscription_name = data.azurerm_subscription.this.display_name
     stage = var.stage
   })
   branch              = "refs/heads/${azuredevops_git_repository_branch.init.name}"
