@@ -66,8 +66,8 @@ variable "vnet_config" {
   ```
   If you want to provide a virtual network, please provide the following values: 
     dns_server: DNS Servers that will be used in the network.
-    address_space: Address space of the virtual network.
-    subnets: Subnets that will be created in the virtual network. Use 'Usecase' as the key and the address prefix as the value.    
+    address_space: Address space of the virtual network in CIDR notation.
+    subnets: Subnets that will be created in the virtual network. Use 'Usecase' as the key and the address prefix as the value in CIDR notation.    
   ```
   DOC
   default = null
