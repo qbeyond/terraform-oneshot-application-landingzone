@@ -15,19 +15,19 @@ data "azuread_client_config" "current" {}
 
 locals {
   application = {
-    object_id = var.application == null ? azuread_application.this[0].object_id : var.application.object_id
+    object_id      = var.application == null ? azuread_application.this[0].object_id : var.application.object_id
     application_id = var.application == null ? azuread_application.this[0].application_id : var.application.application_id
   }
 }
 
 resource "azuread_application" "this" {
-  count = var.application == null ? 1 : 0
+  count        = var.application == null ? 1 : 0
   display_name = "sp-${var.display_name}"
   owners       = [data.azuread_client_config.current.object_id]
 }
 
 resource "azuread_service_principal" "this" {
-  count = var.application == null ? 1 : 0
+  count                        = var.application == null ? 1 : 0
   application_id               = local.application.application_id
   app_role_assignment_required = false
   owners                       = [data.azuread_client_config.current.object_id]
@@ -51,8 +51,8 @@ resource "azuredevops_serviceendpoint_azurerm" "this" {
 }
 
 resource "azurerm_role_assignment" "this" {
-  principal_id = azuread_service_principal.this[0].object_id
+  principal_id         = azuread_service_principal.this[0].object_id
   role_definition_name = var.application_permission
-  scope ="/subscriptions/${var.subscription_id}" 
+  scope                = "/subscriptions/${var.subscription_id}"
 }
 

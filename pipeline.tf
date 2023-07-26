@@ -20,6 +20,6 @@ resource "azuredevops_build_definition" "this" {
 
 resource "azuredevops_environment" "alz" {
   description = "Automatically created environment"
-  project_id = data.azuredevops_project.this.project_id
-  name       = data.azurerm_subscription.this.display_name
+  project_id  = data.azuredevops_project.this.project_id
+  name        = data.azurerm_subscription.this.display_name
 }
