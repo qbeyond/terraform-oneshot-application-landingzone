@@ -34,3 +34,9 @@ variable "application" {
   default = null
   description = "Optional azuread_application if one already exists."
 }
+
+variable "application_permission" {
+  type = string 
+  default = "Contributor"
+  description = "The permission the serviceprincipal gets on the target subscription."
+}

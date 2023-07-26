@@ -49,3 +49,10 @@ resource "azuredevops_serviceendpoint_azurerm" "this" {
     serviceprincipalkey = azuread_application_password.this.value
   }
 }
+
+resource "azurerm_role_assignment" "this" {
+  principal_id = azuread_service_principal.this[0].object_id
+  role_definition_name = var.application_permission
+  scope ="/subscriptions/${var.subscription_id}" 
+}
+
