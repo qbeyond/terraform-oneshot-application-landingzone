@@ -42,12 +42,12 @@ variable "terraform_state_config" {
     storage_account_name = string
     backend_service_connection = string
   })
-  description = "The configuration of the Terraform state. The state will be saved in the given storage account ind the DevOps subscription using the backend service connection."
+  description = "The configuration of the Terraform state. The state will be saved in the given storage account in the DevOps subscription using the backend service connection."
 }
 
 variable "stage" {
   type = string
-  description = "Name of the current stage"
+  description = "Name of the current stage."
 }
 
 variable "location" {
@@ -60,7 +60,6 @@ variable "vnet_config" {
     dns_server = list(string)
     address_space   = string
     subnets = map(string) 
-    # doku was key
   })
   description = <<-DOC
   ```
@@ -79,8 +78,8 @@ variable "skip_provider_registration" {
   default     = false
 }
 
-variable "virtual_machine_template" {
+variable "create_virtual_machine_template" {
   type        = bool
-  description = "Set to true to create a template for creating a windows vm"
+  description = "Set to true to create a template for creating a windows vm."
   default     = false 
 }
