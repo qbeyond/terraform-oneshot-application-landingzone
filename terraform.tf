@@ -12,12 +12,17 @@ terraform {
       source  = "hashicorp/azurerm"
       version = ">=3.46.0"
     }
+    http-full = {
+      source  = "salrashid123/http-full"
+      version = "1.3.1"
+    }
   }
 }
 
 provider "azurerm" {
   features {}
-  subscription_id = var.management_subscription_id
+  subscription_id            = var.devops_subscription_id
+  skip_provider_registration = var.skip_provider_registration
 }
 
 provider "azuread" {

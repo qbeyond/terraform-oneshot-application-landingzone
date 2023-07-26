@@ -28,7 +28,7 @@ content: |-
     {{- $resource := append $resource .Resource -}}
     {{- $_ := set .Dict .Key $resource -}}
   {{- end -}}
-  
+
   {{- $filesResources := dict -}}
   {{- $resourceTypes := dict -}}
   {{- range .Module.Resources -}}
@@ -39,7 +39,7 @@ content: |-
     {{- end -}}
   {{- end -}}
   {{ indent 0 "#" }} Usage
-  
+
   # Introduction
   This module is intended for one-shot deployments only!
 
