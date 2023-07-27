@@ -51,6 +51,7 @@ You need
 - Personal Access Token for the DevOps Organization to create service connections and repositories
 - Project Admin on DevOps Project
 - Admin User to create the service principal in the Customer Tenant. If you want to move the subscription into a new management group you need an admin user directly in the tenant. AOBO will not work.
+
   {{ .Requirements }}
   {{ .Providers }}
   {{ .Inputs }}
