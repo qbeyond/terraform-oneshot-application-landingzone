@@ -1,164 +1,111 @@
 <!-- BEGIN_TF_DOCS -->
-
 ## Usage
 
 # Introduction
-
 This module is intended for one-shot deployments only!
 
-This module provides a bootstrap deployment for a new application landing zone.
-It creates the service connection, optionally moves the subscription, creates a build validation policy and creates a new repository with the first pipeline settings and terraform files.
+This module provides a oneshot deployment for a new application landing zone.
+It creates the service connection, optionally moves the subscription to a new management group, creates a build validation policy and creates a new repository with the first pipeline settings and terraform files.
 
 ## Prerequisites
-
 You need:
-
 - Personal Access Token for the DevOps Organization to create service connections and repositories
-- Rights to create the service principal
-- Project Admin on Customer DevOps Project
-
-## Authentication
-
-To authenticate yourself you need a service principal or an invited user. CSP AOBO Permissions will not work.
-The Service Principal needs Owner permission on the management group and application admin in the AAD.
-Follow the instructions on how to set the environment varibles for the service principal [here](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/guides/service_principal_client_secret).
-
-## Approvals
-
-On the first run of the pipeline, permissions are needed for the service connections and environment.
-This can only be done with the user which pat was used in this deployment.
-
-## Examples
-
-### Basic
+- Project Admin on DevOps Project
+- Admin User to create the service principal in the Customer Tenant. If you want to move the subscription into a new management group you need an admin user directly in the tenant. AOBO will not work.
 
 This is a basic terraform.tfvars template to use
-
 ```hcl
-subscription_id = "<application subscription id>"
-management_subscription_id = "<management subscription id>"
-tenant_id = "<customer tenant id>"
-management_group_id = "msp-lz-prd" #optional parameter
-personal_access_token = "<your pat>"
-devops_service_url = "https://dev.azure.com/<customer>"
-devops_project_name = "ALZ - q.beyond AG"
-terraform_state_config = {
-    resource_group_name = "rg-TerraformState-prd-01"
-    storage_account_name = "stter<customer>tfstate01"
-    backend_service_connection = "sc-azurerm-prd-Management-01-backend"
-}
-location = "westeurope"
-stage = "prd"
-vnet_config = {
-    dns_server = ["0.0.0.0","1.1.1.1"]
-    address_space = "10.0.0.0/16"
-    subnets = {
-      subnet1 = {
-        address_prefix = "10.0.0.0/24"
-        usecase = "storage"
-      },
-      subnet2 = {
-        address_prefix = "10.0.1.0/24"
-        usecase = "coolerusecase"
-      }
-    }
-}
 ```
 
 ## Requirements
 
-| Name                                                                           | Version  |
-| ------------------------------------------------------------------------------ | -------- |
-| <a name="requirement_azuread"></a> [azuread](#requirement_azuread)             | >=2.36.0 |
-| <a name="requirement_azuredevops"></a> [azuredevops](#requirement_azuredevops) | >=0.4.0  |
-| <a name="requirement_azurerm"></a> [azurerm](#requirement_azurerm)             | >=3.46.0 |
+| Name | Version |
+|------|---------|
+| <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | >=2.36.0 |
+| <a name="requirement_azuredevops"></a> [azuredevops](#requirement\_azuredevops) | >=0.4.0 |
+| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | >=3.46.0 |
+| <a name="requirement_http-full"></a> [http-full](#requirement\_http-full) | 1.3.1 |
 
 ## Inputs
 
-| Name                                                                                                            | Description                                                          | Type                                                                                                                                  | Default | Required |
-| --------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- | ------- | :------: |
-| <a name="input_devops_project_name"></a> [devops_project_name](#input_devops_project_name)                      | Name of the DevOps Project to create the service connections for.    | `string`                                                                                                                              | n/a     |   yes    |
-| <a name="input_devops_service_url"></a> [devops_service_url](#input_devops_service_url)                         | Azure DevOps organization url.                                       | `string`                                                                                                                              | n/a     |   yes    |
-| <a name="input_management_subscription_id"></a> [management_subscription_id](#input_management_subscription_id) | Subscription ID of the Management Subscription                       | `string`                                                                                                                              | n/a     |   yes    |
-| <a name="input_personal_access_token"></a> [personal_access_token](#input_personal_access_token)                | PAT to use.                                                          | `string`                                                                                                                              | n/a     |   yes    |
-| <a name="input_subscription_id"></a> [subscription_id](#input_subscription_id)                                  | Subscription ID of the Landing Zone Subscription                     | `string`                                                                                                                              | n/a     |   yes    |
-| <a name="input_tenant_id"></a> [tenant_id](#input_tenant_id)                                                    | Tenant of the Customer                                               | `string`                                                                                                                              | n/a     |   yes    |
-| <a name="input_terraform_state_config"></a> [terraform_state_config](#input_terraform_state_config)             | n/a                                                                  | <pre>object({<br> resource_group_name = string<br> storage_account_name = string<br> backend_service_connection = string<br> })</pre> | n/a     |   yes    |
-| <a name="input_management_group_id"></a> [management_group_id](#input_management_group_id)                      | Management Group ID. Optional Parameter if association already done. | `string`                                                                                                                              | `""`    |    no    |
-
+| Name | Description | Type | Default | Required |
+|------|-------------|------|---------|:--------:|
+| <a name="input_devops_project_name"></a> [devops\_project\_name](#input\_devops\_project\_name) | Name of the DevOps Project to create the service connections for. | `string` | n/a | yes |
+| <a name="input_devops_service_url"></a> [devops\_service\_url](#input\_devops\_service\_url) | Azure DevOps organization url. | `string` | n/a | yes |
+| <a name="input_devops_subscription_id"></a> [devops\_subscription\_id](#input\_devops\_subscription\_id) | Subscription ID of the DevOps Subscription. | `string` | n/a | yes |
+| <a name="input_location"></a> [location](#input\_location) | The default location used for resources in this Landing Zone. | `string` | n/a | yes |
+| <a name="input_personal_access_token"></a> [personal\_access\_token](#input\_personal\_access\_token) | [Personal access token](https://learn.microsoft.com/en-us/azure/devops/organizations/accounts/use-personal-access-tokens-to-authenticate?view=azure-devops&tabs=Windows#create-a-pat) used for authentication to the Azure DevOps organization. Is only used during the oneshot deployment. You require the following scopes: `Code`=`Full`, `Environment`=`Read & manage`, `Identity`=`Read & manage`, `Pipeline Resources`=`Use and manage`, `Project and Team`=`Read, write, & manage`, `Security`=`Manage`, `Service Connections`=`Read, query, & manage`,`Variable Groups`=`Read, create, & manage` | `string` | n/a | yes |
+| <a name="input_stage"></a> [stage](#input\_stage) | Name of the current stage. | `string` | n/a | yes |
+| <a name="input_subscription_id"></a> [subscription\_id](#input\_subscription\_id) | Subscription ID of the Landing Zone Subscription. | `string` | n/a | yes |
+| <a name="input_tenant_id"></a> [tenant\_id](#input\_tenant\_id) | Tenant ID of the Customer. | `string` | n/a | yes |
+| <a name="input_terraform_state_config"></a> [terraform\_state\_config](#input\_terraform\_state\_config) | The configuration of the Terraform state. The state will be saved in the given storage account in the DevOps subscription using the backend service connection. | <pre>object({<br>    resource_group_name        = string<br>    storage_account_name       = string<br>    backend_service_connection = string<br>  })</pre> | n/a | yes |
+| <a name="input_create_virtual_machine_template"></a> [create\_virtual\_machine\_template](#input\_create\_virtual\_machine\_template) | Set to true to create a template for creating a windows vm. | `bool` | `false` | no |
+| <a name="input_management_group_id"></a> [management\_group\_id](#input\_management\_group\_id) | Management Group ID where to move the subscription. Optional Parameter if association already done. | `string` | `""` | no |
+| <a name="input_skip_provider_registration"></a> [skip\_provider\_registration](#input\_skip\_provider\_registration) | Allows you to skip the provider registration when initilizing the azurerm provider. This is useful in development environments where not every provider can be registered. | `bool` | `false` | no |
+| <a name="input_vnet_config"></a> [vnet\_config](#input\_vnet\_config) | <pre>If you want to provide a virtual network, please provide the following values: <br>  dns_server: DNS Servers that will be used in the network.<br>  address_space: Address space of the virtual network in CIDR notation.<br>  subnets: Subnets that will be created in the virtual network. Use 'Usecase' as the key and the address prefix as the value in CIDR notation.</pre> | <pre>object({<br>    dns_server    = list(string)<br>    address_space = string<br>    subnets       = map(string)<br>  })</pre> | `null` | no |
 ## Outputs
 
 No outputs.
 
 ## Resource types
-
-| Type                                                                                                                                                                           | Used |
-| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---- |
-| [azuread_application](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/resources/application)                                                             | 1    |
-| [azuread_application_password](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/resources/application_password)                                           | 1    |
-| [azuread_service_principal](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/resources/service_principal)                                                 | 1    |
-| [azuredevops_branch_policy_build_validation](https://registry.terraform.io/providers/microsoft/azuredevops/latest/docs/resources/branch_policy_build_validation)               | 1    |
-| [azuredevops_build_definition](https://registry.terraform.io/providers/microsoft/azuredevops/latest/docs/resources/build_definition)                                           | 1    |
-| [azuredevops_environment](https://registry.terraform.io/providers/microsoft/azuredevops/latest/docs/resources/environment)                                                     | 1    |
-| [azuredevops_git_repository](https://registry.terraform.io/providers/microsoft/azuredevops/latest/docs/resources/git_repository)                                               | 1    |
-| [azuredevops_git_repository_branch](https://registry.terraform.io/providers/microsoft/azuredevops/latest/docs/resources/git_repository_branch)                                 | 1    |
-| [azuredevops_git_repository_file](https://registry.terraform.io/providers/microsoft/azuredevops/latest/docs/resources/git_repository_file)                                     | 1    |
-| [azuredevops_serviceendpoint_azurerm](https://registry.terraform.io/providers/microsoft/azuredevops/latest/docs/resources/serviceendpoint_azurerm)                             | 1    |
-| [azurerm_management_group_subscription_association](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/management_group_subscription_association) | 1    |
-| [azurerm_storage_container](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_container)                                                 | 1    |
-
+| Type | Used |
+|------|-------|
+| [azuredevops_branch_policy_build_validation](https://registry.terraform.io/providers/microsoft/azuredevops/latest/docs/resources/branch_policy_build_validation) | 1 |
+| [azuredevops_build_definition](https://registry.terraform.io/providers/microsoft/azuredevops/latest/docs/resources/build_definition) | 1 |
+| [azuredevops_environment](https://registry.terraform.io/providers/microsoft/azuredevops/latest/docs/resources/environment) | 1 |
+| [azuredevops_git_repository](https://registry.terraform.io/providers/microsoft/azuredevops/latest/docs/resources/git_repository) | 1 |
+| [azuredevops_git_repository_branch](https://registry.terraform.io/providers/microsoft/azuredevops/latest/docs/resources/git_repository_branch) | 1 |
+| [azuredevops_git_repository_file](https://registry.terraform.io/providers/microsoft/azuredevops/latest/docs/resources/git_repository_file) | 6 |
+| [azuredevops_resource_authorization](https://registry.terraform.io/providers/microsoft/azuredevops/latest/docs/resources/resource_authorization) | 1 |
+| [azurerm_management_group_subscription_association](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/management_group_subscription_association) | 1 |
+| [azurerm_storage_container](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_container) | 1 |
 **`Used` only includes resource blocks.** `for_each` and `count` meta arguments, as well as resource blocks of modules are not considered.
 
 ## Modules
 
-No modules.
+| Name | Source | Version |
+|------|--------|---------|
+| <a name="module_service_connection_application"></a> [service\_connection\_application](#module\_service\_connection\_application) | ./modules/devops_azurerm_service_connection | n/a |
 
 ## Resources by Files
-
 ### build_validation.tf
-
-| Name                                                                                                                                                                  | Type     |
-| --------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- |
+| Name | Type |
+|------|------|
 | [azuredevops_branch_policy_build_validation.this](https://registry.terraform.io/providers/microsoft/azuredevops/latest/docs/resources/branch_policy_build_validation) | resource |
-
 ### main.tf
-
-| Name                                                                                                                                                                                  | Type        |
-| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
-| [azurerm_management_group_subscription_association.target](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/management_group_subscription_association) | resource    |
-| [azurerm_storage_container.landing_zone](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_container)                                           | resource    |
-| [azurerm_management_group.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/management_group)                                                  | data source |
-| [azurerm_storage_account.terraform_state](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/storage_account)                                         | data source |
-
+| Name | Type |
+|------|------|
+| [azurerm_management_group_subscription_association.target](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/management_group_subscription_association) | resource |
+| [azurerm_storage_container.landing_zone](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_container) | resource |
+| [azurerm_management_group.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/management_group) | data source |
+| [azurerm_storage_account.terraform_state](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/storage_account) | data source |
+### pipeline-permissions.tf
+| Name | Type |
+|------|------|
+| [azuredevops_resource_authorization.service_connection_permission_alz](https://registry.terraform.io/providers/microsoft/azuredevops/latest/docs/resources/resource_authorization) | resource |
+| [azuredevops_team.default](https://registry.terraform.io/providers/microsoft/azuredevops/latest/docs/data-sources/team) | data source |
+| [http-full_http.approval_and_check_alz](https://registry.terraform.io/providers/salrashid123/http-full/1.3.1/docs/data-sources/http) | data source |
+| [http-full_http.environment_permission_alz](https://registry.terraform.io/providers/salrashid123/http-full/1.3.1/docs/data-sources/http) | data source |
+| [http-full_http.environment_user_permission_alz](https://registry.terraform.io/providers/salrashid123/http-full/1.3.1/docs/data-sources/http) | data source |
 ### pipeline.tf
-
-| Name                                                                                                                                      | Type     |
-| ----------------------------------------------------------------------------------------------------------------------------------------- | -------- |
+| Name | Type |
+|------|------|
 | [azuredevops_build_definition.this](https://registry.terraform.io/providers/microsoft/azuredevops/latest/docs/resources/build_definition) | resource |
-| [azuredevops_environment.alz](https://registry.terraform.io/providers/microsoft/azuredevops/latest/docs/resources/environment)            | resource |
-
+| [azuredevops_environment.alz](https://registry.terraform.io/providers/microsoft/azuredevops/latest/docs/resources/environment) | resource |
 ### repository.tf
-
-| Name                                                                                                                                                | Type     |
-| --------------------------------------------------------------------------------------------------------------------------------------------------- | -------- |
-| [azuredevops_git_repository.landing_zone](https://registry.terraform.io/providers/microsoft/azuredevops/latest/docs/resources/git_repository)       | resource |
+| Name | Type |
+|------|------|
+| [azuredevops_git_repository.landing_zone](https://registry.terraform.io/providers/microsoft/azuredevops/latest/docs/resources/git_repository) | resource |
 | [azuredevops_git_repository_branch.init](https://registry.terraform.io/providers/microsoft/azuredevops/latest/docs/resources/git_repository_branch) | resource |
+| [azuredevops_git_repository_file.locals](https://registry.terraform.io/providers/microsoft/azuredevops/latest/docs/resources/git_repository_file) | resource |
+| [azuredevops_git_repository_file.main](https://registry.terraform.io/providers/microsoft/azuredevops/latest/docs/resources/git_repository_file) | resource |
 | [azuredevops_git_repository_file.pipeline](https://registry.terraform.io/providers/microsoft/azuredevops/latest/docs/resources/git_repository_file) | resource |
-
-### service_connection.tf
-
-| Name                                                                                                                                                    | Type     |
-| ------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- |
-| [azuread_application.this](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/resources/application)                                 | resource |
-| [azuread_application_password.this](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/resources/application_password)               | resource |
-| [azuread_service_principal.this](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/resources/service_principal)                     | resource |
-| [azuredevops_serviceendpoint_azurerm.this](https://registry.terraform.io/providers/microsoft/azuredevops/latest/docs/resources/serviceendpoint_azurerm) | resource |
-
+| [azuredevops_git_repository_file.terraform](https://registry.terraform.io/providers/microsoft/azuredevops/latest/docs/resources/git_repository_file) | resource |
+| [azuredevops_git_repository_file.virtual_machine](https://registry.terraform.io/providers/microsoft/azuredevops/latest/docs/resources/git_repository_file) | resource |
+| [azuredevops_git_repository_file.vnet](https://registry.terraform.io/providers/microsoft/azuredevops/latest/docs/resources/git_repository_file) | resource |
 ### terraform.tf
-
-| Name                                                                                                                         | Type        |
-| ---------------------------------------------------------------------------------------------------------------------------- | ----------- |
-| [azuredevops_project.this](https://registry.terraform.io/providers/microsoft/azuredevops/latest/docs/data-sources/project)   | data source |
+| Name | Type |
+|------|------|
+| [azuredevops_project.this](https://registry.terraform.io/providers/microsoft/azuredevops/latest/docs/data-sources/project) | data source |
 | [azurerm_subscription.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/subscription) | data source |
-
 <!-- END_TF_DOCS -->
