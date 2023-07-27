@@ -13,6 +13,10 @@ You need:
 - Project Admin on DevOps Project
 - Admin User to create the service principal in the Customer Tenant. If you want to move the subscription into a new management group you need an admin user directly in the tenant. AOBO will not work.
 
+This is a basic terraform.tfvars template to use
+```hcl
+```
+
 ## Requirements
 
 | Name | Version |
