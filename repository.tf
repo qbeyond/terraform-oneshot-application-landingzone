@@ -40,7 +40,7 @@ resource "azuredevops_git_repository_file" "main" {
   file                = "main.tf"
   content             = templatefile("${path.module}/templates/main.tftpl", {})
   branch              = "refs/heads/${azuredevops_git_repository_branch.init.name}"
-  commit_message      = "Add Terraform.tf"
+  commit_message      = "Add main.tf"
   overwrite_on_create = true
 
   lifecycle {
@@ -56,7 +56,7 @@ resource "azuredevops_git_repository_file" "locals" {
     subscription_name = data.azurerm_subscription.this.display_name
   })
   branch              = "refs/heads/${azuredevops_git_repository_branch.init.name}"
-  commit_message      = "Add Terraform.tf"
+  commit_message      = "Add locals.tf"
   overwrite_on_create = true
 
   lifecycle {
@@ -69,7 +69,7 @@ resource "azuredevops_git_repository_file" "terraform" {
   file                = "terraform.tf"
   content             = templatefile("${path.module}/templates/terraform.tftpl", {})
   branch              = "refs/heads/${azuredevops_git_repository_branch.init.name}"
-  commit_message      = "Add Terraform.tf"
+  commit_message      = "Add terraform.tf"
   overwrite_on_create = true
 
   lifecycle {
