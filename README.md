@@ -1,7 +1,6 @@
-<!-- BEGIN_TF_DOCS -->
-## Usage
+# Oneshot deployment for application landingzone
 
-# Introduction
+## Introduction
 This module is intended for one-shot deployments only!
 
 This module provides a oneshot deployment for a new application landing zone.
@@ -12,10 +11,7 @@ You need:
 - Personal Access Token for the DevOps Organization to create service connections and repositories
 - Project Admin on DevOps Project
 - Admin User to create the service principal in the Customer Tenant. If you want to move the subscription into a new management group you need an admin user directly in the tenant. AOBO will not work.
-
-This is a basic terraform.tfvars template to use
-```hcl
-```
+<!-- BEGIN_TF_DOCS -->
 
 ## Requirements
 
