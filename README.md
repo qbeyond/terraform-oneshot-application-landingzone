@@ -62,7 +62,7 @@ No outputs.
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_service_connection_application"></a> [service\_connection\_application](#module\_service\_connection\_application) | ./modules/devops_azurerm_service_connection | n/a |
+| <a name="module_service_connection_application"></a> [service\_connection\_application](#module\_service\_connection\_application) | qbeyond/service-connection/azuredevops | 1.0.0 |
 
 ## Resources by Files
 ### build_validation.tf
