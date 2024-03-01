@@ -1,5 +1,5 @@
 resource "azurerm_resource_group" "vm" {
-  name     = "rg-$${local.subsciption_logical_name}-${stage}-01"
+  name     = "rg-$${local.subsciption_logical_name}-${stage}-$${local.subsciption_logical_num}"
   location = local.default_location
 }
 
