@@ -38,7 +38,9 @@ resource "azuredevops_git_repository_file" "pipeline" {
 resource "azuredevops_git_repository_file" "main" {
   repository_id       = azuredevops_git_repository.landing_zone.id
   file                = "main.tf"
-  content             = templatefile("${path.module}/templates/main.tftpl", {})
+  content             = templatefile("${path.module}/templates/main.tftpl", {
+    stage = var.stage
+  })
   branch              = "refs/heads/${azuredevops_git_repository_branch.init.name}"
   commit_message      = "Add main.tf"
   overwrite_on_create = true
