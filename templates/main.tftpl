@@ -8,6 +8,6 @@ module "tags" {
   tags = {
       "Business Service Number"      = ""
       "applicationname"              = "$${local.subsciption_logical_name}"
-      "env"                          = "${stage}"
+      "env"                          = "$${subsciption_logical_stage}"
   }
 }

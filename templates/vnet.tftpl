@@ -7,7 +7,7 @@ locals {
 }
 
 resource "azurerm_resource_group" "vnet" {
-  name     = "rg-$${local.subsciption_logical_name}Network-${stage}-$${local.subsciption_logical_num}"
+  name     = "rg-$${local.subsciption_logical_name}Network-$${subsciption_logical_stage}-$${local.subsciption_logical_num}"
   location = local.default_location
 }
 
