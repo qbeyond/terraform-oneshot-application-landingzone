@@ -1,5 +1,5 @@
 locals {
   default_location = "${location}"
-  stage            = "${split("-",subscription_name)[0]}"
-  application_name = "${split("-",subscription_name)[1]}"
+  stage            = "${split("-","${subscription_name})[0]}"
+  application_name = "${split("-","${subscription_name})[1]}"
 }

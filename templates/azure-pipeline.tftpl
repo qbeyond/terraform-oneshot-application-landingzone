@@ -21,4 +21,6 @@ stages:
     container_name: '${container_name}'
     key: '${subscription_name}.tfstate'
     environment: '${environment}'
-    variables:
+    # Variables can be used eg. to pull secrets
+#    variables:
+#      password: $(password)

@@ -1,5 +1,5 @@
 resource "azurerm_resource_group" "vm" {
-  name     = "rg-${local.application_name}-App-${local.stage}-01"
+  name     = "rg-$${local.application_name}-App-$${local.stage}-01"
   location = local.default_location
 }
 
