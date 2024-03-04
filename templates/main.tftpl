@@ -1,1 +1,16 @@
 #This file is where the code for your application will be in the future.
+data "azurerm_subscription" "current" {
+}
+
+module "tags" {
+  source          = "qbeyond/subscription-tags/azapi"
+  subscription_id = data.azurerm_subscription.current.subscription_id
+  tags = {
+      "Business Service Number" = "${business_service_number}"
+      "applicationname"         = local.application_name
+      "env"                     = local.stage
+       iac                      = "true"
+       managedby                = "${managedby}"
+       alerting                 = "enabled"
+  }
+}
