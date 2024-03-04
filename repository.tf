@@ -81,7 +81,9 @@ resource "azuredevops_git_repository_file" "vnet" {
   count         = var.vnet_config.address_space == null ? 0 : 1
   repository_id = azuredevops_git_repository.landing_zone.id
   file          = "vnet.tf"
-  content = templatefile("${path.module}/templates/vnet.tftpl", {})
+  content = templatefile("${path.module}/templates/vnet.tftpl", {
+    vnet_config = var.vnet_config
+  })
   branch              = "refs/heads/${azuredevops_git_repository_branch.init.name}"
   commit_message      = "Add Vnet.tf"
   overwrite_on_create = true
