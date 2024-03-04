@@ -8,18 +8,16 @@ and this module adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.
 ## [Unreleased]
 
 
-## [1.1.0] - 2024-03-04
+## [2.0.0] - 2024-03-04
 
-One-shot deployments only, no new features, improved templates.
+Upgrade the template to avoid changing the Governance only to include tags for new subscription
 
 ### Added
 
 - Tags module for subscription in main.tf template.
-- Subscription local parameters
 
-### Updated
+### Changed
 
-- Terraform version to 1.7.4.
 - Stage parameter for local variables.
 
 ## [1.0.0] - 2023-09-08

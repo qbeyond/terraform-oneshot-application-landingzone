@@ -1,7 +1,5 @@
 locals {
-  default_location         = "${location}"
-  subscription_name         = data.azurerm_subscription.current.display_name
-  subsciption_logical_stage = split("-", local.subscription_name)[0]
-  subsciption_logical_name  = split("-", local.subscription_name)[1]
-  subsciption_logical_num   = split("-", local.subscription_name)[2]
+  default_location = "${location}"
+  stage            = "${split("-",subscription_name)[0]}"
+  application_name = "${split("-",subscription_name)[1]}"
 }

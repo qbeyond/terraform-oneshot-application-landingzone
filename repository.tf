@@ -23,7 +23,6 @@ resource "azuredevops_git_repository_file" "pipeline" {
     storage_account_name                = var.terraform_state_config.storage_account_name
     container_name                      = lower(data.azurerm_subscription.this.display_name)
     environment                         = azuredevops_environment.alz.name
-    stage                               = var.stage
     subscription_name                   = data.azurerm_subscription.this.display_name
   })
   branch              = "refs/heads/${azuredevops_git_repository_branch.init.name}"
@@ -38,7 +37,10 @@ resource "azuredevops_git_repository_file" "pipeline" {
 resource "azuredevops_git_repository_file" "main" {
   repository_id       = azuredevops_git_repository.landing_zone.id
   file                = "main.tf"
-  content             = templatefile("${path.module}/templates/main.tftpl", {})
+  content             = templatefile("${path.module}/templates/main.tftpl", {
+    business_service_number             = var.business_service_number
+    managedby                           = var.managedby
+  })
   branch              = "refs/heads/${azuredevops_git_repository_branch.init.name}"
   commit_message      = "Add main.tf"
   overwrite_on_create = true

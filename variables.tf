@@ -45,9 +45,15 @@ variable "terraform_state_config" {
   description = "The configuration of the Terraform state. The state will be saved in the given storage account in the DevOps subscription using the backend service connection."
 }
 
-variable "stage" {
+variable "business_service_number" {
   type        = string
-  description = "Name of the current stage."
+  description = "Number of the business services associated to the current subscription."
+}
+
+variable "managedby" {
+  type        = string
+  default     = "q.beyond"
+  description = "Name of the of the organization that managed the resources."
 }
 
 variable "location" {
