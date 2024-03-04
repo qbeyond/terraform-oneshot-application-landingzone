@@ -8,7 +8,7 @@ and this module adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.
 ## [Unreleased]
 
 
-## [1.1.0] - 2023-11-28
+## [1.1.0] - 2024-03-04
 
 One-shot deployments only, no new features, improved templates.
 
