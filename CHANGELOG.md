@@ -20,6 +20,7 @@ One-shot deployments only, no new features, improved templates.
 ### Updated
 
 - Terraform version to 1.7.4.
+- Stage parameter for local variables.
 
 ## [1.0.0] - 2023-09-08
 
