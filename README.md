@@ -96,10 +96,10 @@ No outputs.
                   | [azuredevops_git_repository_branch.init](https://registry.terraform.io/providers/microsoft/azuredevops/latest/docs/resources/git_repository_branch) | resource |
                   | [azuredevops_git_repository_file.locals](https://registry.terraform.io/providers/microsoft/azuredevops/latest/docs/resources/git_repository_file) | resource |
                   | [azuredevops_git_repository_file.main](https://registry.terraform.io/providers/microsoft/azuredevops/latest/docs/resources/git_repository_file) | resource |
+                  | [azuredevops_git_repository_file.network](https://registry.terraform.io/providers/microsoft/azuredevops/latest/docs/resources/git_repository_file) | resource |
                   | [azuredevops_git_repository_file.pipeline](https://registry.terraform.io/providers/microsoft/azuredevops/latest/docs/resources/git_repository_file) | resource |
                   | [azuredevops_git_repository_file.terraform](https://registry.terraform.io/providers/microsoft/azuredevops/latest/docs/resources/git_repository_file) | resource |
                   | [azuredevops_git_repository_file.virtual_machine](https://registry.terraform.io/providers/microsoft/azuredevops/latest/docs/resources/git_repository_file) | resource |
-                  | [azuredevops_git_repository_file.vnet](https://registry.terraform.io/providers/microsoft/azuredevops/latest/docs/resources/git_repository_file) | resource |
             ### terraform.tf
             | Name | Type |
             |------|------|
