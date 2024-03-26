@@ -79,16 +79,16 @@ resource "azuredevops_git_repository_file" "terraform" {
   }
 }
 
-resource "azuredevops_git_repository_file" "vnet" {
+resource "azuredevops_git_repository_file" "network" {
   count         = var.vnet_config == null ? 0 : 1
   repository_id = azuredevops_git_repository.landing_zone.id
-  file          = "vnet.tf"
-  content = templatefile("${path.module}/templates/vnet.tftpl", {
+  file          = "network.tf"
+  content = templatefile("${path.module}/templates/network.tftpl", {
     vnet_config = var.vnet_config
     stage       = var.stage
   })
   branch              = "refs/heads/${azuredevops_git_repository_branch.init.name}"
-  commit_message      = "Add Vnet.tf"
+  commit_message      = "Add network.tf"
   overwrite_on_create = true
 
   lifecycle {
