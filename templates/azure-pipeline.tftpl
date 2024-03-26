@@ -19,7 +19,7 @@ stages:
     terraformVersion: '1.5.3'
     storage_account_name: '${storage_account_name}'
     container_name: '${container_name}'
-    key: ''${subscription_name}.tfstate''
+    key: '${subscription_name}.tfstate'
     environment: '${environment}'
     variables:
       state: '${stage}'
