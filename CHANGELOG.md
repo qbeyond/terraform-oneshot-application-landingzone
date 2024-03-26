@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - rename `vnet.tf` to `network.tf` as it contains Resource Group for `Network`
 - remove `locals` from `network.tf`/`vnet.tf`
+- fix location not inserted into 'locals.tf'
 
 ## [1.0.1] - 2024-03-25
 
