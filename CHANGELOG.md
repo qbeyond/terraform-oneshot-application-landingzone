@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - fix `/azure-pipelines.yml (Line: 22, Col: 12): While parsing a block mapping, did not find expected key.`
+- use 1.7.5 as terraform version in pipeline
 
 ## [1.0.1] - 2024-03-25
 
