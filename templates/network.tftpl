@@ -1,11 +1,3 @@
-locals {
-  subnets = { 
-%{ for usecase, address_prefix in vnet_config.subnets ~}
-    ${usecase} = "${address_prefix}"
-%{ endfor ~}
-  }
-}
-
 resource "azurerm_resource_group" "network" {
   name     = "rg-$${local.subsciption_logical_name}Network-${stage}-01"
   location = local.default_location
@@ -19,7 +11,11 @@ resource "azurerm_virtual_network" "this" {
 }
 
 resource "azurerm_subnet" "this" {
-  for_each             = local.subnets
+  for_each             = { 
+%{ for usecase, address_prefix in vnet_config.subnets ~}
+    ${usecase} = "${address_prefix}"
+%{ endfor ~}
+  }
   name                 = "snet-$${replace(each.value, "/[./]/", "-")}-$${each.key}"
   resource_group_name  = azurerm_resource_group.vnet.name
   virtual_network_name = azurerm_virtual_network.this.name
