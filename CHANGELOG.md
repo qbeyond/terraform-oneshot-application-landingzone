@@ -7,8 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Set the `skip_provider_registration` of `azurerm` provider in created terraform configuration to `var.skip_provider_registration` instead of `true`
+
 ### Changed
 
+- rename `vnet.tf` to `network.tf` as it contains Resource Group for `Network`
+- remove `locals` from `network.tf`/`vnet.tf`
+- fix location not inserted into 'locals.tf'
+- use pessimistic version constrained in template to prevent upgrade of major versions
 - fix `/azure-pipelines.yml (Line: 22, Col: 12): While parsing a block mapping, did not find expected key.`
 - use 1.7.5 as terraform version in pipeline
 
