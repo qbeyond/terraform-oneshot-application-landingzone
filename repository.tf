@@ -52,8 +52,8 @@ resource "azuredevops_git_repository_file" "locals" {
   repository_id = azuredevops_git_repository.landing_zone.id
   file          = "locals.tf"
   content = templatefile("${path.module}/templates/locals.tftpl", {
-    location          = var.location
-    subscription_name = data.azurerm_subscription.this.display_name
+    location                  = var.location
+    subscription_logical_name = split("-", data.azurerm_subscription.this.display_name)[1]
   })
   branch              = "refs/heads/${azuredevops_git_repository_branch.init.name}"
   commit_message      = "Add locals.tf"
