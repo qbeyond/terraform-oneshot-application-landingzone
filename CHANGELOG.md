@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.0] - 2024-03-27
+
 ### Added
 
 - Set the `skip_provider_registration` of `azurerm` provider in created terraform configuration to `var.skip_provider_registration` instead of `true`
@@ -17,6 +19,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - remove `locals` from `network.tf`/`vnet.tf`
 - fix location not inserted into 'locals.tf'
 - use pessimistic version constrained in template to prevent upgrade of major versions
+- fix `/azure-pipelines.yml (Line: 22, Col: 12): While parsing a block mapping, did not find expected key.`
+- use 1.7.5 as terraform version in pipeline
 
 ## [1.0.1] - 2024-03-25
 
