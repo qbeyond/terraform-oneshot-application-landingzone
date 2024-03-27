@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [2.0.0] - 2024-03-27
 
+### Changed
+
+- hard code `subscription_logical_name` in created repo to avoid changes on subscription rename
+
 ### Added
 
 - Set tags at subscription level. Should be used when tags are not managed centrally (version of `archetype-lib` `>=3.0.0`)
