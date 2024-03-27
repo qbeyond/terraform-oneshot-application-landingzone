@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.0.0] - 2024-03-27
+
+### Added
+
+- Set tags at subscription level. Should be used when tags are not managed centrally (version of `archetype-lib` `>=3.0.0`)
+
 ## [1.1.0] - 2024-03-27
 
 ### Added

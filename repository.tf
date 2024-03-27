@@ -79,6 +79,21 @@ resource "azuredevops_git_repository_file" "terraform" {
   }
 }
 
+resource "azuredevops_git_repository_file" "tags" {
+  repository_id = azuredevops_git_repository.landing_zone.id
+  file          = "tags.tf"
+  content = templatefile("${path.module}/templates/tags.tftpl", {
+    tags = local.tags
+  })
+  branch              = "refs/heads/${azuredevops_git_repository_branch.init.name}"
+  commit_message      = "Add tags.tf"
+  overwrite_on_create = true
+
+  lifecycle {
+    ignore_changes = [commit_message]
+  }
+}
+
 resource "azuredevops_git_repository_file" "network" {
   count         = var.vnet_config == null ? 0 : 1
   repository_id = azuredevops_git_repository.landing_zone.id
