@@ -1,4 +1,9 @@
 locals {
   default_location         = "${location}"
   subsciption_logical_name = "${subscription_logical_name}"
+  tags = {
+    %{for tag_name, tag_value in tags ~}
+    "${tag_name}" = "${tag_value}"
+    %{ endfor ~}
+  }
 }
