@@ -31,3 +31,6 @@ env = "abc"
 iac = true
 managed_by = "example.company"
 alerting = "enabled"
+additional_tags = {
+  tagname = "tagvalue"
+}

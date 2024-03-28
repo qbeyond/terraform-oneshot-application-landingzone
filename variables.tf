@@ -144,4 +144,8 @@ variable "additional_tags" {
   type        = map(string)
   description = "A mapping of tags to add to the subscription in addition to the default tags."
   default     = {}
+  validation {
+    condition     = var.additional_tags.tagname == "tagvalue"
+    error_message = "The key `tagname` is just an example. Please remove it from the additional tags."
+  }
 }
