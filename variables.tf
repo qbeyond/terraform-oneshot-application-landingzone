@@ -91,6 +91,11 @@ variable "business_service_number" {
     condition     = startswith(var.business_service_number, "CI")
     error_message = "The Business Service Number should start with `CI`"
   }
+
+  validation {
+    condition     = var.business_service_number != "CI123456789"
+    error_message = "The Business Service Number should be replaced with the actual Business Service Number. Sorry if you really have this number."
+  }
 }
 
 variable "application_name" {
