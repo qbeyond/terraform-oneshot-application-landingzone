@@ -30,3 +30,4 @@ var.application_name    = "ApplicationName"
 env = "abc"
 iac = true
 managed_by = "example.company"
+alerting = "enabled"
