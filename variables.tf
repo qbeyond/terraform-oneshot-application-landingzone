@@ -124,6 +124,10 @@ variable "iac" {
 variable "managed_by" {
   type        = string
   description = "The `managedby` tag of the subscription. This should be the entity responsible for managing the infrastructure (e.g `q.beyond`)."
+  validation {
+    condition     = var.managed_by != "example.company"
+    error_message = "The managed by should be replaced with the actual entity responsible for managing the infrastructure."
+  }
 }
 
 variable "alerting" {
