@@ -101,6 +101,10 @@ variable "business_service_number" {
 variable "application_name" {
   type        = string
   description = "The `applicationname` tag of subscription."
+  validation {
+    condition     = var.application_name != "ApplicationName"
+    error_message = "The Application Name should be replaced with the actual Application Name."
+  }
 }
 
 variable "env" {

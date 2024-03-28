@@ -26,3 +26,4 @@ create_virtual_machine_template = false
 #tags
 
 business_service_number = "CI123456789"
+var.application_name    = "ApplicationName"
