@@ -88,12 +88,12 @@ variable "business_service_number" {
   type        = string
   description = "The `Business Service Number` tag of subscription."
   validation {
-    condition     = startswith(var.business_service_number, "CI")
-    error_message = "The Business Service Number should start with `CI`"
+    condition     = length(regexall("^\\d+$", var.business_service_number)) == 1
+    error_message = "The Business Service Number should only contain numbers."
   }
 
   validation {
-    condition     = var.business_service_number != "CI123456789"
+    condition     = var.business_service_number != "12345"
     error_message = "The Business Service Number should be replaced with the actual Business Service Number. Sorry if you really have this number."
   }
 }

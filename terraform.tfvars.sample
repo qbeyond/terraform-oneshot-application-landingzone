@@ -24,8 +24,7 @@ vnet_config = {
 create_virtual_machine_template = false
 
 #tags
-
-business_service_number = "CI123456789"
+business_service_number = "12345"
 application_name    = "ApplicationName"
 env = "abc"
 iac = true
