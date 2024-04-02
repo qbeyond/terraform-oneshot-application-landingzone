@@ -54,7 +54,6 @@ resource "azuredevops_git_repository_file" "locals" {
   content = templatefile("${path.module}/templates/locals.tftpl", {
     location                  = var.location
     subscription_logical_name = split("-", data.azurerm_subscription.this.display_name)[1]
-    tags                      = local.tags
   })
   branch              = "refs/heads/${azuredevops_git_repository_branch.init.name}"
   commit_message      = "Add locals.tf"
@@ -81,9 +80,11 @@ resource "azuredevops_git_repository_file" "terraform" {
 }
 
 resource "azuredevops_git_repository_file" "tags" {
-  repository_id       = azuredevops_git_repository.landing_zone.id
-  file                = "tags.tf"
-  content             = templatefile("${path.module}/templates/tags.tftpl", {})
+  repository_id = azuredevops_git_repository.landing_zone.id
+  file          = "tags.tf"
+  content = templatefile("${path.module}/templates/tags.tftpl", {
+    tags = local.tags
+  })
   branch              = "refs/heads/${azuredevops_git_repository_branch.init.name}"
   commit_message      = "Add tags.tf"
   overwrite_on_create = true

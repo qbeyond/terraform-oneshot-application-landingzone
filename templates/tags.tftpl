@@ -1,3 +1,11 @@
+locals {
+  tags = {
+  %{for tag_name, tag_value in tags ~}
+  "${tag_name}" = "${tag_value}"
+  %{ endfor ~}
+  }
+}
+
 data "azurerm_subscription" "current" {
 }
 
