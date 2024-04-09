@@ -1,0 +1,18 @@
+locals {
+  tags = {
+  %{for tag_name, tag_value in tags ~}
+  "${tag_name}" = "${tag_value}"
+  %{ endfor ~}
+  }
+}
+
+data "azurerm_subscription" "current" {
+}
+
+#Apply tags to subscription
+module "subscription_tags" {
+  source   = "qbeyond/subscription-tags/azapi"
+  version  = "2.0.1"
+  subscription_id = data.azurerm_subscription.current.subscription_id
+  tags = local.tags
+}

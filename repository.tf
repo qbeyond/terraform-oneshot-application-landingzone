@@ -52,8 +52,8 @@ resource "azuredevops_git_repository_file" "locals" {
   repository_id = azuredevops_git_repository.landing_zone.id
   file          = "locals.tf"
   content = templatefile("${path.module}/templates/locals.tftpl", {
-    location          = var.location
-    subscription_name = data.azurerm_subscription.this.display_name
+    location                  = var.location
+    subscription_logical_name = split("-", data.azurerm_subscription.this.display_name)[1]
   })
   branch              = "refs/heads/${azuredevops_git_repository_branch.init.name}"
   commit_message      = "Add locals.tf"
@@ -72,6 +72,21 @@ resource "azuredevops_git_repository_file" "terraform" {
   })
   branch              = "refs/heads/${azuredevops_git_repository_branch.init.name}"
   commit_message      = "Add terraform.tf"
+  overwrite_on_create = true
+
+  lifecycle {
+    ignore_changes = [commit_message]
+  }
+}
+
+resource "azuredevops_git_repository_file" "tags" {
+  repository_id = azuredevops_git_repository.landing_zone.id
+  file          = "tags.tf"
+  content = templatefile("${path.module}/templates/tags.tftpl", {
+    tags = local.tags
+  })
+  branch              = "refs/heads/${azuredevops_git_repository_branch.init.name}"
+  commit_message      = "Add tags.tf"
   overwrite_on_create = true
 
   lifecycle {
@@ -105,6 +120,19 @@ resource "azuredevops_git_repository_file" "virtual_machine" {
   })
   branch              = "refs/heads/${azuredevops_git_repository_branch.init.name}"
   commit_message      = "Add virtual_machine_template.tf"
+  overwrite_on_create = true
+
+  lifecycle {
+    ignore_changes = [commit_message]
+  }
+}
+
+resource "azuredevops_git_repository_file" "gitignore" {
+  repository_id       = azuredevops_git_repository.landing_zone.id
+  file                = ".gitignore"
+  content             = file("${path.module}/templates/gitignore")
+  branch              = "refs/heads/${azuredevops_git_repository_branch.init.name}"
+  commit_message      = "Add .gitignore"
   overwrite_on_create = true
 
   lifecycle {

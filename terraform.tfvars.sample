@@ -22,3 +22,14 @@ vnet_config = {
   }
 }
 create_virtual_machine_template = false
+
+#tags
+business_service_number = "12345"
+application_name    = "ApplicationName"
+env = "abc"
+iac = true
+managed_by = "example.company"
+alerting = "enabled"
+additional_tags = {
+  tagname = "tagvalue"
+}

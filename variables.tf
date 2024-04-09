@@ -83,3 +83,69 @@ variable "create_virtual_machine_template" {
   description = "Set to true to create a template for creating a windows vm."
   default     = false
 }
+
+variable "business_service_number" {
+  type        = string
+  description = "The `Business Service Number` tag of subscription."
+  validation {
+    condition     = length(regexall("^\\d+$", var.business_service_number)) == 1
+    error_message = "The Business Service Number should only contain numbers."
+  }
+
+  validation {
+    condition     = var.business_service_number != "12345"
+    error_message = "The Business Service Number should be replaced with the actual Business Service Number. Sorry if you really have this number."
+  }
+}
+
+variable "application_name" {
+  type        = string
+  description = "The `applicationname` tag of subscription."
+  validation {
+    condition     = var.application_name != "ApplicationName"
+    error_message = "The Application Name should be replaced with the actual Application Name."
+  }
+}
+
+variable "env" {
+  type        = string
+  description = "The `env` tag of the subscription . Can be `prd`, `dev`, `tst`, `qas`, `stg`, `int`, or `lab`."
+  validation {
+    condition     = contains(["prd", "dev", "tst", "qas", "stg", "int", "lab"], var.env)
+    error_message = "The environment should be either `prd`, `dev`, `tst`, `qas`, `stg`, `int`, or `lab`"
+  }
+}
+
+variable "iac" {
+  type        = bool
+  description = "The `iac` tag of subscription. Set to `true` if the subscription is managed by Infrastructure as Code (IaC) and `false` otherwise"
+}
+
+variable "managed_by" {
+  type        = string
+  description = "The `managedby` tag of the subscription. This should be the entity responsible for managing the infrastructure (e.g `q.beyond`)."
+  validation {
+    condition     = var.managed_by != "example.company"
+    error_message = "The managed by should be replaced with the actual entity responsible for managing the infrastructure."
+  }
+}
+
+variable "alerting" {
+  type        = string
+  description = "The `alerting` tag of the subscription. Can be `enabled` or `disabled`."
+
+  validation {
+    condition     = contains(["enabled", "disabled"], var.alerting)
+    error_message = "The alerting tag should be either `enabled` or `disabled`"
+  }
+}
+
+variable "additional_tags" {
+  type        = map(string)
+  description = "A mapping of tags to add to the subscription in addition to the default tags."
+  default     = {}
+  validation {
+    condition     = var.additional_tags.tagname == "tagvalue"
+    error_message = "The key `tagname` is just an example. Please remove it from the additional tags."
+  }
+}
