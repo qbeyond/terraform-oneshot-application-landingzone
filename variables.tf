@@ -145,7 +145,7 @@ variable "additional_tags" {
   description = "A mapping of tags to add to the subscription in addition to the default tags."
   default     = {}
   validation {
-    condition     = var.additional_tags.tagname == "tagvalue"
+    condition     = contains(keys(var.additional_tags), "tagname") != true
     error_message = "The key `tagname` is just an example. Please remove it from the additional tags."
   }
 }
