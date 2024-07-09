@@ -145,11 +145,12 @@ resource "azuredevops_git_repository_file" "virtual_machine" {
   count         = var.create_virtual_machine_template == true ? 1 : 0
   repository_id = azuredevops_git_repository.landing_zone.id
   file          = "virtual_machine_template.tf"
-  content = templatefile("${path.module}/templates/virtual_machine.tftpl", {
-    stage = var.stage
+  content = templatefile("${path.module}/templates/vm*.tftpl", {
+    create_vm_win = var.create_vm_win
+    create_vm_ux  = var.create_vm_ux
   })
   branch              = "refs/heads/${azuredevops_git_repository_branch.init.name}"
-  commit_message      = "Add virtual_machine_template.tf"
+  commit_message      = "Add vm template files"
   overwrite_on_create = true
 
   lifecycle {

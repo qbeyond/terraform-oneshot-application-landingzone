@@ -1,0 +1,134 @@
+locals {
+  %{ if var.create_vm_win == true ~}
+  vm_win = {
+    CUSTWIN001 = {
+
+      resource_group_name = azurerm_resource_group.app.name
+      subnet              = azurerm_subnet.this["PrintConnector"]
+  
+      virtual_machine_config = {
+        hostname                          = "CUSTWIN001"
+        admin_username                    = "loc_sysadmin"
+        size                              = "Standard_B2ms"
+        location                          = local.default_location
+        os_sku                            = "2022-datacenter-azure-edition"
+        os_version                        = "latest"
+        os_disk_caching                   = "ReadWrite"
+        os_disk_size_gb                   = 128
+        os_disk_storage_type              = "Premium_ZRS"
+        timezone                          = "W. Europe Standard Time"
+        zone                              = null
+        write_accelerator_enabled         = false
+        availability_set_id               = null
+        proximity_placement_group_id      = null
+      }
+       
+      admin_password = var.habroprp001_pwd
+      severity_group = "01-third-saturday-0200-CSUFEDTG-reboot"
+      update_allowed = true
+       
+      data_disks = {
+
+      }
+
+      nic_config = {
+        private_ip                    = "10.253.4.36"
+        dns_servers                   = local.dns_servers
+        enable_accelerated_networking = true
+        nsg                           = null
+      }
+
+      public_ip_config = {
+        enabled           = false
+        allocation_method = "Static"
+      }
+
+      name_overrides = {
+        nic             = "nic-CUSTWIN001-01"
+        nic_ip_config   = "prip-CUSTWIN001-01"
+        public_ip       = null
+        virtual_machine = null
+        os_disk         = null
+        data_disks      = null
+      }
+
+      tags = {
+      }
+    }
+  }    
+  %{ endif ~}
+    
+  %{ if var.create_vm_ux == true ~}
+  vm_ux = {
+    CUSTLIN001 = {
+
+      admin_username   = "loc_sysadmin"
+
+      admin_credential = {
+        admin_password = var.habroapp001_pwd
+        public_key     = null
+      } 
+
+      resource_group_name = azurerm_resource_group.database.name
+      subnet              = azurerm_subnet.this["Database"]
+  
+      virtual_machine_config = {
+        hostname                          = "CUSTLIN001"
+        size                              = "Standard_D4s_v5"
+        location                          = local.default_location
+        os_sku                            = "ol88-lvm-gen2"
+        os_offer                          = "Oracle-Linux"
+        os_version                        = "8.8.5"
+        os_publisher                      = "Oracle"
+        os_disk_caching                   = "ReadWrite"
+        os_disk_size_gb                   = 64
+        os_disk_storage_type              = "Premium_ZRS"
+        os_disk_write_accelerator_enabled = false
+        zone                              = null 
+        availability_set_id               = null
+        proximity_placement_group_id      = null
+        severity_group                    = ""
+        update_allowed                    = false
+      }
+
+      additional_network_interface_ids = [
+
+      ]
+
+      data_disks = {
+        "DataDisk01" = {
+          lun                        = 1
+          disk_size_gb               = 512
+          caching                    = "ReadWrite"
+          create_option              = "Empty"
+          storage_account_type       = "Premium_ZRS"
+          write_accelerator_enabled  = false
+          on_demand_bursting_enabled = false
+        }
+      }
+
+      nic_config = {
+        private_ip                    = "10.253.6.20"  
+        dns_servers                   = null
+        enable_accelerated_networking = true
+        nsg                           = null
+      }
+
+      public_ip_config = null
+
+      name_overrides = {
+        nic             = "nic-CUSTLIN001-01"
+        nic_ip_config   = "prip-CUSTLIN001-01"
+        public_ip       = null
+        virtual_machine = null
+        os_disk         = null
+        data_disks      = null
+      }
+
+      tags = {
+
+      }
+    } 
+  }
+  %{ endif ~}
+}

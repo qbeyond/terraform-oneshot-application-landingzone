@@ -84,6 +84,18 @@ variable "create_virtual_machine_template" {
   default     = false
 }
 
+variable "create_vm_win" {
+  type        = bool
+  description = "Set to true to create a template for creating a windows vm."
+  default     = false
+}
+
+variable "create_vm_ux" {
+  type        = bool
+  description = "Set to true to create a template for creating a linux vm."
+  default     = false
+}
+
 variable "business_service_number" {
   type        = string
   description = "The `Business Service Number` tag of subscription."

@@ -21,7 +21,10 @@ vnet_config = {
     application = ""
   }
 }
+
 create_virtual_machine_template = false
+create_vm_win = false
+create_vm_ux  = false
 
 #tags
 business_service_number = "12345"
