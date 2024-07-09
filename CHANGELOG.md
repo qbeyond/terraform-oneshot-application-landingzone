@@ -7,6 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.1.0] - 2024-07-10
+
+### Changed
+
+- Change name `subscription_logical_name` to `application_name`.
+- Subnets moved to local variable and change subnet creation.
+- Moved network resource group to `main.tf`.
+- Rename file `virtual_machine.tf` to `vm_creation.tf`.
+
+### Added
+
+- Set up variables in locals.tf.
+- Defaults resources groups in main.tf.
+- NSG files.
+- New code templates for VM.
+
 ## [2.0.1] - 2024-05-14
 
 ### fixed
