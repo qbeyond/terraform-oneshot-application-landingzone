@@ -96,6 +96,34 @@ resource "azuredevops_git_repository_file" "tags" {
   }
 }
 
+resource "azuredevops_git_repository_file" "nsg" {
+  repository_id = azuredevops_git_repository.landing_zone.id
+  file          = "nsg.tf"
+  content = templatefile("${path.module}/templates/nsg.tftpl", {})
+  branch              = "refs/heads/${azuredevops_git_repository_branch.init.name}"
+  commit_message      = "Add nsg.tf"
+  overwrite_on_create = true
+
+  lifecycle {
+    ignore_changes = [commit_message]
+  }
+}
+
+resource "azuredevops_git_repository_file" "nsgyaml" {
+  repository_id = azuredevops_git_repository.landing_zone.id
+  file          = "nsg.yaml"
+  content = templatefile("${path.module}/templates/nsg.yamltpl", {
+    subscription_name = data.azurerm_subscription.this.display_name
+  })
+  branch              = "refs/heads/${azuredevops_git_repository_branch.init.name}"
+  commit_message      = "Add nsg.yaml"
+  overwrite_on_create = true
+
+  lifecycle {
+    ignore_changes = [commit_message]
+  }
+}
+
 resource "azuredevops_git_repository_file" "network" {
   count         = var.vnet_config == null ? 0 : 1
   repository_id = azuredevops_git_repository.landing_zone.id
