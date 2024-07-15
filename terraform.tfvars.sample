@@ -24,6 +24,7 @@ vnet_config = {
 }
 
 terraform_version = "1.9.2"
+
 create_virtual_machine_template = false
 create_vm_win = false
 create_vm_ux  = false
