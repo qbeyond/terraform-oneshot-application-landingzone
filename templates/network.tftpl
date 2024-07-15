@@ -1,9 +1,9 @@
 locals {
   subnets = {
-    %{ for usecase, address_prefix in vnet_config.subnets ~}
-      ${usecase} = "${address_prefix}"
-    %{ endfor ~}
-  }
+  %{ for usecase, address_prefix in vnet_config.subnets ~}
+  ${usecase} = "${address_prefix}"
+  %{ endfor ~}
+}
 }
 
 resource "azurerm_virtual_network" "this" {
@@ -22,8 +22,8 @@ resource "azurerm_subnet" "this" {
   address_prefixes     = [each.value]
 }
 
-resource "azurerm_subnet_network_security_group_association" "this" {
+%{ if vnet_config.nsg }resource "azurerm_subnet_network_security_group_association" "this" {
   for_each                  = local.subnets
   subnet_id                 = azurerm_subnet.this["$${each.key}"].id
   network_security_group_id = module.nsg.groups[0].id
-}
+}%{ endif }

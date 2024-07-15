@@ -1,5 +1,4 @@
-locals {
-  %{ if var.create_vm_win == true ~}
+locals {%{ if create_vm_win }
   vm_win = {
     CUSTWIN001 = {
 
@@ -55,10 +54,8 @@ locals {
       tags = {
       }
     }
-  }    
-  %{ endif ~}
-    
-  %{ if var.create_vm_ux == true ~}
+  }%{ endif }  
+  %{ if create_vm_ux }
   vm_ux = {
     CUSTLIN001 = {
 
@@ -129,6 +126,5 @@ locals {
 
       }
     } 
-  }
-  %{ endif ~}
+  }%{ endif }
 }

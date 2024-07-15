@@ -25,6 +25,7 @@ resource "azuredevops_git_repository_file" "pipeline" {
     environment                         = azuredevops_environment.alz.name
     stage                               = var.stage
     subscription_name                   = data.azurerm_subscription.this.display_name
+    terraform_version                   = var.terraform_version
   })
   branch              = "refs/heads/${azuredevops_git_repository_branch.init.name}"
   commit_message      = "Add Pipeline Configuration"
@@ -53,6 +54,7 @@ resource "azuredevops_git_repository_file" "locals" {
   file          = "locals.tf"
   content = templatefile("${path.module}/templates/locals.tftpl", {
     location         = var.location
+    dns_servers      = join(", ", var.vnet_config.dns_server)
     stage            = split("-", data.azurerm_subscription.this.display_name)[0]
     application_name = split("-", data.azurerm_subscription.this.display_name)[1]
     env_num          = split("-", data.azurerm_subscription.this.display_name)[2]
@@ -97,6 +99,7 @@ resource "azuredevops_git_repository_file" "tags" {
 }
 
 resource "azuredevops_git_repository_file" "nsg" {
+  count = var.vnet_config != null && var.vnet_config.nsg == true ? 1 : 0
   repository_id = azuredevops_git_repository.landing_zone.id
   file          = "nsg.tf"
   content = templatefile("${path.module}/templates/nsg.tftpl", {})
@@ -110,6 +113,7 @@ resource "azuredevops_git_repository_file" "nsg" {
 }
 
 resource "azuredevops_git_repository_file" "nsgyaml" {
+  count = var.vnet_config != null && var.vnet_config.nsg == true ? 1 : 0
   repository_id = azuredevops_git_repository.landing_zone.id
   file          = "nsg.yaml"
   content = templatefile("${path.module}/templates/nsg.yamltpl", {
@@ -144,13 +148,30 @@ resource "azuredevops_git_repository_file" "network" {
 resource "azuredevops_git_repository_file" "virtual_machine" {
   count         = var.create_virtual_machine_template == true ? 1 : 0
   repository_id = azuredevops_git_repository.landing_zone.id
-  file          = "virtual_machine_template.tf"
-  content = templatefile("${path.module}/templates/vm*.tftpl", {
+  file          = "vm.tf"
+  content = templatefile("${path.module}/templates/vm.tftpl", {
     create_vm_win = var.create_vm_win
     create_vm_ux  = var.create_vm_ux
   })
   branch              = "refs/heads/${azuredevops_git_repository_branch.init.name}"
   commit_message      = "Add vm template files"
+  overwrite_on_create = true
+
+  lifecycle {
+    ignore_changes = [commit_message]
+  }
+}
+
+resource "azuredevops_git_repository_file" "virtual_machine_creation" {
+  count         = var.create_virtual_machine_template == true ? 1 : 0
+  repository_id = azuredevops_git_repository.landing_zone.id
+  file          = "vm_creation.tf"
+  content = templatefile("${path.module}/templates/vm_creation.tftpl", {
+    create_vm_win = var.create_vm_win
+    create_vm_ux  = var.create_vm_ux
+  })
+  branch              = "refs/heads/${azuredevops_git_repository_branch.init.name}"
+  commit_message      = "Add vm module template files"
   overwrite_on_create = true
 
   lifecycle {

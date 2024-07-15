@@ -55,11 +55,18 @@ variable "location" {
   description = "The default location used for resources in this Landing Zone."
 }
 
+variable "terraform_version" {
+  type        = string
+  description = "Terraform version to install."
+  default     = "1.9.2"
+}
+
 variable "vnet_config" {
   type = object({
     dns_server    = list(string)
     address_space = string
     subnets       = map(string)
+    nsg           = bool
   })
   description = <<-DOC
   ```
@@ -67,6 +74,7 @@ variable "vnet_config" {
     dns_server: DNS Servers that will be used in the network.
     address_space: Address space of the virtual network in CIDR notation.
     subnets: Subnets that will be created in the virtual network. Use 'Usecase' as the key and the address prefix as the value in CIDR notation.    
+    nsg: Create NSG for all the subnets.
   ```
   DOC
   default     = null

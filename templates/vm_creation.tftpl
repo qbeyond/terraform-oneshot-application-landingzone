@@ -1,4 +1,4 @@
-%{ if var.create_vm_win == true ~}
+%{ if create_vm_win }
 module "win_vm" {
   source                           = "qbeyond/windows-vm/azurerm"
   version                          = "4.1.0"
@@ -14,10 +14,8 @@ module "win_vm" {
   public_ip_config                 = each.value.public_ip_config
   name_overrides                   = each.value.name_overrides
   tags                             = merge(each.value.tags, local.tags) 
-}
-%{ endif ~}
-
-%{ if var.create_vm_ux == true ~}
+}%{ endif }
+%{ if create_vm_ux }
 module "linux_vm" {
   source                           = "qbeyond/linux-vm/azurerm"
   version                          = "1.0.0"
@@ -33,5 +31,4 @@ module "linux_vm" {
   public_ip_config                 = each.value.public_ip_config
   name_overrides                   = each.value.name_overrides
   tags                             = merge(each.value.tags, local.tags) 
-}
-%{ endif ~}
+}%{ endif }
