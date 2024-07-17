@@ -1,25 +1,59 @@
-locals {%{ if create_vm_win }
+%{ if vm_win_hostname != "" }module "win_vm" {
+  source                 = "qbeyond/windows-vm/azurerm"
+  version                = "4.1.0"
+  for_each               = local.vm_win
+  resource_group_name    = each.value.resource_group_name
+  subnet                 = each.value.subnet
+  virtual_machine_config = each.value.virtual_machine_config
+  admin_password         = each.value.admin_password
+  severity_group         = each.value.severity_group
+  update_allowed         = each.value.update_allowed
+  data_disks             = each.value.data_disks
+  nic_config             = each.value.nic_config
+  public_ip_config       = each.value.public_ip_config
+  name_overrides         = each.value.name_overrides
+  tags                   = merge(each.value.tags, local.tags) 
+}%{ endif }
+%{ if vm_ux_hostname != "" }
+module "linux_vm" {
+  source                           = "qbeyond/linux-vm/azurerm"
+  version                          = "1.0.0"
+  for_each                         = local.vm_ux
+  admin_username                   = each.value.admin_username
+  admin_credential                 = each.value.admin_credential
+  resource_group_name              = each.value.resource_group_name
+  subnet                           = each.value.subnet
+  virtual_machine_config           = each.value.virtual_machine_config
+  additional_network_interface_ids = each.value.additional_network_interface_ids
+  data_disks                       = each.value.data_disks
+  nic_config                       = each.value.nic_config
+  public_ip_config                 = each.value.public_ip_config
+  name_overrides                   = each.value.name_overrides
+  tags                             = merge(each.value.tags, local.tags) 
+}%{ endif }
+
+locals {%{ if vm_win_hostname != "" }
   vm_win = {
-    CUSTWIN001 = {
+    ${vm_win_hostname} = {
 
       resource_group_name = azurerm_resource_group.app.name
       subnet              = azurerm_subnet.this["PrintConnector"]
   
       virtual_machine_config = {
-        hostname                          = "CUSTWIN001"
-        admin_username                    = "loc_sysadmin"
-        size                              = "Standard_B2ms"
-        location                          = local.default_location
-        os_sku                            = "2022-datacenter-azure-edition"
-        os_version                        = "latest"
-        os_disk_caching                   = "ReadWrite"
-        os_disk_size_gb                   = 128
-        os_disk_storage_type              = "Premium_ZRS"
-        timezone                          = "W. Europe Standard Time"
-        zone                              = null
-        write_accelerator_enabled         = false
-        availability_set_id               = null
-        proximity_placement_group_id      = null
+        hostname                     = "${vm_win_hostname}"
+        admin_username               = "loc_sysadmin"
+        size                         = "Standard_B2ms"
+        location                     = local.default_location
+        os_sku                       = "2022-datacenter-azure-edition"
+        os_version                   = "latest"
+        os_disk_caching              = "ReadWrite"
+        os_disk_size_gb              = 128
+        os_disk_storage_type         = "Premium_LRS"
+        timezone                     = "W. Europe Standard Time"
+        zone                         = null
+        write_accelerator_enabled    = false
+        availability_set_id          = null
+        proximity_placement_group_id = null
       }
        
       admin_password = var.habroprp001_pwd
@@ -31,9 +65,9 @@ locals {%{ if create_vm_win }
       }
 
       nic_config = {
-        private_ip                    = "10.253.4.36"
+        private_ip                    = null
         dns_servers                   = local.dns_servers
-        enable_accelerated_networking = true
+        enable_accelerated_networking = false
         nsg                           = null
       }
 
@@ -43,21 +77,20 @@ locals {%{ if create_vm_win }
       }
 
       name_overrides = {
-        nic             = "nic-CUSTWIN001-01"
-        nic_ip_config   = "prip-CUSTWIN001-01"
+        nic             = null
+        nic_ip_config   = null
         public_ip       = null
         virtual_machine = null
         os_disk         = null
         data_disks      = null
       }
 
-      tags = {
-      }
+      tags = local.tags
     }
   }%{ endif }  
-  %{ if create_vm_ux }
+  %{ if vm_ux_hostname != "" }
   vm_ux = {
-    CUSTLIN001 = {
+    ${vm_ux_hostname} = {
 
       admin_username   = "loc_sysadmin"
 
@@ -70,7 +103,7 @@ locals {%{ if create_vm_win }
       subnet              = azurerm_subnet.this["Database"]
   
       virtual_machine_config = {
-        hostname                          = "CUSTLIN001"
+        hostname                          = "${vm_ux_hostname}"
         size                              = "Standard_D4s_v5"
         location                          = local.default_location
         os_sku                            = "ol88-lvm-gen2"
@@ -79,7 +112,7 @@ locals {%{ if create_vm_win }
         os_publisher                      = "Oracle"
         os_disk_caching                   = "ReadWrite"
         os_disk_size_gb                   = 64
-        os_disk_storage_type              = "Premium_ZRS"
+        os_disk_storage_type              = "Premium_LRS"
         os_disk_write_accelerator_enabled = false
         zone                              = null 
         availability_set_id               = null
@@ -98,33 +131,31 @@ locals {%{ if create_vm_win }
           disk_size_gb               = 512
           caching                    = "ReadWrite"
           create_option              = "Empty"
-          storage_account_type       = "Premium_ZRS"
+          storage_account_type       = "Premium_LRS"
           write_accelerator_enabled  = false
           on_demand_bursting_enabled = false
         }
       }
 
       nic_config = {
-        private_ip                    = "10.253.6.20"  
+        private_ip                    = null
         dns_servers                   = null
-        enable_accelerated_networking = true
+        enable_accelerated_networking = false
         nsg                           = null
       }
 
       public_ip_config = null
 
       name_overrides = {
-        nic             = "nic-CUSTLIN001-01"
-        nic_ip_config   = "prip-CUSTLIN001-01"
+        nic             = null
+        nic_ip_config   = null
         public_ip       = null
         virtual_machine = null
         os_disk         = null
         data_disks      = null
       }
 
-      tags = {
-
-      }
+      tags = local.tags
     } 
   }%{ endif }
 }

@@ -92,16 +92,16 @@ variable "create_virtual_machine_template" {
   default     = false
 }
 
-variable "create_vm_win" {
-  type        = bool
-  description = "Set to true to create a template for creating a windows vm."
-  default     = false
+variable "vm_win_hostname" {
+  type        = string
+  description = "Set the hostnmae of vm."
+  default     = ""
 }
 
-variable "create_vm_ux" {
-  type        = bool
-  description = "Set to true to create a template for creating a linux vm."
-  default     = false
+variable "vm_ux_hostname" {
+  type        = string
+  description = "Set the hostnmae of vm."
+  default     = ""
 }
 
 variable "business_service_number" {

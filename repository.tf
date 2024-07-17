@@ -150,28 +150,11 @@ resource "azuredevops_git_repository_file" "virtual_machine" {
   repository_id = azuredevops_git_repository.landing_zone.id
   file          = "vm.tf"
   content = templatefile("${path.module}/templates/vm.tftpl", {
-    create_vm_win = var.create_vm_win
-    create_vm_ux  = var.create_vm_ux
+    vm_win_hostname = var.vm_win_hostname
+    vm_ux_hostname  = var.vm_ux_hostname
   })
   branch              = "refs/heads/${azuredevops_git_repository_branch.init.name}"
-  commit_message      = "Add vm template files"
-  overwrite_on_create = true
-
-  lifecycle {
-    ignore_changes = [commit_message]
-  }
-}
-
-resource "azuredevops_git_repository_file" "virtual_machine_creation" {
-  count         = var.create_virtual_machine_template == true ? 1 : 0
-  repository_id = azuredevops_git_repository.landing_zone.id
-  file          = "vm_creation.tf"
-  content = templatefile("${path.module}/templates/vm_creation.tftpl", {
-    create_vm_win = var.create_vm_win
-    create_vm_ux  = var.create_vm_ux
-  })
-  branch              = "refs/heads/${azuredevops_git_repository_branch.init.name}"
-  commit_message      = "Add vm module template files"
+  commit_message      = "Add vm template file"
   overwrite_on_create = true
 
   lifecycle {
