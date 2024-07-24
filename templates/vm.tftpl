@@ -87,7 +87,7 @@ locals {%{ if vm_win_hostname != "" }
         data_disks      = null
       }
 
-      tags = local.tags
+      tags = {}
     }
   }%{ endif }  
   %{ if vm_ux_hostname != "" }
@@ -157,7 +157,7 @@ locals {%{ if vm_win_hostname != "" }
         data_disks      = null
       }
 
-      tags = local.tags
+      tags = {}
     } 
   }%{ endif }
 }
