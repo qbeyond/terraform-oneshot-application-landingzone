@@ -152,6 +152,7 @@ resource "azuredevops_git_repository_file" "virtual_machine" {
   repository_id = azuredevops_git_repository.landing_zone.id
   file          = "vm.tf"
   content = templatefile("${path.module}/templates/vm.tftpl", {
+    subnet          = keys(var.vnet_config.subnets)[0]
     vm_win_hostname = var.vm_win_hostname
     vm_ux_hostname  = var.vm_ux_hostname
   })
