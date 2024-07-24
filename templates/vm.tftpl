@@ -1,4 +1,5 @@
-%{ if vm_win_hostname != "" }module "win_vm" {
+%{ if vm_win_hostname != "" ~}
+module "win_vm" {
   source                 = "qbeyond/windows-vm/azurerm"
   version                = "4.1.0"
   for_each               = local.vm_win
@@ -13,8 +14,9 @@
   public_ip_config       = each.value.public_ip_config
   name_overrides         = each.value.name_overrides
   tags                   = merge(each.value.tags, local.tags) 
-}%{ endif }
-%{ if vm_ux_hostname != "" }
+}
+%{ endif ~}
+%{ if vm_ux_hostname != "" ~}
 module "linux_vm" {
   source                           = "qbeyond/linux-vm/azurerm"
   version                          = "1.0.0"
@@ -30,7 +32,8 @@ module "linux_vm" {
   public_ip_config                 = each.value.public_ip_config
   name_overrides                   = each.value.name_overrides
   tags                             = merge(each.value.tags, local.tags) 
-}%{ endif }
+}
+%{ endif ~}
 
 locals {%{ if vm_win_hostname != "" }
   vm_win = {

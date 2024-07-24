@@ -1,11 +1,14 @@
-%{ if vm_win_hostname != "" }variable "${vm_win_hostname}_password" {
+%{ if vm_win_hostname != "" ~}
+variable "${vm_win_hostname}_password" {
     type        = string
     description = "The password for the ${vm_win_hostname} local admin account"
     sensitive   = true
-}%{ endif }
-
-%{ if vm_ux_hostname != "" }variable "${vm_ux_hostname}_password" {
+}
+%{ endif ~}
+%{ if vm_ux_hostname != "" ~}
+variable "${vm_ux_hostname}_password" {
     type        = string
     description = "The password for the ${vm_ux_hostname} local admin account"
     sensitive   = true
-}%{ endif }
+}
+%{ endif ~}

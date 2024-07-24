@@ -26,6 +26,7 @@ resource "azuredevops_git_repository_file" "pipeline" {
     stage                               = var.stage
     subscription_name                   = data.azurerm_subscription.this.display_name
     terraform_version                   = var.terraform_version
+    create_virtual_machine              = var.create_virtual_machine_template
     vm_win_hostname                     = var.vm_win_hostname
     vm_ux_hostname                      = var.vm_ux_hostname
   })
