@@ -26,6 +26,8 @@ resource "azuredevops_git_repository_file" "pipeline" {
     stage                               = var.stage
     subscription_name                   = data.azurerm_subscription.this.display_name
     terraform_version                   = var.terraform_version
+    vm_win_hostname                     = var.vm_win_hostname
+    vm_ux_hostname                      = var.vm_ux_hostname
   })
   branch              = "refs/heads/${azuredevops_git_repository_branch.init.name}"
   commit_message      = "Add Pipeline Configuration"
