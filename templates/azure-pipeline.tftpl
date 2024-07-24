@@ -22,6 +22,5 @@ stages:
     key: '${subscription_name}.tfstate'
     environment: '${environment}'
     variables:
-      state: '${stage}'
-      %{ if vm_win_hostname != "" }${vm_win_hostname}: $$(${vm_win_hostname})%{ endif }
-      %{ if vm_ux_hostname != "" }${vm_ux_hostname}: $$(${vm_ux_hostname})%{ endif }
+      state: '${stage}'%{ if vm_win_hostname != "" }${vm_win_hostname}_password: $(${vm_win_hostname}_password)%{ endif }
+      %{ if vm_ux_hostname != "" }${vm_ux_hostname}_password: $(${vm_ux_hostname}_password)%{ endif }
