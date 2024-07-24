@@ -162,6 +162,23 @@ resource "azuredevops_git_repository_file" "virtual_machine" {
   }
 }
 
+resource "azuredevops_git_repository_file" "variables" {
+  count         = var.create_virtual_machine_template == true ? 1 : 0
+  repository_id = azuredevops_git_repository.landing_zone.id
+  file          = "variables.tf"
+  content = templatefile("${path.module}/templates/variables.tftpl", {
+    vm_win_hostname = var.vm_win_hostname
+    vm_ux_hostname  = var.vm_ux_hostname
+  })
+  branch              = "refs/heads/${azuredevops_git_repository_branch.init.name}"
+  commit_message      = "Add variables template file"
+  overwrite_on_create = true
+
+  lifecycle {
+    ignore_changes = [commit_message]
+  }
+}
+
 resource "azuredevops_git_repository_file" "gitignore" {
   repository_id       = azuredevops_git_repository.landing_zone.id
   file                = ".gitignore"

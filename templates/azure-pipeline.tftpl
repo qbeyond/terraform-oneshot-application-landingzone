@@ -23,3 +23,5 @@ stages:
     environment: '${environment}'
     variables:
       state: '${stage}'
+      %{ if vm_win_hostname != "" }${vm_win_hostname}: $$(${vm_win_hostname})%{ endif }
+      %{ if vm_ux_hostname != "" }${vm_ux_hostname}: $$(${vm_ux_hostname})%{ endif }

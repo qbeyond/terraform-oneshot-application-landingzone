@@ -53,10 +53,12 @@ locals {%{ if vm_win_hostname != "" }
         zone                         = null
         write_accelerator_enabled    = false
         availability_set_id          = null
-        proximity_placement_group_id = null
+        patch_assessment_mode                                  = "AutomaticByPlatform"
+        patch_mode                                             = "AutomaticByPlatform"
+        bypass_platform_safety_checks_on_user_schedule_enabled = true
       }
        
-      admin_password = var.habroprp001_pwd
+      admin_password = var.${vm_win_hostname}_password
       severity_group = "01-third-saturday-0200-CSUFEDTG-reboot"
       update_allowed = true
        
@@ -95,7 +97,7 @@ locals {%{ if vm_win_hostname != "" }
       admin_username   = "loc_sysadmin"
 
       admin_credential = {
-        admin_password = var.habroapp001_pwd
+        admin_password = var.${vm_ux_hostname}_password
         public_key     = null
       } 
 
