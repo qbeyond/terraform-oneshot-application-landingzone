@@ -58,7 +58,6 @@ variable "location" {
 variable "terraform_version" {
   type        = string
   description = "Terraform version to install."
-  default     = "1.9.2"
 }
 
 variable "vnet_config" {
