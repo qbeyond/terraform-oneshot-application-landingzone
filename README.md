@@ -33,7 +33,7 @@ You need:
 | <a name="input_devops_project_name"></a> [devops\_project\_name](#input\_devops\_project\_name) | Name of the DevOps Project to create the service connections for. | `string` | n/a | yes |
 | <a name="input_devops_service_url"></a> [devops\_service\_url](#input\_devops\_service\_url) | Azure DevOps organization url. | `string` | n/a | yes |
 | <a name="input_devops_subscription_id"></a> [devops\_subscription\_id](#input\_devops\_subscription\_id) | Subscription ID of the DevOps Subscription. | `string` | n/a | yes |
-| <a name="input_env"></a> [env](#input\_env) | The `env` tag of the subscription . Can be `prd`, `dev`, `tst`, `qas`, `stg`, `int`, `lab` or `shr`." | `string` | n/a | yes |
+| <a name="input_env"></a> [env](#input\_env) | The `env` tag of the subscription . Can be `prd`, `dev`, `tst`, `qas`, `stg`, `int`, `lab` or `shr`. | `string` | n/a | yes |
 | <a name="input_iac"></a> [iac](#input\_iac) | The `iac` tag of subscription. Set to `true` if the subscription is managed by Infrastructure as Code (IaC) and `false` otherwise | `bool` | n/a | yes |
 | <a name="input_location"></a> [location](#input\_location) | The default location used for resources in this Landing Zone. | `string` | n/a | yes |
 | <a name="input_managed_by"></a> [managed\_by](#input\_managed\_by) | The `managedby` tag of the subscription. This should be the entity responsible for managing the infrastructure (e.g `q.beyond`). | `string` | n/a | yes |
@@ -43,12 +43,12 @@ You need:
 | <a name="input_tenant_id"></a> [tenant\_id](#input\_tenant\_id) | Tenant ID of the Customer. | `string` | n/a | yes |
 | <a name="input_terraform_state_config"></a> [terraform\_state\_config](#input\_terraform\_state\_config) | The configuration of the Terraform state. The state will be saved in the given storage account in the DevOps subscription using the backend service connection. | <pre>object({<br>    resource_group_name        = string<br>    storage_account_name       = string<br>    backend_service_connection = string<br>  })</pre> | n/a | yes |
 | <a name="input_additional_tags"></a> [additional\_tags](#input\_additional\_tags) | A mapping of tags to add to the subscription in addition to the default tags. | `map(string)` | `{}` | no |
-| <a name="input_create_virtual_machine_template"></a> [create\_virtual\_machine\_template](#input\_create\_virtual\_machine\_template) | Set to true to create a template for a vm. | `bool` | `false` | no |
-| <a name="input_vm_win_hostname"></a> [vm\_win\_hostname](#input\_vm\_win\_hostname) | Set the hostnmae of vm. | `string` | n/a | no |
-| <a name="input_vm_ux_hostname"></a> [vm\_ux\_hostname](#input\_vm\_ux\_hostname) | Set the hostnmae of vm. | `string` | n/a | no |
+| <a name="input_create_virtual_machine_template"></a> [create\_virtual\_machine\_template](#input\_create\_virtual\_machine\_template) | Set to true to create a template for creating a windows vm. | `bool` | `false` | no |
 | <a name="input_management_group_id"></a> [management\_group\_id](#input\_management\_group\_id) | Management Group ID where to move the subscription. Optional Parameter if association already done. | `string` | `""` | no |
 | <a name="input_skip_provider_registration"></a> [skip\_provider\_registration](#input\_skip\_provider\_registration) | Allows you to skip the provider registration when initilizing the azurerm provider in this configuration and the created configuration. This is useful in development environments where not every provider can be registered. | `bool` | `false` | no |
 | <a name="input_terraform_version"></a> [terraform\_version](#input\_terraform\_version) | Terraform version to install. | `string` | `"1.9.2"` | no |
+| <a name="input_vm_ux_hostname"></a> [vm\_ux\_hostname](#input\_vm\_ux\_hostname) | Set the hostnmae of vm. | `string` | `""` | no |
+| <a name="input_vm_win_hostname"></a> [vm\_win\_hostname](#input\_vm\_win\_hostname) | Set the hostnmae of vm. | `string` | `""` | no |
 | <a name="input_vnet_config"></a> [vnet\_config](#input\_vnet\_config) | <pre>If you want to provide a virtual network, please provide the following values: <br>  dns_server: DNS Servers that will be used in the network.<br>  address_space: Address space of the virtual network in CIDR notation.<br>  subnets: Subnets that will be created in the virtual network. Use 'Usecase' as the key and the address prefix as the value in CIDR notation.    <br>  nsg: Create NSG for all the subnets.</pre> | <pre>object({<br>    dns_server    = list(string)<br>    address_space = string<br>    subnets       = map(string)<br>    nsg           = bool<br>  })</pre> | `null` | no |
 ## Outputs
 
@@ -113,8 +113,8 @@ No outputs.
                   | [azuredevops_git_repository_file.pipeline](https://registry.terraform.io/providers/microsoft/azuredevops/latest/docs/resources/git_repository_file) | resource |
                   | [azuredevops_git_repository_file.tags](https://registry.terraform.io/providers/microsoft/azuredevops/latest/docs/resources/git_repository_file) | resource |
                   | [azuredevops_git_repository_file.terraform](https://registry.terraform.io/providers/microsoft/azuredevops/latest/docs/resources/git_repository_file) | resource |
+                  | [azuredevops_git_repository_file.variables](https://registry.terraform.io/providers/microsoft/azuredevops/latest/docs/resources/git_repository_file) | resource |
                   | [azuredevops_git_repository_file.virtual_machine](https://registry.terraform.io/providers/microsoft/azuredevops/latest/docs/resources/git_repository_file) | resource |
-                  | [azuredevops_git_repository_file.virtual_machine_creation](https://registry.terraform.io/providers/microsoft/azuredevops/latest/docs/resources/git_repository_file) | resource |
             ### terraform.tf
             | Name | Type |
             |------|------|
