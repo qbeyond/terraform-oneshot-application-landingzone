@@ -19,7 +19,7 @@ module "win_vm" {
 %{ if vm_ux_hostname != "" ~}
 module "linux_vm" {
   source                           = "qbeyond/linux-vm/azurerm"
-  version                          = "1.0.0"
+  version                          = "1.3.0"
   for_each                         = local.vm_ux
   admin_username                   = each.value.admin_username
   admin_credential                 = each.value.admin_credential
@@ -136,6 +136,7 @@ locals {%{ if vm_win_hostname != "" }
           disk_size_gb               = 512
           caching                    = "ReadWrite"
           create_option              = "Empty"
+          source_resource_id         = null
           storage_account_type       = "Premium_LRS"
           write_accelerator_enabled  = false
           on_demand_bursting_enabled = false
