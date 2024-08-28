@@ -20,10 +20,10 @@ vnet_config = {
     databases   = "",
     application = ""
   }
-  nsg = false
+  nsg = true
 }
 
-terraform_version = "1.9.4"
+terraform_version = ""
 
 create_virtual_machine_template = false
 vm_win_hostname = ""
