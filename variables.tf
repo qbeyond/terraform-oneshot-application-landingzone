@@ -57,7 +57,7 @@ variable "location" {
 
 variable "terraform_version" {
   type        = string
-  description = "Terraform version to install."
+  description = "Terraform version to install in the DevOps pipeline."
 }
 
 variable "vnet_config" {
