@@ -5,7 +5,7 @@ variable "${vm_win_hostname}_password" {
     sensitive   = true
 }
 %{ endif ~}
-%{ if vm_ux_hostname != "" ~}
+%{ if vm_ux_hostname != "" && vm_ux_public_key_name == "" ~}
 variable "${vm_ux_hostname}_password" {
     type        = string
     description = "The password for the ${vm_ux_hostname} local admin account"

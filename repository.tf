@@ -27,8 +27,9 @@ resource "azuredevops_git_repository_file" "pipeline" {
     subscription_name                   = data.azurerm_subscription.this.display_name
     terraform_version                   = var.terraform_version
     create_virtual_machine              = var.create_virtual_machine_template
-    vm_win_hostname                     = var.vm_win_hostname
-    vm_ux_hostname                      = var.vm_ux_hostname
+    vm_win_hostname                     = upper(var.vm_win_hostname)
+    vm_ux_hostname                      = upper(var.vm_ux_hostname)
+    vm_ux_public_key_name               = var.vm_ux_public_key_name
   })
   branch              = "refs/heads/${azuredevops_git_repository_branch.init.name}"
   commit_message      = "Add Pipeline Configuration"
@@ -42,7 +43,9 @@ resource "azuredevops_git_repository_file" "pipeline" {
 resource "azuredevops_git_repository_file" "main" {
   repository_id       = azuredevops_git_repository.landing_zone.id
   file                = "main.tf"
-  content             = templatefile("${path.module}/templates/main.tftpl", {})
+  content             = templatefile("${path.module}/templates/main.tftpl", {
+    rg_config   = var.rg_config
+  })
   branch              = "refs/heads/${azuredevops_git_repository_branch.init.name}"
   commit_message      = "Add main.tf"
   overwrite_on_create = true
@@ -153,9 +156,10 @@ resource "azuredevops_git_repository_file" "virtual_machine" {
   repository_id = azuredevops_git_repository.landing_zone.id
   file          = "vm.tf"
   content = templatefile("${path.module}/templates/vm.tftpl", {
-    subnet          = keys(var.vnet_config.subnets)[0]
-    vm_win_hostname = var.vm_win_hostname
-    vm_ux_hostname  = var.vm_ux_hostname
+    subnet                = keys(var.vnet_config.subnets)[0]
+    vm_win_hostname       = upper(var.vm_win_hostname)
+    vm_ux_hostname        = upper(var.vm_ux_hostname)
+    vm_ux_public_key_name = var.vm_ux_public_key_name
   })
   branch              = "refs/heads/${azuredevops_git_repository_branch.init.name}"
   commit_message      = "Add vm template file"
@@ -167,12 +171,13 @@ resource "azuredevops_git_repository_file" "virtual_machine" {
 }
 
 resource "azuredevops_git_repository_file" "variables" {
-  count         = var.create_virtual_machine_template == true ? 1 : 0
+  count = var.create_virtual_machine_template == true && (var.vm_win_hostname != "" || (var.vm_ux_hostname != "" && var.vm_ux_public_key_name == "" )) ? 1 : 0
   repository_id = azuredevops_git_repository.landing_zone.id
   file          = "variables.tf"
   content = templatefile("${path.module}/templates/variables.tftpl", {
-    vm_win_hostname = var.vm_win_hostname
-    vm_ux_hostname  = var.vm_ux_hostname
+    vm_win_hostname        = upper(var.vm_win_hostname)
+    vm_ux_hostname         = upper(var.vm_ux_hostname)
+    vm_ux_public_key_name  = var.vm_ux_public_key_name
   })
   branch              = "refs/heads/${azuredevops_git_repository_branch.init.name}"
   commit_message      = "Add variables template file"

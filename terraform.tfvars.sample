@@ -5,14 +5,19 @@ management_group_id    = ""
 personal_access_token  = ""
 devops_service_url     = ""
 devops_project_name    = ""
+
 terraform_state_config = {
   resource_group_name        = ""
   storage_account_name       = ""
   backend_service_connection = ""
 }
+
 location                   = ""
 stage                      = ""
 skip_provider_registration = false
+
+rg_config = ["Network", "Security", "Application", "Database", "Files"]
+
 vnet_config = {
   dns_server    = [""]
   address_space = ""
@@ -26,16 +31,18 @@ vnet_config = {
 terraform_version = ""
 
 create_virtual_machine_template = false
-vm_win_hostname = ""
-vm_ux_hostname = ""
+vm_win_hostname                 = ""
+vm_ux_hostname                  = ""
+vm_ux_public_key_name           = "id_rsa.pub"
 
 #tags
 business_service_number = "12345"
-application_name    = "ApplicationName"
-env = "abc"
-iac = true
-managed_by = "example.company"
-alerting = "enabled"
+application_name        = "ApplicationName"
+env                     = "abc"
+iac                     = true
+managed_by              = "example.company"
+alerting                = "enabled"
+
 additional_tags = {
   tagname = "tagvalue"
 }

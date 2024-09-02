@@ -60,6 +60,13 @@ variable "terraform_version" {
   description = "Terraform version to install in the DevOps pipeline."
 }
 
+variable "rg_config" {
+  type        = list(string)
+  description = "List of resource group names to create."
+  nullable    = false
+  default     = []
+}
+
 variable "vnet_config" {
   type = object({
     dns_server    = list(string)
@@ -100,6 +107,12 @@ variable "vm_win_hostname" {
 variable "vm_ux_hostname" {
   type        = string
   description = "Set the hostnmae of vm."
+  default     = ""
+}
+
+variable "vm_ux_public_key_name" {
+  type        = string
+  description = "Set the public key file name."
   default     = ""
 }
 

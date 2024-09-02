@@ -74,8 +74,8 @@ module "${vm_ux_hostname}" {
   admin_username   = "loc_sysadmin"
 
   admin_credential = {
-    admin_password = var.${vm_ux_hostname}_password
-    public_key     = null
+    admin_password = %{ if vm_ux_public_key_name != "" }"" %{ else }var.${vm_ux_hostname}_password %{ endif }
+    public_key     = %{ if vm_ux_public_key_name != "" }file("${vm_ux_public_key_name}") %{ else }null %{ endif }
   } 
 
   resource_group_name              = azurerm_resource_group.app.name

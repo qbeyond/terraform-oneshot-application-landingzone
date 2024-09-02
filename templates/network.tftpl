@@ -3,7 +3,7 @@ locals {
   %{ for usecase, address_prefix in vnet_config.subnets ~}
   ${usecase} = "${address_prefix}"
   %{ endfor ~}
-}
+  }
 }
 
 resource "azurerm_virtual_network" "this" {
