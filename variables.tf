@@ -86,12 +86,6 @@ variable "vnet_config" {
   default     = null
 }
 
-variable "skip_provider_registration" {
-  type        = bool
-  description = "Allows you to skip the provider registration when initilizing the azurerm provider in this configuration and the created configuration. This is useful in development environments where not every provider can be registered."
-  default     = false
-}
-
 variable "create_virtual_machine_template" {
   type        = bool
   description = "Set to true to create a template for creating a windows vm."
