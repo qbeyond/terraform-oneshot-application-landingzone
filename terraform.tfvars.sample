@@ -16,13 +16,19 @@ location                   = ""
 stage                      = ""
 skip_provider_registration = false
 
-rg_config = ["Network", "Security", "Application", "Database", "Files"]
+rg_config = {
+  network   = "Network"
+  app       = "Application"
+  database  = "Database"
+  fileshare = "Files"
+  security  = "Security"
+}
 
 vnet_config = {
   dns_server    = [""]
   address_space = ""
   subnets = {
-    databases   = "",
+    database    = "",
     application = ""
   }
   nsg = true

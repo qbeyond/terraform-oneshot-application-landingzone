@@ -61,10 +61,10 @@ variable "terraform_version" {
 }
 
 variable "rg_config" {
-  type        = list(string)
-  description = "List of resource group names to create."
+  type        = map(string)
+  description = "Resources groups to create. Use 'rg' as the key and resources group name as the value."
   nullable    = false
-  default     = []
+  default     = {}
 }
 
 variable "vnet_config" {

@@ -27,5 +27,5 @@ stages:
     environment: '${environment}'
     variables:
       state: '${stage}'
-      %{ if create_virtual_machine && vm_win_hostname != "" ~}${vm_win_hostname}_password: $(${vm_win_hostname}_password)%{ endif ~}
-      %{ if create_virtual_machine && vm_ux_hostname != "" && vm_ux_public_key_name == "" ~}${vm_ux_hostname}_password: $(${vm_ux_hostname}_password)%{ endif ~}
+      %{ if create_virtual_machine && vm_win_hostname != "" }${vm_win_hostname}_password: $(${vm_win_hostname}_password)%{ endif }
+      %{ if create_virtual_machine && vm_ux_hostname != "" && vm_ux_public_key_name == "" }${vm_ux_hostname}_password: $(${vm_ux_hostname}_password)%{ endif }

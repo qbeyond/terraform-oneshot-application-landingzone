@@ -1,13 +1,16 @@
 # Oneshot deployment for application landingzone
 
 ## Introduction
+
 This module is intended for one-shot deployments only!
 
 This module provides a oneshot deployment for a new application landing zone.
 It creates the service connection, optionally moves the subscription to a new management group, creates a build validation policy and creates a new repository with the first pipeline settings and terraform files.
 
 ## Prerequisites
+
 You need:
+
 - Personal Access Token for the DevOps Organization to create service connections and repositories
 - Project Admin on DevOps Project
 - Admin User to create the service principal in the Customer Tenant. If you want to move the subscription into a new management group you need an admin user directly in the tenant. AOBO will not work.
@@ -38,7 +41,7 @@ You need:
 | <a name="input_location"></a> [location](#input\_location) | The default location used for resources in this Landing Zone. | `string` | n/a | yes |
 | <a name="input_managed_by"></a> [managed\_by](#input\_managed\_by) | The `managedby` tag of the subscription. This should be the entity responsible for managing the infrastructure (e.g `q.beyond`). | `string` | n/a | yes |
 | <a name="input_personal_access_token"></a> [personal\_access\_token](#input\_personal\_access\_token) | [Personal access token](https://learn.microsoft.com/en-us/azure/devops/organizations/accounts/use-personal-access-tokens-to-authenticate?view=azure-devops&tabs=Windows#create-a-pat) used for authentication to the Azure DevOps organization. Is only used during the oneshot deployment. You require the following scopes: `Code`=`Full`, `Environment`=`Read & manage`, `Identity`=`Read & manage`, `Pipeline Resources`=`Use and manage`, `Project and Team`=`Read, write, & manage`, `Security`=`Manage`, `Service Connections`=`Read, query, & manage`,`Variable Groups`=`Read, create, & manage` | `string` | n/a | yes |
-| <a name="input_rg_config"></a> [rg\_config](#input\_rg\_config) | List of resource group names to create. | `list(string)` | n/a | yes |
+| <a name="input_rg_config"></a> [rg\_config](#input\_rg\_config) | Resources groups to create. Use 'rg' as the key and resources group name as the value. | `map(string)` | n/a | yes |
 | <a name="input_stage"></a> [stage](#input\_stage) | Name of the current stage. | `string` | n/a | yes |
 | <a name="input_subscription_id"></a> [subscription\_id](#input\_subscription\_id) | Subscription ID of the Landing Zone Subscription. | `string` | n/a | yes |
 | <a name="input_tenant_id"></a> [tenant\_id](#input\_tenant\_id) | Tenant ID of the Customer. | `string` | n/a | yes |
