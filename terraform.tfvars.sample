@@ -14,7 +14,6 @@ terraform_state_config = {
 
 location                   = ""
 stage                      = ""
-skip_provider_registration = false
 
 rg_config = {
   network   = "Network"

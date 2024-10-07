@@ -70,7 +70,7 @@ module "${vm_win_hostname}" {
 %{ if vm_ux_hostname != "" ~}
 module "${vm_ux_hostname}" {
   source           = "qbeyond/linux-vm/azurerm"
-  version          = "1.3.0"
+  version          = "1.4.0"
   admin_username   = "loc_sysadmin"
 
   admin_credential = {

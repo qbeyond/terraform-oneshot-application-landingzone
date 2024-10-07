@@ -50,7 +50,6 @@ You need:
 | <a name="input_additional_tags"></a> [additional\_tags](#input\_additional\_tags) | A mapping of tags to add to the subscription in addition to the default tags. | `map(string)` | `{}` | no |
 | <a name="input_create_virtual_machine_template"></a> [create\_virtual\_machine\_template](#input\_create\_virtual\_machine\_template) | Set to true to create a template for creating a windows vm. | `bool` | `false` | no |
 | <a name="input_management_group_id"></a> [management\_group\_id](#input\_management\_group\_id) | Management Group ID where to move the subscription. Optional Parameter if association already done. | `string` | `""` | no |
-| <a name="input_skip_provider_registration"></a> [skip\_provider\_registration](#input\_skip\_provider\_registration) | Allows you to skip the provider registration when initilizing the azurerm provider in this configuration and the created configuration. This is useful in development environments where not every provider can be registered. | `bool` | `false` | no |
 | <a name="input_vm_ux_hostname"></a> [vm\_ux\_hostname](#input\_vm\_ux\_hostname) | Set the hostnmae of vm. | `string` | `""` | no |
 | <a name="input_vm_ux_public_key_name"></a> [vm\_ux\_public\_key\_name](#input\_vm\_ux\_public\_key\_name) | Set the public key file name. | `string` | `""` | no |
 | <a name="input_vm_win_hostname"></a> [vm\_win\_hostname](#input\_vm\_win\_hostname) | Set the hostnmae of vm. | `string` | `""` | no |
