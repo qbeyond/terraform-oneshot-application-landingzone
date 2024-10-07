@@ -55,11 +55,24 @@ variable "location" {
   description = "The default location used for resources in this Landing Zone."
 }
 
+variable "terraform_version" {
+  type        = string
+  description = "Terraform version to install in the DevOps pipeline."
+}
+
+variable "rg_config" {
+  type        = map(string)
+  description = "Resources groups to create. Use 'rg' as the key and resources group name as the value."
+  nullable    = false
+  default     = {}
+}
+
 variable "vnet_config" {
   type = object({
     dns_server    = list(string)
     address_space = string
     subnets       = map(string)
+    nsg           = bool
   })
   description = <<-DOC
   ```
@@ -67,21 +80,34 @@ variable "vnet_config" {
     dns_server: DNS Servers that will be used in the network.
     address_space: Address space of the virtual network in CIDR notation.
     subnets: Subnets that will be created in the virtual network. Use 'Usecase' as the key and the address prefix as the value in CIDR notation.    
+    nsg: Create NSG for all the subnets.
   ```
   DOC
   default     = null
-}
-
-variable "skip_provider_registration" {
-  type        = bool
-  description = "Allows you to skip the provider registration when initilizing the azurerm provider in this configuration and the created configuration. This is useful in development environments where not every provider can be registered."
-  default     = false
 }
 
 variable "create_virtual_machine_template" {
   type        = bool
   description = "Set to true to create a template for creating a windows vm."
   default     = false
+}
+
+variable "vm_win_hostname" {
+  type        = string
+  description = "Set the hostnmae of vm."
+  default     = ""
+}
+
+variable "vm_ux_hostname" {
+  type        = string
+  description = "Set the hostnmae of vm."
+  default     = ""
+}
+
+variable "vm_ux_public_key_name" {
+  type        = string
+  description = "Set the public key file name."
+  default     = ""
 }
 
 variable "business_service_number" {
@@ -109,10 +135,10 @@ variable "application_name" {
 
 variable "env" {
   type        = string
-  description = "The `env` tag of the subscription . Can be `prd`, `dev`, `tst`, `qas`, `stg`, `int`, or `lab`."
+  description = "The `env` tag of the subscription . Can be `prd`, `dev`, `tst`, `qas`, `stg`, `int`, `lab` or `shr`."
   validation {
-    condition     = contains(["prd", "dev", "tst", "qas", "stg", "int", "lab"], var.env)
-    error_message = "The environment should be either `prd`, `dev`, `tst`, `qas`, `stg`, `int`, or `lab`"
+    condition     = contains(["prd", "dev", "tst", "qas", "stg", "int", "lab", "shr"], var.env)
+    error_message = "The environment should be either `prd`, `dev`, `tst`, `qas`, `stg`, `int`, `lab` or `shr`"
   }
 }
 

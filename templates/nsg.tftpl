@@ -1,0 +1,7 @@
+# NSG
+module "nsg" {
+  source         = "qbeyond/nsg/azurerm"
+  resource_group = azurerm_resource_group.network
+  version        = "0.0.1"
+  yaml_path      = "./nsg.yaml"
+}

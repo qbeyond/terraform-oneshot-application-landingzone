@@ -7,4 +7,3 @@ module "service_connection_application" {
   azure_devops_project = data.azuredevops_project.this
   tenant_id            = var.tenant_id
 }
-
