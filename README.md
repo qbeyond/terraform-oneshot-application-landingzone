@@ -41,12 +41,12 @@ You need:
 | <a name="input_stage"></a> [stage](#input\_stage) | Name of the current stage. | `string` | n/a | yes |
 | <a name="input_subscription_id"></a> [subscription\_id](#input\_subscription\_id) | Subscription ID of the Landing Zone Subscription. | `string` | n/a | yes |
 | <a name="input_tenant_id"></a> [tenant\_id](#input\_tenant\_id) | Tenant ID of the Customer. | `string` | n/a | yes |
-| <a name="input_terraform_state_config"></a> [terraform\_state\_config](#input\_terraform\_state\_config) | The configuration of the Terraform state. The state will be saved in the given storage account in the DevOps subscription using the backend service connection. | <pre>object({<br>    resource_group_name        = string<br>    storage_account_name       = string<br>    backend_service_connection = string<br>  })</pre> | n/a | yes |
+| <a name="input_terraform_state_config"></a> [terraform\_state\_config](#input\_terraform\_state\_config) | The configuration of the Terraform state. The state will be saved in the given storage account in the DevOps subscription using the backend service connection. | <pre>object({<br/>    resource_group_name        = string<br/>    storage_account_name       = string<br/>    backend_service_connection = string<br/>  })</pre> | n/a | yes |
 | <a name="input_additional_tags"></a> [additional\_tags](#input\_additional\_tags) | A mapping of tags to add to the subscription in addition to the default tags. | `map(string)` | `{}` | no |
 | <a name="input_create_virtual_machine_template"></a> [create\_virtual\_machine\_template](#input\_create\_virtual\_machine\_template) | Set to true to create a template for creating a windows vm. | `bool` | `false` | no |
 | <a name="input_management_group_id"></a> [management\_group\_id](#input\_management\_group\_id) | Management Group ID where to move the subscription. Optional Parameter if association already done. | `string` | `""` | no |
 | <a name="input_skip_provider_registration"></a> [skip\_provider\_registration](#input\_skip\_provider\_registration) | Allows you to skip the provider registration when initilizing the azurerm provider in this configuration and the created configuration. This is useful in development environments where not every provider can be registered. | `bool` | `false` | no |
-| <a name="input_vnet_config"></a> [vnet\_config](#input\_vnet\_config) | <pre>If you want to provide a virtual network, please provide the following values: <br>  dns_server: DNS Servers that will be used in the network.<br>  address_space: Address space of the virtual network in CIDR notation.<br>  subnets: Subnets that will be created in the virtual network. Use 'Usecase' as the key and the address prefix as the value in CIDR notation.</pre> | <pre>object({<br>    dns_server    = list(string)<br>    address_space = string<br>    subnets       = map(string)<br>  })</pre> | `null` | no |
+| <a name="input_vnet_config"></a> [vnet\_config](#input\_vnet\_config) | <pre>If you want to provide a virtual network, please provide the following values: <br/>  dns_server: DNS Servers that will be used in the network.<br/>  address_space: Address space of the virtual network in CIDR notation.<br/>  subnets: Subnets that will be created in the virtual network. Use 'Usecase' as the key and the address prefix as the value in CIDR notation.</pre> | <pre>object({<br/>    dns_server    = list(string)<br/>    address_space = string<br/>    subnets       = map(string)<br/>  })</pre> | `null` | no |
 ## Outputs
 
 No outputs.
@@ -69,7 +69,7 @@ No outputs.
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_service_connection_application"></a> [service\_connection\_application](#module\_service\_connection\_application) | qbeyond/service-connection/azuredevops | 1.0.0 |
+| <a name="module_service_connection_application"></a> [service\_connection\_application](#module\_service\_connection\_application) | qbeyond/service-connection/azuredevops | 1.0.1 |
 
         ## Resources by Files
             ### build_validation.tf
