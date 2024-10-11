@@ -175,3 +175,18 @@ variable "additional_tags" {
     error_message = "The key `tagname` is just an example. Please remove it from the additional tags."
   }
 }
+
+variable "sql" {
+  type = object({
+    cust           = string
+    rg             = string      # Same name as vnet_config subnets key name and rg_config key.
+    type           = string
+    ip_server      = string
+    database_name  = string
+    sku_name       = string
+    max_size_gb    = number
+    tags           = map(string)
+  })
+  description = "SQL configuration."
+  default = null
+}

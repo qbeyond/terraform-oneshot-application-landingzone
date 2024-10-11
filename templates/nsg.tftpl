@@ -1,7 +1,44 @@
 # NSG
-module "nsg" {
-  source         = "qbeyond/nsg/azurerm"
-  resource_group = azurerm_resource_group.network
-  version        = "0.0.1"
-  yaml_path      = "./nsg.yaml"
+local {
+  nsg = {%{ for subnet_name, address_prefix in vnet_config.subnets ~}
+    snet-$${replace(${address_prefix}, "/[./]/", "-")}-${subnet_name} = {
+      ### INBOUND RULES ###
+      DenyAllInboundTraffic = {
+        description                  = "Deny All Vnet Traffic"
+        priority                     = 4096
+        direction                    = "Inbound"
+        access                       = "Deny"
+        protocol                     = "*"
+        source_port_ranges           = ["*"]
+        destination_port_ranges      = ["*"]
+        source_address_prefixes      = ["${vnet_config.address_space}"] # Vnet address space
+        destination_address_prefixes = ["${vnet_config.address_space}"] # Vnet address space
+      }
+
+      ### OUTBOUND RULES ###      
+    }%{ endfor ~}
+  }
+}
+
+resource "azurerm_network_security_group" "this" {
+  for_each            = local.nsg
+  name                = each.key
+  location            = local.default_location
+  resource_group_name = azurerm_resource_group.network.name
+
+  dynamic "security_rule" {
+    for_each = each.value
+    content {
+      name                         = security_rule.key
+      description                  = security_rule.value.description
+      priority                     = security_rule.value.priority
+      direction                    = security_rule.value.direction
+      access                       = security_rule.value.access
+      protocol                     = security_rule.value.protocol
+      source_port_ranges           = security_rule.value.source_port_ranges
+      destination_port_ranges      = security_rule.value.destination_port_ranges
+      source_address_prefixes      = security_rule.value.source_address_prefixes
+      destination_address_prefixes = security_rule.value.destination_address_prefixes
+    }
+  }
 }

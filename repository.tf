@@ -57,8 +57,8 @@ resource "azuredevops_git_repository_file" "main" {
 
 resource "azuredevops_git_repository_file" "locals" {
   repository_id = azuredevops_git_repository.landing_zone.id
-  file          = "locals.tf"
-  content = templatefile("${path.module}/templates/locals.tftpl", {
+  file                = "locals.tf"
+  content             = templatefile("${path.module}/templates/locals.tftpl", {
     location         = var.location
     dns_servers      = join(", ", var.vnet_config.dns_server)
     stage            = split("-", data.azurerm_subscription.this.display_name)[0]
@@ -106,7 +106,9 @@ resource "azuredevops_git_repository_file" "nsg" {
   count = var.vnet_config != null && var.vnet_config.nsg == true ? 1 : 0
   repository_id = azuredevops_git_repository.landing_zone.id
   file          = "nsg.tf"
-  content = templatefile("${path.module}/templates/nsg.tftpl", {})
+  content = templatefile("${path.module}/templates/nsg.tftpl", {
+    vnet_config = var.vnet_config
+  })
   branch              = "refs/heads/${azuredevops_git_repository_branch.init.name}"
   commit_message      = "Add nsg.tf"
   overwrite_on_create = true
@@ -122,6 +124,7 @@ resource "azuredevops_git_repository_file" "network" {
   file          = "network.tf"
   content = templatefile("${path.module}/templates/network.tftpl", {
     vnet_config = var.vnet_config
+    sql         = var.sql
     stage       = var.stage
   })
   branch              = "refs/heads/${azuredevops_git_repository_branch.init.name}"
@@ -145,6 +148,24 @@ resource "azuredevops_git_repository_file" "virtual_machine" {
   })
   branch              = "refs/heads/${azuredevops_git_repository_branch.init.name}"
   commit_message      = "Add vm template file"
+  overwrite_on_create = true
+
+  lifecycle {
+    ignore_changes = [commit_message]
+  }
+}
+
+resource "azuredevops_git_repository_file" "sql" {
+  repository_id = azuredevops_git_repository.landing_zone.id
+  file          = "sql.tf"
+  content = templatefile("${path.module}/templates/sql.tftpl", {
+    sql              = var.sql
+    subnet_name      = var.vnet_config.subnets["${var.sql.rg}"]
+    application_name = lower(var.application_name)
+    tags             = var.sql.tags != null ? var.sql.tags : local.tags
+  })
+  branch              = "refs/heads/${azuredevops_git_repository_branch.init.name}"
+  commit_message      = "Add sql.tf"
   overwrite_on_create = true
 
   lifecycle {

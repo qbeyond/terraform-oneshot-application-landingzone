@@ -12,23 +12,23 @@ terraform_state_config = {
   backend_service_connection = ""
 }
 
-location                   = ""
-stage                      = ""
+location  = ""
+stage     = ""
 
 rg_config = {
-  network   = "Network"
-  app       = "Application"
-  database  = "Database"
-  fileshare = "Files"
-  security  = "Security"
+  network     = "Network"
+  application = "Application"
+  database    = "Database"
+  fileshare   = "Files"
+  security    = "Security"
 }
 
 vnet_config = {
   dns_server    = [""]
   address_space = ""
   subnets = {
-    database    = "",
     application = ""
+    database    = ""
   }
   nsg = true
 }
@@ -40,13 +40,34 @@ vm_win_hostname                 = ""
 vm_ux_hostname                  = ""
 vm_ux_public_key_name           = "id_rsa.pub"
 
+# SQL
+sql = {
+  cust           = "peacf"
+  rg             = "database"      # Same name as vnet_config subnets key name and rg_config key.
+  type           = "server"        # type: server or managed_instance
+  ip_server      = "10.249.6.110"
+  database_name  = lobster_data
+  collation      = "Latin1_General_CI_AS"
+  sku_name       = "S3"
+  max_size_gb    = 20
+  
+  sql_tags = {
+    tagname = "tagvalue"
+  }
+}
+
 #tags
+
+## default
+
 business_service_number = "12345"
 application_name        = "ApplicationName"
 env                     = "abc"
 iac                     = true
 managed_by              = "example.company"
 alerting                = "enabled"
+
+# default additional. join with default
 
 additional_tags = {
   tagname = "tagvalue"
