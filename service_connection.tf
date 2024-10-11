@@ -1,6 +1,6 @@
 module "service_connection_application" {
   source               = "qbeyond/service-connection/azuredevops"
-  version              = "1.0.0"
+  version              = "1.0.1"
   subscription_id      = var.subscription_id
   subscription_name    = data.azurerm_subscription.this.display_name
   display_name         = data.azurerm_subscription.this.display_name
