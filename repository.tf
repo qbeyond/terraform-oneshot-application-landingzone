@@ -116,22 +116,6 @@ resource "azuredevops_git_repository_file" "nsg" {
   }
 }
 
-resource "azuredevops_git_repository_file" "nsgyaml" {
-  count = var.vnet_config != null && var.vnet_config.nsg == true ? 1 : 0
-  repository_id = azuredevops_git_repository.landing_zone.id
-  file          = "nsg.yaml"
-  content = templatefile("${path.module}/templates/nsg.yamltpl", {
-    subscription_name = data.azurerm_subscription.this.display_name
-  })
-  branch              = "refs/heads/${azuredevops_git_repository_branch.init.name}"
-  commit_message      = "Add nsg.yaml"
-  overwrite_on_create = true
-
-  lifecycle {
-    ignore_changes = [commit_message]
-  }
-}
-
 resource "azuredevops_git_repository_file" "network" {
   count         = var.vnet_config == null ? 0 : 1
   repository_id = azuredevops_git_repository.landing_zone.id
