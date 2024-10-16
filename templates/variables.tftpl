@@ -12,3 +12,10 @@ variable "${vm_ux_hostname}_password" {
     sensitive   = true
 }
 %{ endif ~}
+%{if ${sql.type} != "" ~}
+variable "${application_name}_db_admin_pw" {
+    type        = string
+    description = "The password for local admin account"
+    sensitive   = true
+}
+%{ endif ~}

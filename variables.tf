@@ -188,5 +188,5 @@ variable "sql" {
     tags           = map(string)
   })
   description = "SQL configuration."
-  default = null
+  default     = null
 }

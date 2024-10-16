@@ -30,6 +30,7 @@ resource "azuredevops_git_repository_file" "pipeline" {
     vm_win_hostname                     = upper(var.vm_win_hostname)
     vm_ux_hostname                      = upper(var.vm_ux_hostname)
     vm_ux_public_key_name               = var.vm_ux_public_key_name
+    create_sql                          = var.sql
   })
   branch              = "refs/heads/${azuredevops_git_repository_branch.init.name}"
   commit_message      = "Add Pipeline Configuration"
@@ -161,7 +162,7 @@ resource "azuredevops_git_repository_file" "sql" {
   content = templatefile("${path.module}/templates/sql.tftpl", {
     sql              = var.sql
     subnet_name      = var.vnet_config.subnets["${var.sql.rg}"]
-    application_name = lower(var.application_name)
+    application_name = lower(split("-", data.azurerm_subscription.this.display_name)[1])
     tags             = var.sql.tags != null ? var.sql.tags : local.tags
   })
   branch              = "refs/heads/${azuredevops_git_repository_branch.init.name}"
@@ -178,9 +179,10 @@ resource "azuredevops_git_repository_file" "variables" {
   repository_id = azuredevops_git_repository.landing_zone.id
   file          = "variables.tf"
   content = templatefile("${path.module}/templates/variables.tftpl", {
-    vm_win_hostname        = upper(var.vm_win_hostname)
-    vm_ux_hostname         = upper(var.vm_ux_hostname)
-    vm_ux_public_key_name  = var.vm_ux_public_key_name
+    vm_win_hostname       = upper(var.vm_win_hostname)
+    vm_ux_hostname        = upper(var.vm_ux_hostname)
+    vm_ux_public_key_name = var.vm_ux_public_key_name
+    application_name      = lower(split("-", data.azurerm_subscription.this.display_name)[1])
   })
   branch              = "refs/heads/${azuredevops_git_repository_branch.init.name}"
   commit_message      = "Add variables template file"
