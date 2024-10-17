@@ -1,8 +1,12 @@
 locals {
-  sql_tags = ${sql.tags}
+  sql_tags = {
+%{for tag_name, tag_value in sql.tags ~}
+    "${tag_name}" = "${tag_value}"
+%{ endfor ~}
+  }
 }
 
-%{if ${sql.type} == "server" }resource "azurerm_mssql_server" "this" {
+%{if sql.type == "server" }resource "azurerm_mssql_server" "this" {
   name                          = lower("sql-${sql.cust}-$${local.stage}-$${local.application_name}-$${local.env_num}")
   resource_group_name           = azurerm_resource_group.${sql.rg}.name
   location                      = local.default_location
@@ -12,10 +16,10 @@ locals {
   minimum_tls_version           = "1.2"
   public_network_access_enabled = false
   tags                          = local.sql_tags
-}%{ endif }
+}
 
 resource "azurerm_mssql_database" "$lower(${sql.database_name})" {
-  name            = "sqldb-$${local.stage}-${name}_$${local.env_num}"
+  name            = "sqldb-$${local.stage}-${sql.database_name}_$${local.env_num}"
   server_id       = azurerm_mssql_server.this.id
   collation       = "${sql.collation}"
   sku_name        = "${sql.sku_name}"
@@ -23,26 +27,26 @@ resource "azurerm_mssql_database" "$lower(${sql.database_name})" {
   license_type    = "LicenseIncluded"
   zone_redundant  = false
   read_scale      = false
-  %{if ${sql.sku_name} == "ElasticPool" }elastic_pool_id = azurerm_mssql_elasticpool.this.id%{ endif }
+%{if sql.sku_name == "ElasticPool" ~}  elastic_pool_id = azurerm_mssql_elasticpool.this.id%{ endif ~}
   tags            = local.sql_tags
   maintenance_configuration_name = "SQL_WestEurope_DB_2" # Friday-Sunday from 22:00h-6:00h
 }
 
 resource "azurerm_private_endpoint" "this" {
-  name                = "pe-$${replace(${sql.ip_server}, "/[./]/", "-")}-${subnet_name}-$${azurerm_mssql_server.this.name}"
+  name                = "pe-$${replace(${sql.ip_server}, "/[./]/", "-")}-${sql.subnet}-$${azurerm_mssql_server.this.name}"
   location            = local.default_location
   resource_group_name = azurerm_resource_group.${sql.rg}.name
-  subnet_id           = azurerm_subnet.this["${subnet_name}"].id
+  subnet_id           = azurerm_subnet.this["${sql.subnet}"].id
 
   private_service_connection {
-    name                           = "psc-$${replace(${sql.ip_server}, "/[./]/", "-")}-${subnet_name}-$${azurerm_mssql_server.this.name}"
+    name                           = "psc-$${replace(${sql.ip_server}, "/[./]/", "-")}-${sql.subnet}-$${azurerm_mssql_server.this.name}"
     is_manual_connection           = false
     private_connection_resource_id = azurerm_mssql_server.this.id
     subresource_names              = ["sqlServer"]
   }
 
   ip_configuration {
-    name               = "pe-$${replace(${sql.ip_server}, "/[./]/", "-")}-${subnet_name}-$${azurerm_mssql_server.this.name}"
+    name               = "pe-$${replace(${sql.ip_server}, "/[./]/", "-")}-${sql.subnet}-$${azurerm_mssql_server.this.name}"
     private_ip_address = "${sql.ip_server}"
     subresource_name   = "sqlServer"
     member_name        = "sqlServer"
@@ -54,8 +58,8 @@ resource "azurerm_private_endpoint" "this" {
   }
 }%{ endif }
 
-%{if ${sql.sku_name} == "ElasticPool" }resource "azurerm_mssql_elasticpool" "this"{
-  name                           = "sqlep-${sql.cust}-$${local.env}-$${local.env_short_name}-$${local.env_num}"
+%{if sql.sku_name == "ElasticPool" }resource "azurerm_mssql_elasticpool" "this"{
+  name                           = "sqlep-${sql.cust}-$${local.stage}-$${local.application_name}-$${local.env_num}"
   resource_group_name            = azurerm_resource_group.${sql.rg}.name
   location                       = local.default_location
   server_name                    = azurerm_mssql_server.this.name
@@ -76,21 +80,22 @@ resource "azurerm_private_endpoint" "this" {
 }%{ endif }
 
 
-%{if ${sql.type} == "managed_instance" }resource "azurerm_mssql_managed_instance" "this" {
+%{if sql.type == "managed" }resource "azurerm_mssql_managed_instance" "this" {
   name                           = lower("sqlmi-${sql.cust}-$${local.env}-$${local.application_name}-$${local.env_num}")
   location                       = local.default_location
   resource_group_name            = azurerm_resource_group.${sql.rg}.name
-  subnet_id                      = azurerm_subnet.this["${subnet_name}"].id
-
+  subnet_id                      = azurerm_subnet.this["${sql.subnet}"].id
   license_type                   = "LicenseIncluded" # "BasePrice" is BYOL "Bring your Own License"
   sku_name                       = "${sql.sku_name}"
   collation                      = "${sql.collation}"
   storage_size_in_gb             = ${sql.max_size_gb}
+  storage_account_type           = "LRS"
   vcores                         = 8
   timezone_id                    = "UTC"
   administrator_login            = "sa_vbz"
   administrator_login_password   = var.${application_name}_db_admin_pw
   maintenance_configuration_name = "SQL_WestEurope_MI_2" # Friday-Sunday from 22:00h-6:00h
+  proxy_override                 = "Proxy"
   tags                           = local.sql_tags
 
   depends_on = [
@@ -100,20 +105,20 @@ resource "azurerm_private_endpoint" "this" {
 }
 
 resource "azurerm_private_endpoint" "this" {
-  name                = "pe-$${replace(${sql.ip_server}, "/[./]/", "-")}-${subnet_name}-$${azurerm_mssql_managed_instance.this.name}"
+  name                = "pe-$${replace(${sql.ip_server}, "/[./]/", "-")}-${sql.subnet}-$${azurerm_mssql_managed_instance.this.name}"
   location            = local.default_location
   resource_group_name = azurerm_resource_group.${sql.rg}.name
-  subnet_id           = azurerm_subnet.this["${subnet_name}"].id
+  subnet_id           = azurerm_subnet.this["${sql.subnet}"].id
 
   private_service_connection {
-    name                           = "psc-$${replace(${sql.ip_server}, "/[./]/", "-")}-${subnet_name}-$${azurerm_mssql_managed_instance.this.name}"
+    name                           = "psc-$${replace(${sql.ip_server}, "/[./]/", "-")}-${sql.subnet}-$${azurerm_mssql_managed_instance.this.name}"
     is_manual_connection           = false
     private_connection_resource_id = azurerm_mssql_managed_instance.this.id
     subresource_names              = ["managedInstance"]
   }
 
   ip_configuration {
-    name               = "pe-$${replace(${sql.ip_server}, "/[./]/", "-")}-${subnet_name}-$${azurerm_mssql_managed_instance.this.name}"
+    name               = "pe-$${replace(${sql.ip_server}, "/[./]/", "-")}-${sql.subnet}-$${azurerm_mssql_managed_instance.this.name}"
     private_ip_address = "${sql.ip_server}"
     subresource_name   = "managedInstance"
     member_name        = "managedInstance"

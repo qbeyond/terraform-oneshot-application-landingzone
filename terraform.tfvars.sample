@@ -42,16 +42,18 @@ vm_ux_public_key_name           = "id_rsa.pub"
 
 # SQL
 sql = {
+  create         = false
   cust           = "peacf"
-  rg             = "database"      # Same name as vnet_config subnets key name and rg_config key.
-  type           = "server"        # type: server or managed_instance
+  rg             = "database"      
+  type           = "server"        # type: server or managed
+  subnet         = "ApplicationServer"
   ip_server      = "10.249.6.110"
-  database_name  = lobster_data
+  database_name  = "lobster_data"
   collation      = "Latin1_General_CI_AS"
   sku_name       = "S3"
   max_size_gb    = 20
   
-  sql_tags = {
+  tags = {
     tagname = "tagvalue"
   }
 }

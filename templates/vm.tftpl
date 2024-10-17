@@ -1,5 +1,4 @@
-%{ if vm_win_hostname != "" ~}
-module "${vm_win_hostname}" {
+%{ if vm_win_hostname != "" ~}module "${vm_win_hostname}" {
   source              = "qbeyond/windows-vm/azurerm"
   version             = "5.0.0"
   resource_group_name = azurerm_resource_group.app.name
@@ -134,5 +133,4 @@ module "${vm_ux_hostname}" {
   }
 
   tags = merge({}, local.tags) 
-}
-%{ endif ~}
+}%{ endif ~}

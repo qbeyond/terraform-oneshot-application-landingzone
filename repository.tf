@@ -30,7 +30,8 @@ resource "azuredevops_git_repository_file" "pipeline" {
     vm_win_hostname                     = upper(var.vm_win_hostname)
     vm_ux_hostname                      = upper(var.vm_ux_hostname)
     vm_ux_public_key_name               = var.vm_ux_public_key_name
-    create_sql                          = var.sql
+    sql                                 = var.sql
+    application_name                    = lower(split("-", data.azurerm_subscription.this.display_name)[1])
   })
   branch              = "refs/heads/${azuredevops_git_repository_branch.init.name}"
   commit_message      = "Add Pipeline Configuration"
@@ -42,9 +43,9 @@ resource "azuredevops_git_repository_file" "pipeline" {
 }
 
 resource "azuredevops_git_repository_file" "main" {
-  repository_id       = azuredevops_git_repository.landing_zone.id
-  file                = "main.tf"
-  content             = templatefile("${path.module}/templates/main.tftpl", {
+  repository_id = azuredevops_git_repository.landing_zone.id
+  file          = "main.tf"
+  content = templatefile("${path.module}/templates/main.tftpl", {
     rg_config   = var.rg_config
   })
   branch              = "refs/heads/${azuredevops_git_repository_branch.init.name}"
@@ -58,10 +59,10 @@ resource "azuredevops_git_repository_file" "main" {
 
 resource "azuredevops_git_repository_file" "locals" {
   repository_id = azuredevops_git_repository.landing_zone.id
-  file                = "locals.tf"
-  content             = templatefile("${path.module}/templates/locals.tftpl", {
+  file          = "locals.tf"
+  content = templatefile("${path.module}/templates/locals.tftpl", {
     location         = var.location
-    dns_servers      = join(", ", var.vnet_config.dns_server)
+    dns_servers      = join("\", \"", var.vnet_config.dns_server)
     stage            = split("-", data.azurerm_subscription.this.display_name)[0]
     application_name = split("-", data.azurerm_subscription.this.display_name)[1]
     env_num          = split("-", data.azurerm_subscription.this.display_name)[2]
@@ -104,7 +105,7 @@ resource "azuredevops_git_repository_file" "tags" {
 }
 
 resource "azuredevops_git_repository_file" "nsg" {
-  count = var.vnet_config != null && var.vnet_config.nsg == true ? 1 : 0
+  count         = var.vnet_config != null && var.vnet_config.nsg == true ? 1 : 0
   repository_id = azuredevops_git_repository.landing_zone.id
   file          = "nsg.tf"
   content = templatefile("${path.module}/templates/nsg.tftpl", {
@@ -157,13 +158,12 @@ resource "azuredevops_git_repository_file" "virtual_machine" {
 }
 
 resource "azuredevops_git_repository_file" "sql" {
+  count         = var.sql.create ? 1 : 0
   repository_id = azuredevops_git_repository.landing_zone.id
   file          = "sql.tf"
   content = templatefile("${path.module}/templates/sql.tftpl", {
     sql              = var.sql
-    subnet_name      = var.vnet_config.subnets["${var.sql.rg}"]
     application_name = lower(split("-", data.azurerm_subscription.this.display_name)[1])
-    tags             = var.sql.tags != null ? var.sql.tags : local.tags
   })
   branch              = "refs/heads/${azuredevops_git_repository_branch.init.name}"
   commit_message      = "Add sql.tf"
@@ -175,13 +175,14 @@ resource "azuredevops_git_repository_file" "sql" {
 }
 
 resource "azuredevops_git_repository_file" "variables" {
-  count = var.create_virtual_machine_template == true && (var.vm_win_hostname != "" || (var.vm_ux_hostname != "" && var.vm_ux_public_key_name == "" )) ? 1 : 0
+  count = (var.create_virtual_machine_template == true && (var.vm_win_hostname != "" || (var.vm_ux_hostname != "" && var.vm_ux_public_key_name == "" ))) || (var.sql.create) ? 1 : 0
   repository_id = azuredevops_git_repository.landing_zone.id
   file          = "variables.tf"
   content = templatefile("${path.module}/templates/variables.tftpl", {
     vm_win_hostname       = upper(var.vm_win_hostname)
     vm_ux_hostname        = upper(var.vm_ux_hostname)
     vm_ux_public_key_name = var.vm_ux_public_key_name
+    sql                   = var.sql
     application_name      = lower(split("-", data.azurerm_subscription.this.display_name)[1])
   })
   branch              = "refs/heads/${azuredevops_git_repository_branch.init.name}"

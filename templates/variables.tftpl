@@ -1,21 +1,20 @@
 %{ if vm_win_hostname != "" ~}
 variable "${vm_win_hostname}_password" {
-    type        = string
-    description = "The password for the ${vm_win_hostname} local admin account"
-    sensitive   = true
+  type        = string
+  description = "The password for the ${vm_win_hostname} local admin account"
+  sensitive   = true
 }
 %{ endif ~}
 %{ if vm_ux_hostname != "" && vm_ux_public_key_name == "" ~}
 variable "${vm_ux_hostname}_password" {
-    type        = string
-    description = "The password for the ${vm_ux_hostname} local admin account"
-    sensitive   = true
+  type        = string
+  description = "The password for the ${vm_ux_hostname} local admin account"
+  sensitive   = true
 }
 %{ endif ~}
-%{if ${sql.type} != "" ~}
+%{if sql.create && sql.type != "" ~}
 variable "${application_name}_db_admin_pw" {
-    type        = string
-    description = "The password for local admin account"
-    sensitive   = true
-}
-%{ endif ~}
+  type        = string
+  description = "The password for local admin account"
+  sensitive   = true
+}%{ endif ~}
