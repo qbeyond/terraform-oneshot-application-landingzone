@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [2.1.0] - 2024-10-07
+## [3.0.0] - 2024-10-18
 
 ### Changed
 
@@ -25,6 +25,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Defaults resources groups in main.tf.
 - NSG files templates and assign to subnets by boolean variable.
 - New code templates for VM.
+- Added SQL template.
 
 ## [2.0.1] - 2024-05-14
 

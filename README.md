@@ -31,8 +31,10 @@ You need:
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_alerting"></a> [alerting](#input\_alerting) | The `alerting` tag of the subscription. Can be `enabled` or `disabled`. | `string` | n/a | yes |
+| <a name="input_additional_tags"></a> [additional\_tags](#input\_additional\_tags) | A mapping of tags to add to the subscription in addition to the default tags. | `map(string)` | `{}` | no |
 | <a name="input_application_name"></a> [application\_name](#input\_application\_name) | The `applicationname` tag of subscription. | `string` | n/a | yes |
 | <a name="input_business_service_number"></a> [business\_service\_number](#input\_business\_service\_number) | The `Business Service Number` tag of subscription. | `string` | n/a | yes |
+| <a name="input_create_virtual_machine_template"></a> [create\_virtual\_machine\_template](#input\_create\_virtual\_machine\_template) | Set to true to create a template for creating a windows vm. | `bool` | `false` | no |
 | <a name="input_devops_project_name"></a> [devops\_project\_name](#input\_devops\_project\_name) | Name of the DevOps Project to create the service connections for. | `string` | n/a | yes |
 | <a name="input_devops_service_url"></a> [devops\_service\_url](#input\_devops\_service\_url) | Azure DevOps organization url. | `string` | n/a | yes |
 | <a name="input_devops_subscription_id"></a> [devops\_subscription\_id](#input\_devops\_subscription\_id) | Subscription ID of the DevOps Subscription. | `string` | n/a | yes |
@@ -40,16 +42,15 @@ You need:
 | <a name="input_iac"></a> [iac](#input\_iac) | The `iac` tag of subscription. Set to `true` if the subscription is managed by Infrastructure as Code (IaC) and `false` otherwise | `bool` | n/a | yes |
 | <a name="input_location"></a> [location](#input\_location) | The default location used for resources in this Landing Zone. | `string` | n/a | yes |
 | <a name="input_managed_by"></a> [managed\_by](#input\_managed\_by) | The `managedby` tag of the subscription. This should be the entity responsible for managing the infrastructure (e.g `q.beyond`). | `string` | n/a | yes |
+| <a name="input_management_group_id"></a> [management\_group\_id](#input\_management\_group\_id) | Management Group ID where to move the subscription. Optional Parameter if association already done. | `string` | `""` | no |
 | <a name="input_personal_access_token"></a> [personal\_access\_token](#input\_personal\_access\_token) | [Personal access token](https://learn.microsoft.com/en-us/azure/devops/organizations/accounts/use-personal-access-tokens-to-authenticate?view=azure-devops&tabs=Windows#create-a-pat) used for authentication to the Azure DevOps organization. Is only used during the oneshot deployment. You require the following scopes: `Code`=`Full`, `Environment`=`Read & manage`, `Identity`=`Read & manage`, `Pipeline Resources`=`Use and manage`, `Project and Team`=`Read, write, & manage`, `Security`=`Manage`, `Service Connections`=`Read, query, & manage`,`Variable Groups`=`Read, create, & manage` | `string` | n/a | yes |
+| <a name="input_rg_config"></a> [rg\_config](#input\_rg\_config) | Resources groups to create. Use 'rg' as the key and resources group name as the value. | `map(string)` | `{}` | no |
+| <a name="input_sql"></a> [sql](#input\_sql) | SQL configuration. | <pre>object({<br/>    create         = bool<br/>    cust           = string<br/>    rg             = string      # Same name as vnet_config subnets key name and rg_config key.<br/>    type           = string<br/>    subnet         = string<br/>    ip_server      = string<br/>    database_name  = string<br/>    collation      = string<br/>    sku_name       = string<br/>    max_size_gb    = number<br/>    tags           = map(string)<br/>    })</pre> | n/a | yes |
 | <a name="input_stage"></a> [stage](#input\_stage) | Name of the current stage. | `string` | n/a | yes |
 | <a name="input_subscription_id"></a> [subscription\_id](#input\_subscription\_id) | Subscription ID of the Landing Zone Subscription. | `string` | n/a | yes |
 | <a name="input_tenant_id"></a> [tenant\_id](#input\_tenant\_id) | Tenant ID of the Customer. | `string` | n/a | yes |
 | <a name="input_terraform_state_config"></a> [terraform\_state\_config](#input\_terraform\_state\_config) | The configuration of the Terraform state. The state will be saved in the given storage account in the DevOps subscription using the backend service connection. | <pre>object({<br/>    resource_group_name        = string<br/>    storage_account_name       = string<br/>    backend_service_connection = string<br/>  })</pre> | n/a | yes |
 | <a name="input_terraform_version"></a> [terraform\_version](#input\_terraform\_version) | Terraform version to install in the DevOps pipeline. | `string` | n/a | yes |
-| <a name="input_additional_tags"></a> [additional\_tags](#input\_additional\_tags) | A mapping of tags to add to the subscription in addition to the default tags. | `map(string)` | `{}` | no |
-| <a name="input_create_virtual_machine_template"></a> [create\_virtual\_machine\_template](#input\_create\_virtual\_machine\_template) | Set to true to create a template for creating a windows vm. | `bool` | `false` | no |
-| <a name="input_management_group_id"></a> [management\_group\_id](#input\_management\_group\_id) | Management Group ID where to move the subscription. Optional Parameter if association already done. | `string` | `""` | no |
-| <a name="input_rg_config"></a> [rg\_config](#input\_rg\_config) | Resources groups to create. Use 'rg' as the key and resources group name as the value. | `map(string)` | `{}` | no |
 | <a name="input_vm_ux_hostname"></a> [vm\_ux\_hostname](#input\_vm\_ux\_hostname) | Set the hostnmae of vm. | `string` | `""` | no |
 | <a name="input_vm_ux_public_key_name"></a> [vm\_ux\_public\_key\_name](#input\_vm\_ux\_public\_key\_name) | Set the public key file name. | `string` | `""` | no |
 | <a name="input_vm_win_hostname"></a> [vm\_win\_hostname](#input\_vm\_win\_hostname) | Set the hostnmae of vm. | `string` | `""` | no |
