@@ -1,8 +1,8 @@
 # NSG
 local {
   nsg = {
-%{ for subnet_name, address_prefix in vnet_config.subnets ~}
-    snet-$${replace(${address_prefix}, "/[./]/", "-")}-${subnet_name} = {
+%{ for subnet_name, address_prefix in change_subnet ~}
+    snet-${address_prefix}-${subnet_name} = {
       ### INBOUND RULES ###
       DenyAllInboundTraffic = {
         description                  = "Deny All Vnet Traffic"

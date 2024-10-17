@@ -197,7 +197,7 @@ variable "sql" {
   description = "SQL configuration."
 
   validation {
-    condition     = var.sql.create == true && contains(["server", "managed"], var.sql.type)
+    condition     = var.sql.create == false || (var.sql.create == true && contains(["server", "managed"], var.sql.type))
     error_message = "The SQL type should be either `server` for SQL Server, or `managed` for SQL Managed Instance."
   }
   validation {

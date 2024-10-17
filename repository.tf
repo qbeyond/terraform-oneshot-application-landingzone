@@ -104,12 +104,17 @@ resource "azuredevops_git_repository_file" "tags" {
   }
 }
 
+locals {
+  change_subnet = { for instance_key, instance_value in var.vnet_config.subnets : instance_key => replace(instance_value, "/[./]/", "-")}
+}
+
 resource "azuredevops_git_repository_file" "nsg" {
   count         = var.vnet_config != null && var.vnet_config.nsg == true ? 1 : 0
   repository_id = azuredevops_git_repository.landing_zone.id
   file          = "nsg.tf"
   content = templatefile("${path.module}/templates/nsg.tftpl", {
-    vnet_config = var.vnet_config
+    vnet_config   = var.vnet_config
+    change_subnet = local.change_subnet
   })
   branch              = "refs/heads/${azuredevops_git_repository_branch.init.name}"
   commit_message      = "Add nsg.tf"
