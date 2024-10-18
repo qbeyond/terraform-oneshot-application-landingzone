@@ -55,7 +55,6 @@ You need:
 | <a name="input_vm_ux_public_key_name"></a> [vm\_ux\_public\_key\_name](#input\_vm\_ux\_public\_key\_name) | Set the public key file name. | `string` | `""` | no |
 | <a name="input_vm_win_hostname"></a> [vm\_win\_hostname](#input\_vm\_win\_hostname) | Set the hostnmae of vm. | `string` | `""` | no |
 | <a name="input_vnet_config"></a> [vnet\_config](#input\_vnet\_config) | <pre>If you want to provide a virtual network, please provide the following values: <br/>  dns_server: DNS Servers that will be used in the network.<br/>  address_space: Address space of the virtual network in CIDR notation.<br/>  subnets: Subnets that will be created in the virtual network. Use 'Usecase' as the key and the address prefix as the value in CIDR notation.    <br/>  nsg: Create NSG for all the subnets.</pre> | <pre>object({<br/>    dns_server    = list(string)<br/>    address_space = string<br/>    subnets       = map(string)<br/>    nsg           = bool<br/>  })</pre> | `null` | no |
-
 ## Outputs
 
 No outputs.
