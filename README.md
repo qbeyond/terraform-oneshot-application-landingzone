@@ -77,7 +77,7 @@ No outputs.
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_service_connection_application"></a> [service\_connection\_application](#module\_service\_connection\_application) | qbeyond/service-connection/azuredevops | 1.0.0 |
+| <a name="module_service_connection_application"></a> [service\_connection\_application](#module\_service\_connection\_application) | qbeyond/service-connection/azuredevops | 1.0.1 |
 
         ## Resources by Files
             ### build_validation.tf
