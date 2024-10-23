@@ -1,5 +1,5 @@
 # NSG
-local {
+locals {
   nsg = {
 %{ for subnet_name, address_prefix in change_subnet ~}
     snet-${address_prefix}-${subnet_name} = {
