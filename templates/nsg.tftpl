@@ -17,7 +17,9 @@ resource "azurerm_network_security_group" "this" {
       source_port_ranges           = contains(security_rule.value.source_port_ranges, "*") ? null : security_rule.value.source_port_ranges
       destination_port_range       = contains(security_rule.value.destination_port_ranges, "*") ? "*" : null
       destination_port_ranges      = contains(security_rule.value.destination_port_ranges, "*") ? null : security_rule.value.destination_port_ranges
+      source_address_prefix        = security_rule.value.source_address_prefix
       source_address_prefixes      = security_rule.value.source_address_prefixes
+      destination_address_prefix   = security_rule.value.destination_address_prefix
       destination_address_prefixes = security_rule.value.destination_address_prefixes
     }
   }
@@ -37,7 +39,9 @@ locals {
         protocol                     = "*"
         source_port_ranges           = ["*"]
         destination_port_ranges      = ["*"]
+        source_address_prefix        = ""
         source_address_prefixes      = ["${vnet_config.address_space}"] # Vnet address space
+        destination_address_prefix   = ""
         destination_address_prefixes = ["${vnet_config.address_space}"] # Vnet address space
       }
 
