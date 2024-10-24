@@ -10,7 +10,7 @@ terraform {
     }
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = ">=3.46.0"
+      version = ">=3.90.0"
     }
     http-full = {
       source  = "salrashid123/http-full"
@@ -21,8 +21,7 @@ terraform {
 
 provider "azurerm" {
   features {}
-  subscription_id            = var.devops_subscription_id
-  skip_provider_registration = var.skip_provider_registration
+  subscription_id = var.devops_subscription_id
 }
 
 provider "azuread" {
