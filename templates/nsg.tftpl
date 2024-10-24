@@ -17,10 +17,10 @@ resource "azurerm_network_security_group" "this" {
       source_port_ranges           = contains(security_rule.value.source_port_ranges, "*") ? null : security_rule.value.source_port_ranges
       destination_port_range       = contains(security_rule.value.destination_port_ranges, "*") ? "*" : null
       destination_port_ranges      = contains(security_rule.value.destination_port_ranges, "*") ? null : security_rule.value.destination_port_ranges
-      source_address_prefix        = security_rule.value.source_address_prefix
-      source_address_prefixes      = security_rule.value.source_address_prefixes
-      destination_address_prefix   = security_rule.value.destination_address_prefix
-      destination_address_prefixes = security_rule.value.destination_address_prefixes
+      source_address_prefix        = length(security_rule.value.source_address_prefixes) == 1 ? security_rule.value.source_address_prefixes[0] : null
+      source_address_prefixes      = length(security_rule.value.source_address_prefixes) > 1 ? security_rule.value.source_address_prefixes : null
+      destination_address_prefix   = length(security_rule.value.destination_address_prefixes) == 1 ? security_rule.value.destination_address_prefixes[0] : null
+      destination_address_prefixes = length(security_rule.value.destination_address_prefixes) > 1 ? security_rule.value.destination_address_prefixes : null
     }
   }
 }
@@ -39,13 +39,23 @@ locals {
         protocol                     = "*"
         source_port_ranges           = ["*"]
         destination_port_ranges      = ["*"]
-        source_address_prefix        = ""
         source_address_prefixes      = ["${vnet_config.address_space}"] # Vnet address space
-        destination_address_prefix   = ""
         destination_address_prefixes = ["${vnet_config.address_space}"] # Vnet address space
       }
 
-      ### OUTBOUND RULES ###      
+      ### OUTBOUND RULES ###
+      
+      DenyAllOutboundTraffic = {
+        description                  = "Deny All Vnet Traffic"
+        priority                     = 4096
+        direction                    = "Outbound"
+        access                       = "Deny"
+        protocol                     = "*"
+        source_port_ranges           = ["*"]
+        destination_port_ranges      = ["*"]
+        source_address_prefixes      = ["${vnet_config.address_space}"] # Vnet address space
+        destination_address_prefixes = ["${vnet_config.address_space}"] # Vnet address space
+      }
     }
 %{ endfor ~}
   }
