@@ -73,7 +73,7 @@ content: |-
   {{ else }}
   {{ indent 0 "#" }} Resources by Files
   {{- range $fileName,$resources := $filesResources }}
-  {{ indent 1 "#" }} {{ $fileName }}
+  {{ indent 0 "#" }} {{ $fileName }}
   | Name | Type |
   |------|------|
   {{- range $resources -}}
