@@ -26,8 +26,6 @@ You need:
 | <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | >=3.90.0 |
 | <a name="requirement_http-full"></a> [http-full](#requirement\_http-full) | 1.3.1 |
 
-
-
 ## Inputs
 
 | Name | Description | Type | Default | Required |
@@ -61,8 +59,6 @@ You need:
 ## Outputs
 
 No outputs.
-
-
 
 ## Resource types
 
