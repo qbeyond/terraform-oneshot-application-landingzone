@@ -45,7 +45,7 @@ You need:
 | <a name="input_stage"></a> [stage](#input\_stage) | Name of the current stage. | `string` | n/a | yes |
 | <a name="input_subscription_id"></a> [subscription\_id](#input\_subscription\_id) | Subscription ID of the Landing Zone Subscription. | `string` | n/a | yes |
 | <a name="input_tenant_id"></a> [tenant\_id](#input\_tenant\_id) | Tenant ID of the Customer. | `string` | n/a | yes |
-| <a name="input_terraform_state_config"></a> [terraform\_state\_config](#input\_terraform\_state\_config) | The configuration of the Terraform state. The state will be saved in the given storage account in the DevOps subscription using the backend service connection. | <pre>object({<br/>    resource_group_name        = string<br/>    storage_account_name       = string<br/>    backend_service_connection = string<br/>})</pre> | n/a | yes |
+| <a name="input_terraform_state_config"></a> [terraform\_state\_config](#input\_terraform\_state\_config) | The configuration of the Terraform state. The state will be saved in the given storage account in the DevOps subscription using the backend service connection. | <pre>object({<br/>    resource_group_name        = string<br/>    storage_account_name       = string<br/>    backend_service_connection = string<br/>  })</pre> | n/a | yes |
 | <a name="input_terraform_version"></a> [terraform\_version](#input\_terraform\_version) | Terraform version to install in the DevOps pipeline. | `string` | n/a | yes |
 | <a name="input_additional_tags"></a> [additional\_tags](#input\_additional\_tags) | A mapping of tags to add to the subscription in addition to the default tags. | `map(string)` | `{}` | no |
 | <a name="input_create_virtual_machine_template"></a> [create\_virtual\_machine\_template](#input\_create\_virtual\_machine\_template) | Set to true to create a template for creating a windows vm. | `bool` | `false` | no |
@@ -53,27 +53,27 @@ You need:
 | <a name="input_rg_config"></a> [rg\_config](#input\_rg\_config) | Resources groups to create. Use 'rg' as the key and resources group name as the value. | `map(string)` | `{}` | no |
 | <a name="input_vm_ux_hostname"></a> [vm\_ux\_hostname](#input\_vm\_ux\_hostname) | Set the hostname of vm. | `string` | `""` | no |
 | <a name="input_vm_ux_public_key_name"></a> [vm\_ux\_public\_key\_name](#input\_vm\_ux\_public\_key\_name) | Set the public key file name. | `string` | `""` | no |
-| <a name="input_vm_win"></a> [vm\_win](#input\_vm\_win) | Set the vm values. | <pre>object({<br>    hostname = string<br>    version  = string<br>})</pre> | n/a | no |
+| <a name="input_vm_win"></a> [vm\_win](#input\_vm\_win) | Set the vm values. | <pre>object({<br/>    hostname = string<br/>    version  = string<br/>  })</pre> | `{}` | no |
 | <a name="input_vnet_config"></a> [vnet\_config](#input\_vnet\_config) | <pre>If you want to provide a virtual network, please provide the following values: <br/>  dns_server: DNS Servers that will be used in the network.<br/>  address_space: Address space of the virtual network in CIDR notation.<br/>  subnets: Subnets that will be created in the virtual network. Use 'Usecase' as the key and the address prefix as the value in CIDR notation.    <br/>  nsg: Create NSG for all the subnets.</pre> | <pre>object({<br/>    dns_server    = list(string)<br/>    address_space = string<br/>    subnets       = map(string)<br/>    nsg           = bool<br/>  })</pre> | `null` | no |
 
 ## Outputs
 
 No outputs.
 
-      ## Resource types
-      | Type | Used |
-      |------|-------|
-        | [azuredevops_branch_policy_build_validation](https://registry.terraform.io/providers/microsoft/azuredevops/latest/docs/resources/branch_policy_build_validation) | 1 |
-        | [azuredevops_build_definition](https://registry.terraform.io/providers/microsoft/azuredevops/latest/docs/resources/build_definition) | 1 |
-        | [azuredevops_environment](https://registry.terraform.io/providers/microsoft/azuredevops/latest/docs/resources/environment) | 1 |
-        | [azuredevops_git_repository](https://registry.terraform.io/providers/microsoft/azuredevops/latest/docs/resources/git_repository) | 1 |
-        | [azuredevops_git_repository_branch](https://registry.terraform.io/providers/microsoft/azuredevops/latest/docs/resources/git_repository_branch) | 1 |
-        | [azuredevops_git_repository_file](https://registry.terraform.io/providers/microsoft/azuredevops/latest/docs/resources/git_repository_file) | 11 |
-        | [azuredevops_resource_authorization](https://registry.terraform.io/providers/microsoft/azuredevops/latest/docs/resources/resource_authorization) | 1 |
-        | [azurerm_management_group_subscription_association](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/management_group_subscription_association) | 1 |
-        | [azurerm_storage_container](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_container) | 1 |
-      **`Used` only includes resource blocks.** `for_each` and `count` meta arguments, as well as resource blocks of modules are not considered.
-    
+## Resource types
+| Type | Used |
+|------|-------|
+| [azuredevops_branch_policy_build_validation](https://registry.terraform.io/providers/microsoft/azuredevops/latest/docs/resources/branch_policy_build_validation) | 1 |
+| [azuredevops_build_definition](https://registry.terraform.io/providers/microsoft/azuredevops/latest/docs/resources/build_definition) | 1 |
+| [azuredevops_environment](https://registry.terraform.io/providers/microsoft/azuredevops/latest/docs/resources/environment) | 1 |
+| [azuredevops_git_repository](https://registry.terraform.io/providers/microsoft/azuredevops/latest/docs/resources/git_repository) | 1 |
+| [azuredevops_git_repository_branch](https://registry.terraform.io/providers/microsoft/azuredevops/latest/docs/resources/git_repository_branch) | 1 |
+| [azuredevops_git_repository_file](https://registry.terraform.io/providers/microsoft/azuredevops/latest/docs/resources/git_repository_file) | 11 |
+| [azuredevops_resource_authorization](https://registry.terraform.io/providers/microsoft/azuredevops/latest/docs/resources/resource_authorization) | 1 |
+| [azurerm_management_group_subscription_association](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/management_group_subscription_association) | 1 |
+| [azurerm_storage_container](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_container) | 1 |
+**`Used` only includes resource blocks.** `for_each` and `count` meta arguments, as well as resource blocks of modules are not considered.
+
 ## Modules
 
 | Name | Source | Version |
