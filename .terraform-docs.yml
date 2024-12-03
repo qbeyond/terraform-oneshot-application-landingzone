@@ -59,6 +59,7 @@ content: |-
   {{- $type = ternary $url (printf "[%s](%s)" $type $url) $type }}
   | {{ $type }} | {{ len $resources }} |
   {{- end }}
+  
   **`Used` only includes resource blocks.** `for_each` and `count` meta arguments, as well as resource blocks of modules are not considered.
   {{ end }}
   {{ end -}}
