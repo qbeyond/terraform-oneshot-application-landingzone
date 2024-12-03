@@ -86,13 +86,13 @@ No outputs.
 
 Files.
 
-## build_validation.tf
+### build_validation.tf
 
 | Name | Type |
 |------|------|
 | [azuredevops_branch_policy_build_validation.this](https://registry.terraform.io/providers/microsoft/azuredevops/latest/docs/resources/branch_policy_build_validation) | resource |
 
-## main.tf
+### main.tf
 
 | Name | Type |
 |------|------|
@@ -101,7 +101,7 @@ Files.
 | [azurerm_management_group.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/management_group) | data source |
 | [azurerm_storage_account.terraform_state](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/storage_account) | data source |
 
-## pipeline-permissions.tf
+### pipeline-permissions.tf
 
 | Name | Type |
 |------|------|
@@ -111,14 +111,14 @@ Files.
 | [http-full_http.environment_permission_alz](https://registry.terraform.io/providers/salrashid123/http-full/1.3.1/docs/data-sources/http) | data source |
 | [http-full_http.environment_user_permission_alz](https://registry.terraform.io/providers/salrashid123/http-full/1.3.1/docs/data-sources/http) | data source |
 
-## pipeline.tf
+### pipeline.tf
 
 | Name | Type |
 |------|------|
 | [azuredevops_build_definition.this](https://registry.terraform.io/providers/microsoft/azuredevops/latest/docs/resources/build_definition) | resource |
 | [azuredevops_environment.alz](https://registry.terraform.io/providers/microsoft/azuredevops/latest/docs/resources/environment) | resource |
 
-## repository.tf
+### repository.tf
 
 | Name | Type |
 |------|------|
@@ -136,7 +136,7 @@ Files.
 | [azuredevops_git_repository_file.variables](https://registry.terraform.io/providers/microsoft/azuredevops/latest/docs/resources/git_repository_file) | resource |
 | [azuredevops_git_repository_file.virtual_machine](https://registry.terraform.io/providers/microsoft/azuredevops/latest/docs/resources/git_repository_file) | resource |
 
-## terraform.tf
+### terraform.tf
 
 | Name | Type |
 |------|------|
