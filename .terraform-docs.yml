@@ -41,13 +41,10 @@ content: |-
   {{ indent 0 "#" }} Usage
 
   {{ .Requirements }}
-
   {{ .Providers }}
-
   {{ .Inputs }}
 
   {{ .Outputs }}
-
   {{ if .Config.Sections.Resources -}}
   {{- if not (keys $resourceTypes) -}}
   {{- if not .Config.Settings.HideEmpty -}}
@@ -55,7 +52,6 @@ content: |-
   No resources.
   {{ end }}
   {{ else }}
-  
   {{ indent 0 "#" }} Resource types
 
   | Type | Used |
@@ -81,7 +77,7 @@ content: |-
   {{- range $fileName,$resources := $filesResources }}
   
   {{ indent 0 "#" }} {{ $fileName }}
-  
+
   | Name | Type |
   |------|------|
   {{- range $resources -}}
