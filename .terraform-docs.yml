@@ -81,6 +81,7 @@ content: |-
   {{- range $fileName,$resources := $filesResources }}
   
   {{ indent 0 "#" }} {{ $fileName }}
+  
   | Name | Type |
   |------|------|
   {{- range $resources -}}
