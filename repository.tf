@@ -27,7 +27,7 @@ resource "azuredevops_git_repository_file" "pipeline" {
     subscription_name                   = data.azurerm_subscription.this.display_name
     terraform_version                   = var.terraform_version
     create_virtual_machine              = var.create_virtual_machine_template
-    vm_win_hostname                     = upper(var.vm_win_hostname)
+    vm_win_hostname                     = upper(var.vm_win.hostname)
     vm_ux_hostname                      = upper(var.vm_ux_hostname)
     vm_ux_public_key_name               = var.vm_ux_public_key_name
     sql                                 = var.sql
@@ -104,17 +104,12 @@ resource "azuredevops_git_repository_file" "tags" {
   }
 }
 
-locals {
-  change_subnet = { for instance_key, instance_value in var.vnet_config.subnets : instance_key => replace(instance_value, "/[./]/", "-")}
-}
-
 resource "azuredevops_git_repository_file" "nsg" {
   count         = var.vnet_config != null && var.vnet_config.nsg == true ? 1 : 0
   repository_id = azuredevops_git_repository.landing_zone.id
   file          = "nsg.tf"
   content = templatefile("${path.module}/templates/nsg.tftpl", {
     vnet_config   = var.vnet_config
-    change_subnet = local.change_subnet
   })
   branch              = "refs/heads/${azuredevops_git_repository_branch.init.name}"
   commit_message      = "Add nsg.tf"
@@ -149,7 +144,8 @@ resource "azuredevops_git_repository_file" "virtual_machine" {
   file          = "vm.tf"
   content = templatefile("${path.module}/templates/vm.tftpl", {
     subnet                = keys(var.vnet_config.subnets)[0]
-    vm_win_hostname       = upper(var.vm_win_hostname)
+    vm_win                = var.vm_win
+    vm_win_hostname       = upper(var.vm_win.hostname)
     vm_ux_hostname        = upper(var.vm_ux_hostname)
     vm_ux_public_key_name = var.vm_ux_public_key_name
   })
@@ -180,11 +176,11 @@ resource "azuredevops_git_repository_file" "sql" {
 }
 
 resource "azuredevops_git_repository_file" "variables" {
-  count = (var.create_virtual_machine_template == true && (var.vm_win_hostname != "" || (var.vm_ux_hostname != "" && var.vm_ux_public_key_name == "" ))) || (var.sql.create) ? 1 : 0
+  count = (var.create_virtual_machine_template == true && (var.vm_win.hostname != "" || (var.vm_ux_hostname != "" && var.vm_ux_public_key_name == "" ))) || (var.sql.create) ? 1 : 0
   repository_id = azuredevops_git_repository.landing_zone.id
   file          = "variables.tf"
   content = templatefile("${path.module}/templates/variables.tftpl", {
-    vm_win_hostname       = upper(var.vm_win_hostname)
+    vm_win_hostname       = upper(var.vm_win.hostname)
     vm_ux_hostname        = upper(var.vm_ux_hostname)
     vm_ux_public_key_name = var.vm_ux_public_key_name
     sql                   = var.sql

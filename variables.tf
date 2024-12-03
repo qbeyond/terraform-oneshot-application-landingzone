@@ -201,7 +201,7 @@ variable "terraform_version" {
 
 variable "vm_ux_hostname" {
   type        = string
-  description = "Set the hostnmae of vm."
+  description = "Set the hostname of vm."
   default     = ""
 }
 
@@ -211,10 +211,18 @@ variable "vm_ux_public_key_name" {
   default     = ""
 }
 
-variable "vm_win_hostname" {
-  type        = string
-  description = "Set the hostnmae of vm."
-  default     = ""
+variable "vm_win" {
+  type = object({
+    hostname = string
+    version  = string
+  })
+  description = "Set the vm values."
+  default     = {}
+
+  validation {
+    error_message = "Must be valid semantic version."
+    condition     = can(regex("^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)", var.vm_win.version))
+  }
 }
 
 variable "vnet_config" {

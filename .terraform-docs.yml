@@ -45,22 +45,22 @@ content: |-
   {{ .Inputs }}
   {{ .Outputs }}
   {{ if .Config.Sections.Resources -}}
-    {{- if not (keys $resourceTypes) -}}
-        {{- if not .Config.Settings.HideEmpty -}}
-            {{- indent 0 "#" }} Resource types
-            No resources.
-        {{ end }}
-      {{ else }}
-        {{ indent 0 "#" }} Resource types
-        | Type | Used |
-        |------|-------|
-        {{- range $type,$resources := $resourceTypes }}
-          {{- $url := (first $resources).URL -}}
-          {{- $type = ternary $url (printf "[%s](%s)" $type $url) $type }}
-          | {{ $type }} | {{ len $resources }} |
-        {{- end }}
-        **`Used` only includes resource blocks.** `for_each` and `count` meta arguments, as well as resource blocks of modules are not considered.
-      {{ end }}
+  {{- if not (keys $resourceTypes) -}}
+  {{- if not .Config.Settings.HideEmpty -}}
+  {{- indent 0 "#" }} Resource types
+  No resources.
+  {{ end }}
+  {{ else }}
+  {{ indent 0 "#" }} Resource types
+  | Type | Used |
+  |------|-------|
+  {{- range $type,$resources := $resourceTypes }}
+  {{- $url := (first $resources).URL -}}
+  {{- $type = ternary $url (printf "[%s](%s)" $type $url) $type }}
+  | {{ $type }} | {{ len $resources }} |
+  {{- end }}
+  **`Used` only includes resource blocks.** `for_each` and `count` meta arguments, as well as resource blocks of modules are not considered.
+  {{ end }}
   {{ end -}}
   {{ .Modules }}
   {{ if or .Config.Sections.Resources .Config.Sections.DataSources -}}

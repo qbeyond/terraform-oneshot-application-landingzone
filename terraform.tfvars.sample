@@ -36,7 +36,10 @@ vnet_config = {
 terraform_version = ""
 
 create_virtual_machine_template = false
-vm_win_hostname                 = ""
+vm_win = {
+  hostname = ""
+  version  = ""
+}
 vm_ux_hostname                  = ""
 vm_ux_public_key_name           = "id_rsa.pub"
 
