@@ -89,11 +89,13 @@ No outputs.
 ## Resources by Files
 
 ## build_validation.tf
+
 | Name | Type |
 |------|------|
 | [azuredevops_branch_policy_build_validation.this](https://registry.terraform.io/providers/microsoft/azuredevops/latest/docs/resources/branch_policy_build_validation) | resource |
 
 ## main.tf
+
 | Name | Type |
 |------|------|
 | [azurerm_management_group_subscription_association.target](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/management_group_subscription_association) | resource |
@@ -102,6 +104,7 @@ No outputs.
 | [azurerm_storage_account.terraform_state](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/storage_account) | data source |
 
 ## pipeline-permissions.tf
+
 | Name | Type |
 |------|------|
 | [azuredevops_resource_authorization.service_connection_permission_alz](https://registry.terraform.io/providers/microsoft/azuredevops/latest/docs/resources/resource_authorization) | resource |
@@ -111,12 +114,14 @@ No outputs.
 | [http-full_http.environment_user_permission_alz](https://registry.terraform.io/providers/salrashid123/http-full/1.3.1/docs/data-sources/http) | data source |
 
 ## pipeline.tf
+
 | Name | Type |
 |------|------|
 | [azuredevops_build_definition.this](https://registry.terraform.io/providers/microsoft/azuredevops/latest/docs/resources/build_definition) | resource |
 | [azuredevops_environment.alz](https://registry.terraform.io/providers/microsoft/azuredevops/latest/docs/resources/environment) | resource |
 
 ## repository.tf
+
 | Name | Type |
 |------|------|
 | [azuredevops_git_repository.landing_zone](https://registry.terraform.io/providers/microsoft/azuredevops/latest/docs/resources/git_repository) | resource |
@@ -134,6 +139,7 @@ No outputs.
 | [azuredevops_git_repository_file.virtual_machine](https://registry.terraform.io/providers/microsoft/azuredevops/latest/docs/resources/git_repository_file) | resource |
 
 ## terraform.tf
+
 | Name | Type |
 |------|------|
 | [azuredevops_project.this](https://registry.terraform.io/providers/microsoft/azuredevops/latest/docs/data-sources/project) | data source |
