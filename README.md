@@ -26,6 +26,8 @@ You need:
 | <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | >=3.90.0 |
 | <a name="requirement_http-full"></a> [http-full](#requirement\_http-full) | 1.3.1 |
 
+
+
 ## Inputs
 
 | Name | Description | Type | Default | Required |
@@ -55,11 +57,15 @@ You need:
 | <a name="input_vm_ux_public_key_name"></a> [vm\_ux\_public\_key\_name](#input\_vm\_ux\_public\_key\_name) | Set the public key file name. | `string` | `""` | no |
 | <a name="input_vm_win"></a> [vm\_win](#input\_vm\_win) | Set the vm values. | <pre>object({<br/>    hostname = string<br/>    version  = string<br/>  })</pre> | `{}` | no |
 | <a name="input_vnet_config"></a> [vnet\_config](#input\_vnet\_config) | <pre>If you want to provide a virtual network, please provide the following values: <br/>  dns_server: DNS Servers that will be used in the network.<br/>  address_space: Address space of the virtual network in CIDR notation.<br/>  subnets: Subnets that will be created in the virtual network. Use 'Usecase' as the key and the address prefix as the value in CIDR notation.    <br/>  nsg: Create NSG for all the subnets.</pre> | <pre>object({<br/>    dns_server    = list(string)<br/>    address_space = string<br/>    subnets       = map(string)<br/>    nsg           = bool<br/>  })</pre> | `null` | no |
+
 ## Outputs
 
 No outputs.
 
+
+
 ## Resource types
+
 | Type | Used |
 |------|-------|
 | [azuredevops_branch_policy_build_validation](https://registry.terraform.io/providers/microsoft/azuredevops/latest/docs/resources/branch_policy_build_validation) | 1 |
@@ -81,10 +87,12 @@ No outputs.
 | <a name="module_service_connection_application"></a> [service\_connection\_application](#module\_service\_connection\_application) | qbeyond/service-connection/azuredevops | 1.0.1 |
 
 ## Resources by Files
+
 ## build_validation.tf
 | Name | Type |
 |------|------|
 | [azuredevops_branch_policy_build_validation.this](https://registry.terraform.io/providers/microsoft/azuredevops/latest/docs/resources/branch_policy_build_validation) | resource |
+
 ## main.tf
 | Name | Type |
 |------|------|
@@ -92,6 +100,7 @@ No outputs.
 | [azurerm_storage_container.landing_zone](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_container) | resource |
 | [azurerm_management_group.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/management_group) | data source |
 | [azurerm_storage_account.terraform_state](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/storage_account) | data source |
+
 ## pipeline-permissions.tf
 | Name | Type |
 |------|------|
@@ -100,11 +109,13 @@ No outputs.
 | [http-full_http.approval_and_check_alz](https://registry.terraform.io/providers/salrashid123/http-full/1.3.1/docs/data-sources/http) | data source |
 | [http-full_http.environment_permission_alz](https://registry.terraform.io/providers/salrashid123/http-full/1.3.1/docs/data-sources/http) | data source |
 | [http-full_http.environment_user_permission_alz](https://registry.terraform.io/providers/salrashid123/http-full/1.3.1/docs/data-sources/http) | data source |
+
 ## pipeline.tf
 | Name | Type |
 |------|------|
 | [azuredevops_build_definition.this](https://registry.terraform.io/providers/microsoft/azuredevops/latest/docs/resources/build_definition) | resource |
 | [azuredevops_environment.alz](https://registry.terraform.io/providers/microsoft/azuredevops/latest/docs/resources/environment) | resource |
+
 ## repository.tf
 | Name | Type |
 |------|------|
@@ -121,6 +132,7 @@ No outputs.
 | [azuredevops_git_repository_file.terraform](https://registry.terraform.io/providers/microsoft/azuredevops/latest/docs/resources/git_repository_file) | resource |
 | [azuredevops_git_repository_file.variables](https://registry.terraform.io/providers/microsoft/azuredevops/latest/docs/resources/git_repository_file) | resource |
 | [azuredevops_git_repository_file.virtual_machine](https://registry.terraform.io/providers/microsoft/azuredevops/latest/docs/resources/git_repository_file) | resource |
+
 ## terraform.tf
 | Name | Type |
 |------|------|
