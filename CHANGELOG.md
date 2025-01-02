@@ -15,7 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Changed Resource Group creation with a map variable of resources groups.
 - Moved network resource group to `main.tf`.
 - Subnets moved to local variable and change subnet creation.
-- Rename file `virtual_machine.tf` to `vm.tf` and change de code model.
+- Rename file `virtual_machine.tf` to `vm.tf` and change the code model.
 - Terraform version to be added by variable.
 - Delete deprecated variable.
 
