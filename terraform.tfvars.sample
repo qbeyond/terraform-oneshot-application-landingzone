@@ -12,8 +12,8 @@ terraform_state_config = {
   backend_service_connection = ""
 }
 
-location  = ""
-stage     = ""
+location = ""
+stage    = ""
 
 rg_config = {
   network     = "Network"
@@ -30,7 +30,7 @@ vnet_config = {
     application = "ApplicationServer"
     database    = ""
   }
-  nsg = true
+  nsg = false
 }
 
 terraform_version = ""
@@ -45,16 +45,16 @@ vm_ux_public_key_name           = "id_rsa.pub"
 
 # SQL
 sql = {
-  create         = false
-  cust           = "cust"
-  rg             = "database"      
-  type           = "server"        # type: server or managed
-  subnet         = "ApplicationServer"
-  ip_server      = "XXX.XXX.XXX.XXX"
-  database_name  = "cust_db_data"
-  collation      = "Latin1_General_CI_AS"
-  sku_name       = "S3"
-  max_size_gb    = 20
+  create        = false
+  cust          = "cust"
+  rg            = "database"      
+  type          = "server"        # type: server or managed
+  subnet        = "ApplicationServer"
+  ip_server     = "XXX.XXX.XXX.XXX"
+  database_name = "cust_db_data"
+  collation     = "Latin1_General_CI_AS"
+  sku_name      = "S3"
+  max_size_gb   = 20
   
   tags = {
     tagname = "tagvalue"
