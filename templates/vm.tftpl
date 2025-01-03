@@ -63,7 +63,7 @@
     data_disks      = null
   }
 
-  tags = merge({}, local.tags) 
+  tags = merge({}, local.tags)
 }
 %{ endif ~}
 %{ if vm_ux_hostname != "" ~}
@@ -132,5 +132,5 @@ module "${vm_ux_hostname}" {
     data_disks      = null
   }
 
-  tags = merge({}, local.tags) 
+  tags = merge({}, local.tags)
 }%{ endif ~}

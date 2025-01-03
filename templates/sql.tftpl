@@ -15,7 +15,7 @@ locals {
   administrator_login_password  = var.${application_name}_db_admin_pw
   minimum_tls_version           = "1.2"
   public_network_access_enabled = false
-  tags                          = local.sql_tags
+  tags                          = merge(local.sql_tags, local.tags)
 }
 
 resource "azurerm_mssql_database" "$lower(${sql.database_name})" {
@@ -28,7 +28,7 @@ resource "azurerm_mssql_database" "$lower(${sql.database_name})" {
   zone_redundant  = false
   read_scale      = false
 %{if sql.sku_name == "ElasticPool" ~}  elastic_pool_id = azurerm_mssql_elasticpool.this.id%{ endif ~}
-  tags            = local.sql_tags
+  tags            = merge(local.sql_tags, local.tags)
   maintenance_configuration_name = "SQL_WestEurope_DB_2" # Friday-Sunday from 22:00h-6:00h
 }
 
@@ -51,7 +51,7 @@ resource "azurerm_private_endpoint" "this" {
     subresource_name   = "sqlServer"
     member_name        = "sqlServer"
   }
-  tags = local.sql_tags
+  tags = merge(local.sql_tags, local.tags)
 
   lifecycle {
     ignore_changes = [private_dns_zone_group]
@@ -96,7 +96,7 @@ resource "azurerm_private_endpoint" "this" {
   administrator_login_password   = var.${application_name}_db_admin_pw
   maintenance_configuration_name = "SQL_WestEurope_MI_2" # Friday-Sunday from 22:00h-6:00h
   proxy_override                 = "Proxy"
-  tags                           = local.sql_tags
+  tags                           = merge(local.sql_tags, local.tags)
 
   depends_on = [
     azurerm_subnet_network_security_group_association.db_managedinstance,
@@ -123,7 +123,7 @@ resource "azurerm_private_endpoint" "this" {
     subresource_name   = "managedInstance"
     member_name        = "managedInstance"
   }
-  tags = local.sql_tags
+  tags = merge(local.sql_tags, local.tags)
 
   lifecycle {
     ignore_changes = [private_dns_zone_group]
