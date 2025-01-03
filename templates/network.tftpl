@@ -46,7 +46,7 @@ resource "azurerm_network_security_group" "db_managedinstance" {
   name                = "nsg-$${azurerm_subnet.this[${sql.subnet}].name}"
   location            = local.default_location
   resource_group_name = azurerm_resource_group.${sql.rg}.name
-  tags                = local.sql_tags
+  tags                = merge(local.sql_tags, local.tags)
 }
 
 resource "azurerm_subnet_network_security_group_association" "db_managedinstance" {
@@ -59,7 +59,7 @@ resource "azurerm_route_table" "db_managedinstance" {
   location                      = local.default_location
   resource_group_name           = azurerm_resource_group.${sql.rg}.name
   bgp_route_propagation_enabled = false
-  tags                          = local.sql_tags
+  tags                         = merge(local.sql_tags, local.tags)
 
   depends_on = [
     azurerm_subnet.this[${sql.subnet}]
