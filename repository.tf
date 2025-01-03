@@ -46,7 +46,7 @@ resource "azuredevops_git_repository_file" "main" {
   repository_id = azuredevops_git_repository.landing_zone.id
   file          = "main.tf"
   content = templatefile("${path.module}/templates/main.tftpl", {
-    rg_config   = var.rg_config
+    rg_config = var.rg_config
   })
   branch              = "refs/heads/${azuredevops_git_repository_branch.init.name}"
   commit_message      = "Add main.tf"
@@ -109,7 +109,7 @@ resource "azuredevops_git_repository_file" "nsg" {
   repository_id = azuredevops_git_repository.landing_zone.id
   file          = "nsg.tf"
   content = templatefile("${path.module}/templates/nsg.tftpl", {
-    vnet_config   = var.vnet_config
+    vnet_config = var.vnet_config
   })
   branch              = "refs/heads/${azuredevops_git_repository_branch.init.name}"
   commit_message      = "Add nsg.tf"
