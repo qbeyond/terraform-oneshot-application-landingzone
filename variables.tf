@@ -197,6 +197,10 @@ variable "terraform_state_config" {
 variable "terraform_version" {
   type        = string
   description = "Terraform version to install in the DevOps pipeline."
+  validation {
+    error_message = "Must be valid semantic version."
+    condition     = can(regex("^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)", var.terraform_version))
+  }
 }
 
 variable "vm_ux_hostname" {
