@@ -1,11 +1,11 @@
-%{ if vm_win_hostname != "" ~}module "${vm_win_hostname}" {
+%{ if vm_win.hostname != "" ~}module "${upper("${vm_win.hostname}")}" {
   source              = "qbeyond/windows-vm/azurerm"
-  version             = "$(vm_win.version)"
+  version             = "${vm_win.version}"
   resource_group_name = azurerm_resource_group.app.name
   subnet              = azurerm_subnet.this["${subnet}"]
   
   virtual_machine_config = {
-    hostname                          = "${vm_win_hostname}"
+    hostname                          = ${upper("${vm_win.hostname}")}
     size                              = "Standard_B2ms"
     location                          = local.default_location
     os_sku                            = "2022-datacenter-azure-edition"
@@ -25,7 +25,7 @@
     bypass_platform_safety_checks_on_user_schedule_enabled = true
   }
   
-  admin_password = var.${vm_win_hostname}_password
+  admin_password = var.${upper("${vm_win.hostname}")}_password
   severity_group = "01-third-saturday-0200-XCSUFEDTG-reboot"
   update_allowed = true
   
@@ -66,15 +66,15 @@
   tags = merge({}, local.tags)
 }
 %{ endif ~}
-%{ if vm_ux_hostname != "" ~}
-module "${vm_ux_hostname}" {
+%{ if vm_ux.hostname != "" ~}
+module "${upper("${vm_ux.hostname}")}" {
   source           = "qbeyond/linux-vm/azurerm"
-  version          = "1.4.0"
+  version          = "${vm_ux.version}"
   admin_username   = "loc_sysadmin"
 
   admin_credential = {
-    admin_password = %{ if vm_ux_public_key_name != "" }"" %{ else }var.${vm_ux_hostname}_password %{ endif }
-    public_key     = %{ if vm_ux_public_key_name != "" }file("${vm_ux_public_key_name}") %{ else }null %{ endif }
+    admin_password = %{ if vm_ux.public_key_name != "" }"" %{ else }var.${upper("${vm_ux.hostname}")}_password %{ endif }
+    public_key     = %{ if vm_ux.public_key_name != "" }file("${vm_ux.public_key_name}") %{ else }null %{ endif }
   } 
 
   resource_group_name              = azurerm_resource_group.app.name
@@ -82,7 +82,7 @@ module "${vm_ux_hostname}" {
   additional_network_interface_ids = []
   
   virtual_machine_config = {
-    hostname                          = "${vm_ux_hostname}"
+    hostname                          = "${upper("${vm_ux.hostname}")}"
     size                              = "Standard_D4s_v5"
     location                          = local.default_location
     os_sku                            = "ol88-lvm-gen2"

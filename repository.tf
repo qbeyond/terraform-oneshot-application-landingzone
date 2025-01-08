@@ -28,8 +28,8 @@ resource "azuredevops_git_repository_file" "pipeline" {
     terraform_version                   = var.terraform_version
     create_virtual_machine              = var.create_virtual_machine_template
     vm_win_hostname                     = upper(var.vm_win.hostname)
-    vm_ux_hostname                      = upper(var.vm_ux_hostname)
-    vm_ux_public_key_name               = var.vm_ux_public_key_name
+    vm_ux_hostname                      = upper(var.vm_ux.hostname)
+    vm_ux_public_key_name               = var.vm_ux.public_key_name
     sql                                 = var.sql
     application_name                    = lower(split("-", data.azurerm_subscription.this.display_name)[1])
   })
@@ -143,11 +143,9 @@ resource "azuredevops_git_repository_file" "virtual_machine" {
   repository_id = azuredevops_git_repository.landing_zone.id
   file          = "vm.tf"
   content = templatefile("${path.module}/templates/vm.tftpl", {
-    subnet                = keys(var.vnet_config.subnets)[0]
-    vm_win                = var.vm_win
-    vm_win_hostname       = upper(var.vm_win.hostname)
-    vm_ux_hostname        = upper(var.vm_ux_hostname)
-    vm_ux_public_key_name = var.vm_ux_public_key_name
+    subnet = keys(var.vnet_config.subnets)[0]
+    vm_win = var.vm_win
+    vm_ux  = var.vm_ux
   })
   branch              = "refs/heads/${azuredevops_git_repository_branch.init.name}"
   commit_message      = "Add vm template file"
@@ -176,13 +174,13 @@ resource "azuredevops_git_repository_file" "sql" {
 }
 
 resource "azuredevops_git_repository_file" "variables" {
-  count = (var.create_virtual_machine_template == true && (var.vm_win.hostname != "" || (var.vm_ux_hostname != "" && var.vm_ux_public_key_name == "" ))) || (var.sql.create) ? 1 : 0
+  count = (var.create_virtual_machine_template == true && (var.vm_win.hostname != "" || (var.vm_ux.hostname != "" && var.vm_ux.public_key_name == "" ))) || (var.sql.create) ? 1 : 0
   repository_id = azuredevops_git_repository.landing_zone.id
   file          = "variables.tf"
   content = templatefile("${path.module}/templates/variables.tftpl", {
     vm_win_hostname       = upper(var.vm_win.hostname)
-    vm_ux_hostname        = upper(var.vm_ux_hostname)
-    vm_ux_public_key_name = var.vm_ux_public_key_name
+    vm_ux_hostname        = upper(var.vm_ux.hostname)
+    vm_ux_public_key_name = var.vm_ux.public_key_name
     sql                   = var.sql
     application_name      = lower(split("-", data.azurerm_subscription.this.display_name)[1])
   })

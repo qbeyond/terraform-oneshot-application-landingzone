@@ -40,8 +40,12 @@ vm_win = {
   hostname = ""
   version  = ""
 }
-vm_ux_hostname                  = ""
-vm_ux_public_key_name           = "id_rsa.pub"
+
+vm_ux = {
+  hostname        = "custapp000"
+  version         = "1.4.0"
+  public_key_name = "id_rsa.pub"
+}
 
 # SQL
 sql = {
