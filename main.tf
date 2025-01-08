@@ -16,6 +16,6 @@ data "azurerm_storage_account" "terraform_state" {
 
 resource "azurerm_storage_container" "landing_zone" {
   name                  = lower(data.azurerm_subscription.this.display_name)
-  storage_account_id    = data.azurerm_storage_account.terraform_state.id
+  storage_account_name    = data.azurerm_storage_account.terraform_state.name
   container_access_type = "private"
 }
