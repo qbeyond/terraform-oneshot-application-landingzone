@@ -217,7 +217,7 @@ variable "vm_win" {
     version  = string
   })
   description = "Set the vm values."
-  default     = {}
+  default     = null
 
   validation {
     error_message = "Must be valid semantic version."
