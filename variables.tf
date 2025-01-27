@@ -210,30 +210,66 @@ variable "terraform_version" {
 
 variable "vm_ux" {
   type = object({
-    hostname        = string
     version         = string
+    hostname        = string
+    rg_key          = string
+    subnet          = string
     public_key_name = optional(string)
   })
-  description = "Set the vm values."
+  description = <<-DOC
+  ```
+  If you want to provide a Linux virtual machine, please provide the following values: 
+    version: Linux module version that provide vm resource.
+    hostname: VM hostname.
+    rg_key: Resource group key name of resource defined in rg_config variable.
+    subnet: Subnet key name defined in vnet_config.subnets map.
+  ```
+  DOC
   default     = null
 
   validation {
     error_message = "UX VM must has valid semantic version."
     condition     = var.vm_ux.hostname == "" || (var.vm_ux.hostname != "" && can(regex("^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)", var.vm_ux.version)))
   }
+  validation {
+    condition     = var.create_virtual_machine_template == false || ( var.create_virtual_machine_template == true && contains(keys(var.rg_config), var.vm_ux.rg_key))
+    error_message = "Resource group key name must be defined as in rg_config variable"
+  }
+  validation {
+    condition     = var.create_virtual_machine_template == false || ( var.create_virtual_machine_template == true && contains(keys(var.vnet_config.subnets), var.vm_ux.subnet))
+    error_message = "Subnet key name must be defined as in vnet_config.subnets variable"
+  }
 }
 
 variable "vm_win" {
   type = object({
-    hostname = string
     version  = string
+    hostname = string
+    rg_key   = string
+    subnet   = string
   })
-  description = "Set the vm values."
+  description = <<-DOC
+  ```
+  To provide a Windows virtual machine, please provide the following values: 
+    version: Windows module version that provide vm resource.
+    hostname: VM hostname.
+    rg_key: Resource group key name of resource defined in rg_config variable.
+    subnet: Subnet key name defined in vnet_config.subnets map.
+  ```
+  DOC
   default     = null
 
   validation {
-    error_message = "WIN VM must has valid semantic version."
     condition     = var.vm_win.hostname == "" || (var.vm_win.hostname != "" && can(regex("^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)", var.vm_win.version)))
+    error_message = "WIN VM must has valid semantic version."
+  }
+  validation {
+    condition     = var.create_virtual_machine_template == false || ( var.create_virtual_machine_template == true && contains(keys(var.rg_config), var.vm_win.rg_key))
+    error_message = "Resource group key name must be defined as in rg_config variable"
+  }
+  validation {
+    condition     = var.create_virtual_machine_template == false || ( var.create_virtual_machine_template == true && contains(keys(var.vnet_config.subnets), var.vm_win.subnet))
+    error_message = "Subnet key name must be defined as in vnet_config.subnets variable"
   }
 }
 

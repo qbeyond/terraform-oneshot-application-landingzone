@@ -25,10 +25,10 @@ rg_config = {
 
 vnet_config = {
   dns_server    = [""]
-  address_space = ""
+  address_space = "XXX.XXX.XXX.XXX/XX"
   subnets = {
-    application = "ApplicationServer"
-    database    = ""
+    ApplicationServer = "XXX.XXX.XXX.XXX/XX"
+    Database          = "XXX.XXX.XXX.XXX/XX"
   }
   nsg = false
 }
@@ -37,14 +37,18 @@ terraform_version = ""
 
 create_virtual_machine_template = false
 vm_ux = {
-  hostname        = "custapp000"
   version         = "1.4.0"
+  hostname        = "custapp000"
+  rg_key          = "database"
+  subnet          = "Database"
   public_key_name = "id_rsa.pub"
 }
 
 vm_win = {
-  hostname = ""
-  version  = ""
+  version  = "5.0.1"
+  hostname = "custapp001"
+  rg_key   = "application"
+  subnet   = "ApplicationServer"
 }
 
 # SQL
