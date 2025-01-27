@@ -16,10 +16,10 @@ location = ""
 stage    = ""
 
 rg_config = {
-  network     = "Network"
   application = "Application"
   database    = "Database"
   fileshare   = "Files"
+  network     = "Network"
   security    = "Security"
 }
 
