@@ -203,20 +203,6 @@ variable "terraform_version" {
   }
 }
 
-variable "vm_win" {
-  type = object({
-    hostname = string
-    version  = string
-  })
-  description = "Set the vm values."
-  default     = null
-
-  validation {
-    error_message = "WIN VM must has valid semantic version."
-    condition     = var.vm_win.hostname == "" || (var.vm_win.hostname != "" && can(regex("^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)", var.vm_win.version)))
-  }
-}
-
 variable "vm_ux" {
   type = object({
     hostname        = string
@@ -229,6 +215,20 @@ variable "vm_ux" {
   validation {
     error_message = "UX VM must has valid semantic version."
     condition     = var.vm_ux.hostname == "" || (var.vm_ux.hostname != "" && can(regex("^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)", var.vm_ux.version)))
+  }
+}
+
+variable "vm_win" {
+  type = object({
+    hostname = string
+    version  = string
+  })
+  description = "Set the vm values."
+  default     = null
+
+  validation {
+    error_message = "WIN VM must has valid semantic version."
+    condition     = var.vm_win.hostname == "" || (var.vm_win.hostname != "" && can(regex("^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)", var.vm_win.version)))
   }
 }
 

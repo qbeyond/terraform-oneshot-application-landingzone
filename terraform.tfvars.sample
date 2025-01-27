@@ -36,15 +36,15 @@ vnet_config = {
 terraform_version = ""
 
 create_virtual_machine_template = false
-vm_win = {
-  hostname = ""
-  version  = ""
-}
-
 vm_ux = {
   hostname        = "custapp000"
   version         = "1.4.0"
   public_key_name = "id_rsa.pub"
+}
+
+vm_win = {
+  hostname = ""
+  version  = ""
 }
 
 # SQL
