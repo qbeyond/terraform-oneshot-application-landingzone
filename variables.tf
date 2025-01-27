@@ -218,7 +218,7 @@ variable "vm_ux" {
   })
   description = <<-DOC
   ```
-  If you want to provide a Linux virtual machine, please provide the following values: 
+  To provide a Linux virtual machine, please provide the following values: 
     version: Linux module version that provide vm resource.
     hostname: VM hostname.
     rg_key: Resource group key name of resource defined in rg_config variable.
@@ -228,8 +228,8 @@ variable "vm_ux" {
   default     = null
 
   validation {
-    error_message = "UX VM must has valid semantic version."
     condition     = var.vm_ux.hostname == "" || (var.vm_ux.hostname != "" && can(regex("^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)", var.vm_ux.version)))
+    error_message = "UX VM must has valid semantic version."
   }
   validation {
     condition     = var.create_virtual_machine_template == false || ( var.create_virtual_machine_template == true && contains(keys(var.rg_config), var.vm_ux.rg_key))
