@@ -112,6 +112,11 @@ variable "rg_config" {
   description = "Resources groups to create. Use 'rg' as the key and resources group name as the value."
   nullable    = false
   default     = {}
+  
+  validation {
+    condition     = contains(keys(var.rg_config), "network") && (contains(keys(var.rg_config), "application") || contains(keys(var.rg_config), "database"))
+    error_message = "Keys 'network' and 'application' or 'database' must be defined in the map."
+  }
 }
 
 variable "sql" {
