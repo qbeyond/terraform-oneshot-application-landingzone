@@ -232,11 +232,11 @@ variable "vm_ux" {
     error_message = "UX VM must has valid semantic version."
   }
   validation {
-    condition     = var.create_virtual_machine_template == false || ( var.create_virtual_machine_template == true && contains(keys(var.rg_config), var.vm_ux.rg_key))
+    condition     = var.create_virtual_machine_template == false || (var.create_virtual_machine_template == true && var.vm_ux.hostname == "") || ( var.create_virtual_machine_template == true && var.vm_ux.hostname != "" && contains(keys(var.rg_config), var.vm_ux.rg_key))
     error_message = "Resource group key name must be defined as in rg_config variable"
   }
   validation {
-    condition     = var.create_virtual_machine_template == false || ( var.create_virtual_machine_template == true && contains(keys(var.vnet_config.subnets), var.vm_ux.subnet))
+    condition     = var.create_virtual_machine_template == false || (var.create_virtual_machine_template == true && var.vm_ux.hostname == "") || ( var.create_virtual_machine_template == true && var.vm_ux.hostname != "" && contains(keys(var.vnet_config.subnets), var.vm_ux.subnet))
     error_message = "Subnet key name must be defined as in vnet_config.subnets variable"
   }
 }
@@ -264,11 +264,11 @@ variable "vm_win" {
     error_message = "WIN VM must has valid semantic version."
   }
   validation {
-    condition     = var.create_virtual_machine_template == false || ( var.create_virtual_machine_template == true && contains(keys(var.rg_config), var.vm_win.rg_key))
+    condition     = var.create_virtual_machine_template == false || (var.create_virtual_machine_template == true && var.vm_win.hostname == "") || ( var.create_virtual_machine_template == true && var.vm_win.hostname != "" && contains(keys(var.rg_config), var.vm_win.rg_key))
     error_message = "Resource group key name must be defined as in rg_config variable"
   }
   validation {
-    condition     = var.create_virtual_machine_template == false || ( var.create_virtual_machine_template == true && contains(keys(var.vnet_config.subnets), var.vm_win.subnet))
+    condition     = var.create_virtual_machine_template == false || (var.create_virtual_machine_template == true && var.vm_win.hostname == "") || ( var.create_virtual_machine_template == true && var.vm_win.hostname != "" && contains(keys(var.vnet_config.subnets), var.vm_win.subnet))
     error_message = "Subnet key name must be defined as in vnet_config.subnets variable"
   }
 }

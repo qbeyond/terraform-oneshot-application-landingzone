@@ -139,11 +139,10 @@ resource "azuredevops_git_repository_file" "network" {
 }
 
 resource "azuredevops_git_repository_file" "virtual_machine" {
-  count         = var.create_virtual_machine_template == true ? 1 : 0
+  count         = var.create_virtual_machine_template == true && (var.vm_win.hostname != "" || var.vm_ux.hostname != "") ? 1 : 0
   repository_id = azuredevops_git_repository.landing_zone.id
   file          = "vm.tf"
   content = templatefile("${path.module}/templates/vm.tftpl", {
-    subnet = keys(var.vnet_config.subnets)[0]
     vm_win = var.vm_win
     vm_ux  = var.vm_ux
   })

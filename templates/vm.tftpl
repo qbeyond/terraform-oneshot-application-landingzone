@@ -1,8 +1,8 @@
 %{ if vm_win.hostname != "" ~}module "${upper("${vm_win.hostname}")}" {
   source              = "qbeyond/windows-vm/azurerm"
   version             = "${vm_win.version}"
-  resource_group_name = azurerm_resource_group.app.name
-  subnet              = azurerm_subnet.this["${subnet}"]
+  resource_group_name = azurerm_resource_group.${vm_win.rg_key}.name
+  subnet              = azurerm_subnet.this["${vm_win.subnet}"]
   
   virtual_machine_config = {
     hostname                          = ${upper("${vm_win.hostname}")}
