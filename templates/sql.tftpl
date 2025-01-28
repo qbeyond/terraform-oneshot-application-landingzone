@@ -6,9 +6,9 @@ locals {
   }
 }
 
-%{if sql.type == "server" }resource "azurerm_mssql_server" "this" {
+%{if sql.type == "server" ~}resource "azurerm_mssql_server" "this" {
   name                          = lower("sql-${sql.cust}-$${local.stage}-$${local.application_name}-$${local.env_num}")
-  resource_group_name           = azurerm_resource_group.${sql.rg}.name
+  resource_group_name           = azurerm_resource_group.${sql.rg_key}.name
   location                      = local.default_location
   version                       = "12.0"
   administrator_login           = "sa_vbz"
@@ -35,7 +35,7 @@ resource "azurerm_mssql_database" "$lower(${sql.database_name})" {
 resource "azurerm_private_endpoint" "this" {
   name                = "pe-$${replace(${sql.ip_server}, "/[./]/", "-")}-${sql.subnet}-$${azurerm_mssql_server.this.name}"
   location            = local.default_location
-  resource_group_name = azurerm_resource_group.${sql.rg}.name
+  resource_group_name = azurerm_resource_group.${sql.rg_key}.name
   subnet_id           = azurerm_subnet.this["${sql.subnet}"].id
 
   private_service_connection {
@@ -56,11 +56,11 @@ resource "azurerm_private_endpoint" "this" {
   lifecycle {
     ignore_changes = [private_dns_zone_group]
   }
-}%{ endif }
+}%{ endif ~}
 
-%{if sql.sku_name == "ElasticPool" }resource "azurerm_mssql_elasticpool" "this"{
+%{if sql.sku_name == "ElasticPool" ~}resource "azurerm_mssql_elasticpool" "this"{
   name                           = "sqlep-${sql.cust}-$${local.stage}-$${local.application_name}-$${local.env_num}"
-  resource_group_name            = azurerm_resource_group.${sql.rg}.name
+  resource_group_name            = azurerm_resource_group.${sql.rg_key}.name
   location                       = local.default_location
   server_name                    = azurerm_mssql_server.this.name
   license_type                   = "LicenseIncluded"
@@ -77,13 +77,12 @@ resource "azurerm_private_endpoint" "this" {
     min_capacity = 0.25
     max_capacity = 2
   }
-}%{ endif }
+}%{ endif ~}
 
-
-%{if sql.type == "managed" }resource "azurerm_mssql_managed_instance" "this" {
+%{if sql.type == "managed" ~}resource "azurerm_mssql_managed_instance" "this" {
   name                           = lower("sqlmi-${sql.cust}-$${local.env}-$${local.application_name}-$${local.env_num}")
   location                       = local.default_location
-  resource_group_name            = azurerm_resource_group.${sql.rg}.name
+  resource_group_name            = azurerm_resource_group.${sql.rg_key}.name
   subnet_id                      = azurerm_subnet.this["${sql.subnet}"].id
   license_type                   = "LicenseIncluded" # "BasePrice" is BYOL "Bring your Own License"
   sku_name                       = "${sql.sku_name}"
@@ -107,7 +106,7 @@ resource "azurerm_private_endpoint" "this" {
 resource "azurerm_private_endpoint" "this" {
   name                = "pe-$${replace(${sql.ip_server}, "/[./]/", "-")}-${sql.subnet}-$${azurerm_mssql_managed_instance.this.name}"
   location            = local.default_location
-  resource_group_name = azurerm_resource_group.${sql.rg}.name
+  resource_group_name = azurerm_resource_group.${sql.rg_key}.name
   subnet_id           = azurerm_subnet.this["${sql.subnet}"].id
 
   private_service_connection {
@@ -128,4 +127,4 @@ resource "azurerm_private_endpoint" "this" {
   lifecycle {
     ignore_changes = [private_dns_zone_group]
   }
-}%{ endif }
+}%{ endif ~}
