@@ -162,8 +162,9 @@ resource "azuredevops_git_repository_file" "virtual_machine" {
   repository_id = azuredevops_git_repository.landing_zone.id
   file          = "vm.tf"
   content = templatefile("${path.module}/templates/vm.tftpl", {
-    vm_win = var.vm_win
-    vm_ux  = var.vm_ux
+    vnet_config = var.vnet_config
+    vm_win      = var.vm_win
+    vm_ux       = var.vm_ux
   })
   branch              = "refs/heads/${azuredevops_git_repository_branch.init.name}"
   commit_message      = "Add vm template file"

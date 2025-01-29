@@ -43,7 +43,7 @@
   }
 
   nic_config = {
-    private_ip                    = null
+    private_ip                    = "${cidrhost("${vnet_config.subnets["${vm_win.subnet}"]}", 4)}"
     dns_servers                   = local.dns_servers
     enable_accelerated_networking = false
     nsg                           = null
@@ -77,8 +77,8 @@ module "${upper("${vm_ux.hostname}")}" {
     public_key     = %{ if vm_ux.public_key_name != "" }file("${vm_ux.public_key_name}") %{ else }null %{ endif }
   } 
 
-  resource_group_name              = azurerm_resource_group.app.name
-  subnet                           = azurerm_subnet.this["${subnet}"]
+  resource_group_name = azurerm_resource_group.${vm_ux.rg_key}.name
+  subnet              = azurerm_subnet.this["${vm_ux.subnet}"]
   additional_network_interface_ids = []
   
   virtual_machine_config = {
@@ -115,7 +115,7 @@ module "${upper("${vm_ux.hostname}")}" {
   }
   
   nic_config = {
-    private_ip                    = ${cidrhost("${address_prefix}", 4)}
+    private_ip                    = "${cidrhost("${vnet_config.subnets["${vm_ux.subnet}"]}", 4)}"
     dns_servers                   = local.dns_servers
     enable_accelerated_networking = false
     nsg                           = null
