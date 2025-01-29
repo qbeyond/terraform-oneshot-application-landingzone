@@ -5,17 +5,27 @@ The Vnet of the ${application_name} environment has an address spaces ${vnet_con
 It has one subnet created and in use.
 
 | Subnet address | Range of addresses | Useable IPs | Hosts | Used by subnet resource |
-|----------------|--------------------|-------------|-------|-----------------------|
-| ${vnet_config.address_space} | ${cidrhost(${vnet_config.address_space}, 0)} - ${cidrhost(${vnet_config.address_space}, -1)} | ${cidrhost(${vnet_config.address_space}, 4)} - ${cidrhost(${vnet_config.address_space}, cidrhost(${vnet_config.address_space}, -1) - 1)} | ${cidrsize(vnet_config.address_space) - 5} | ApplicationServer |
+|----------------|--------------------|-------------|-------|-------------------------|
+%{ for subnet_name, address_prefix in vnet_config.subnets ~}
+| ${address_prefix} | ${cidrhost("${address_prefix}", 0)} - ${cidrhost("${address_prefix}", -1)} | ${cidrhost("${address_prefix}", 4)} - ${cidrhost("${address_prefix}", -2)} | ${subnet_name} |
+%{ endfor ~}
+||||||
 
-## ApplicationServer
+%{ for subnet_name, address_prefix in vnet_config.subnets ~}
+## ${subnet_name}
 
-Range address: ${cidrhost(${vnet_config.address_space}, 0)} - ${cidrhost(${vnet_config.address_space}, -1)}
+Range address: ${cidrhost("${address_prefix}", 0)} - ${cidrhost("${address_prefix}", -1)}
 
-IPs to use: ${cidrhost(${vnet_config.address_space}, 4)} - ${cidrhost(${vnet_config.address_space}, cidrhost(${vnet_config.address_space}, -1) - 1)} | ${cidrsize(vnet_config.address_space) - 5}
+IPs to use: ${cidrhost("${address_prefix}", 4)} - ${cidrhost("${address_prefix}", -2)}
 
 | Name | Use IP | System |
-|---------|--------|--------|
-| PEACFAPP018 | 10.249.6.84 | Lobster App Server |
-| sql-peacf-prd-lobster-01 | 10.249.6.94 | Azure SQL Database |
+|------|--------|--------|
+%{ if contains(["${subnet_name}"], vm_ux.subnet) ~}
+| ${vm_ux.hostname} | ${cidrhost("${address_prefix}", 4)} | ${subnet_name} |
+%{ endif ~}
+%{ if contains(["${subnet_name}"], vm_win.subnet) ~}
+| ${vm_win.hostname} | ${cidrhost("${address_prefix}", 4)} | ${subnet_name} |
+%{ endif ~}
 ||||
+
+%{ endfor ~}

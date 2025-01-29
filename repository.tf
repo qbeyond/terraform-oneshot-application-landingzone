@@ -144,6 +144,8 @@ resource "azuredevops_git_repository_file" "readme" {
   file          = "README.md"
   content = templatefile("${path.module}/templates/README.tftpl", {
     vnet_config      = var.vnet_config
+    vm_win           = var.vm_win
+    vm_ux            = var.vm_ux
     application_name = lower(split("-", data.azurerm_subscription.this.display_name)[1])
   })
   branch              = "refs/heads/${azuredevops_git_repository_branch.init.name}"

@@ -115,8 +115,8 @@ module "${upper("${vm_ux.hostname}")}" {
   }
   
   nic_config = {
-    private_ip                    = null
-    dns_servers                   = null
+    private_ip                    = ${cidrhost("${address_prefix}", 4)}
+    dns_servers                   = local.dns_servers
     enable_accelerated_networking = false
     nsg                           = null
   }
