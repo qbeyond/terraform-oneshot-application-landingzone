@@ -73,7 +73,7 @@ module "${upper("${vm_ux.hostname}")}" {
   admin_username   = "loc_sysadmin"
 
   admin_credential = {
-    admin_password = %{ if vm_ux.public_key_name != "" }"" %{ else }var.${upper("${vm_ux.hostname}")}_password %{ endif }
+    admin_password = %{ if vm_ux.public_key_name != "" }null%{ else }var.${upper("${vm_ux.hostname}")}_password %{ endif }
     public_key     = %{ if vm_ux.public_key_name != "" }file("${vm_ux.public_key_name}") %{ else }null %{ endif }
   } 
 
