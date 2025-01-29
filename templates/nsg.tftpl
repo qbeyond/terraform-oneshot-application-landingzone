@@ -4,15 +4,15 @@ resource "azurerm_network_security_group" "this" {
   resource_group_name = azurerm_resource_group.network.name
 
   security_rule {
-    name                        = "DenyAllInboundTraffic"
-    description                 = "Deny All Vnet Traffic"
-    priority                    = 4096
-    direction                   = "Inbound"
-    access                      = "Deny"
-    protocol                    = "*"
-    source_port_range           = "*"
-    destination_port_range      = "*"
-    source_address_prefixe      = "${vnet_config.address_space}" # Vnet address space
-    destination_address_prefixe = "${vnet_config.address_space}" # Vnet address space
+    name                       = "DenyAllInboundTraffic"
+    description                = "Deny All Vnet Traffic"
+    priority                   = 4096
+    direction                  = "Inbound"
+    access                     = "Deny"
+    protocol                   = "*"
+    source_port_range          = "*"
+    destination_port_range     = "*"
+    source_address_prefix      = "${vnet_config.address_space}" # Vnet address space
+    destination_address_prefix = "${vnet_config.address_space}" # Vnet address space
   }
 }
