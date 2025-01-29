@@ -1,0 +1,21 @@
+# ALZ - q.beyond AG
+
+The Vnet of the ${application_name} environment has an address spaces ${vnet_config.address_space}
+
+It has one subnet created and in use.
+
+| Subnet address | Range of addresses | Useable IPs | Hosts | Used by subnet resource |
+|----------------|--------------------|-------------|-------|-----------------------|
+| ${vnet_config.address_space} | ${cidrhost(${vnet_config.address_space}, 0)} - ${cidrhost(${vnet_config.address_space}, -1)} | ${cidrhost(${vnet_config.address_space}, 4)} - ${cidrhost(${vnet_config.address_space}, cidrhost(${vnet_config.address_space}, -1) - 1)} | ${cidrsize(vnet_config.address_space) - 5} | ApplicationServer |
+
+## ApplicationServer
+
+Range address: ${cidrhost(${vnet_config.address_space}, 0)} - ${cidrhost(${vnet_config.address_space}, -1)}
+
+IPs to use: ${cidrhost(${vnet_config.address_space}, 4)} - ${cidrhost(${vnet_config.address_space}, cidrhost(${vnet_config.address_space}, -1) - 1)} | ${cidrsize(vnet_config.address_space) - 5}
+
+| Name | Use IP | System |
+|---------|--------|--------|
+| PEACFAPP018 | 10.249.6.84 | Lobster App Server |
+| sql-peacf-prd-lobster-01 | 10.249.6.94 | Azure SQL Database |
+||||

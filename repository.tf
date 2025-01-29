@@ -104,6 +104,24 @@ resource "azuredevops_git_repository_file" "tags" {
   }
 }
 
+resource "azuredevops_git_repository_file" "network" {
+  count         = var.vnet_config == null ? 0 : 1
+  repository_id = azuredevops_git_repository.landing_zone.id
+  file          = "network.tf"
+  content = templatefile("${path.module}/templates/network.tftpl", {
+    vnet_config = var.vnet_config
+    sql         = var.sql
+    stage       = var.stage
+  })
+  branch              = "refs/heads/${azuredevops_git_repository_branch.init.name}"
+  commit_message      = "Add network.tf"
+  overwrite_on_create = true
+
+  lifecycle {
+    ignore_changes = [commit_message]
+  }
+}
+
 resource "azuredevops_git_repository_file" "nsg" {
   count         = var.vnet_config != null && var.vnet_config.nsg == true ? 1 : 0
   repository_id = azuredevops_git_repository.landing_zone.id
@@ -120,14 +138,13 @@ resource "azuredevops_git_repository_file" "nsg" {
   }
 }
 
-resource "azuredevops_git_repository_file" "network" {
+resource "azuredevops_git_repository_file" "readme" {
   count         = var.vnet_config == null ? 0 : 1
   repository_id = azuredevops_git_repository.landing_zone.id
-  file          = "network.tf"
-  content = templatefile("${path.module}/templates/network.tftpl", {
-    vnet_config = var.vnet_config
-    sql         = var.sql
-    stage       = var.stage
+  file          = "README.md"
+  content = templatefile("${path.module}/templates/README.tftpl", {
+    vnet_config      = var.vnet_config
+    application_name = lower(split("-", data.azurerm_subscription.this.display_name)[1])
   })
   branch              = "refs/heads/${azuredevops_git_repository_branch.init.name}"
   commit_message      = "Add network.tf"
