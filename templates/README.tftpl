@@ -7,7 +7,7 @@ It has one subnet created and in use.
 | Subnet address | Range of addresses | Useable IPs | Hosts | Used by subnet resource |
 |----------------|--------------------|-------------|-------|-------------------------|
 %{ for subnet_name, address_prefix in vnet_config.subnets ~}
-| ${address_prefix} | ${cidrhost("${address_prefix}", 0)} - ${cidrhost("${address_prefix}", -1)} | ${cidrhost("${address_prefix}", 4)} - ${cidrhost("${address_prefix}", -2)} | ${subnet_name} |
+| ${address_prefix} | ${cidrhost("${address_prefix}", 0)} - ${cidrhost("${address_prefix}", -1)} | ${cidrhost("${address_prefix}", 4)} - ${cidrhost("${address_prefix}", -2)} | ${pow(2, 32 - tonumber(element(split("/", "${address_prefix}"), 1))) - 5} | ${subnet_name} |
 %{ endfor ~}
 ||||||
 
