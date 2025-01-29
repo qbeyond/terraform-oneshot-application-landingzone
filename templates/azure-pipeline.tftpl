@@ -1,6 +1,6 @@
 trigger:
 - main
-%{ if create_virtual_machine || sql.create }
+%{ if (create_virtual_machine && (vm_win_hostname != "" || (vm_ux_hostname != "" && vm_ux_public_key_name == ""))) || sql.create }
 variables:
 - group: ${subscription_name}
 %{ endif ~}
