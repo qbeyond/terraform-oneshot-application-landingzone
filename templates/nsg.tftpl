@@ -15,4 +15,6 @@ resource "azurerm_network_security_group" "this" {
     source_address_prefix      = "${vnet_config.address_space}" # Vnet address space
     destination_address_prefix = "${vnet_config.address_space}" # Vnet address space
   }
+
+  tags = local.tags
 }
