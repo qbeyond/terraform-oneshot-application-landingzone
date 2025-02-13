@@ -141,7 +141,7 @@ resource "azuredevops_git_repository_file" "nsg" {
 resource "azuredevops_git_repository_file" "readme" {
   count         = var.vnet_config == null ? 0 : 1
   repository_id = azuredevops_git_repository.landing_zone.id
-  file          = "README.md"
+  file          = "readme.md"
   content = templatefile("${path.module}/templates/README.tftpl", {
     vnet_config      = var.vnet_config
     vm_win           = var.vm_win
@@ -152,7 +152,7 @@ resource "azuredevops_git_repository_file" "readme" {
     env_num          = split("-", data.azurerm_subscription.this.display_name)[2]
   })
   branch              = "refs/heads/${azuredevops_git_repository_branch.init.name}"
-  commit_message      = "Add network.tf"
+  commit_message      = "Add readme.md"
   overwrite_on_create = true
 
   lifecycle {
