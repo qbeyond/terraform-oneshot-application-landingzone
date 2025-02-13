@@ -30,5 +30,4 @@ IPs to use: ${cidrhost("${address_prefix}", 4)} - ${cidrhost("${address_prefix}"
 | ${lower("sql-${sql.cust}-${stage}-${application_name}-${env_num}")} | ${cidrhost("${address_prefix}", 10)} | ${subnet_name} |
 %{ endif ~}
 ||||
-
 %{ endfor ~}
