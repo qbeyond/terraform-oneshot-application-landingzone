@@ -146,7 +146,10 @@ resource "azuredevops_git_repository_file" "readme" {
     vnet_config      = var.vnet_config
     vm_win           = var.vm_win
     vm_ux            = var.vm_ux
-    application_name = lower(split("-", data.azurerm_subscription.this.display_name)[1])
+    sql              = var.sql
+    stage            = split("-", data.azurerm_subscription.this.display_name)[0]
+    application_name = split("-", data.azurerm_subscription.this.display_name)[1]
+    env_num          = split("-", data.azurerm_subscription.this.display_name)[2]
   })
   branch              = "refs/heads/${azuredevops_git_repository_branch.init.name}"
   commit_message      = "Add network.tf"

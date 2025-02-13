@@ -26,6 +26,9 @@ IPs to use: ${cidrhost("${address_prefix}", 4)} - ${cidrhost("${address_prefix}"
 %{ if contains(["${subnet_name}"], vm_win.subnet) ~}
 | ${vm_win.hostname} | ${cidrhost("${address_prefix}", 4)} | ${subnet_name} |
 %{ endif ~}
+%{ if contains(["${subnet_name}"], sql.subnet) ~}
+| ${lower("sql-${sql.cust}-${stage}-${application_name}-${env_num}")} | ${cidrhost("${address_prefix}", 10)} | ${subnet_name} |
+%{ endif ~}
 ||||
 
 %{ endfor ~}
