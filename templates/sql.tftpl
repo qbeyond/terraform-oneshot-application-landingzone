@@ -33,20 +33,20 @@ resource "azurerm_mssql_database" "$lower(${sql.database_name})" {
 }
 
 resource "azurerm_private_endpoint" "this" {
-  name                = "pe-$${replace(${sql.ip_server}, "/[./]/", "-")}-${sql.subnet}-$${azurerm_mssql_server.this.name}"
+  name                = "pe-$${replace("${sql.ip_server}", "/[./]/", "-")}-${sql.subnet}-$${azurerm_mssql_server.this.name}"
   location            = local.default_location
   resource_group_name = azurerm_resource_group.${sql.rg_key}.name
   subnet_id           = azurerm_subnet.this["${sql.subnet}"].id
 
   private_service_connection {
-    name                           = "psc-$${replace(${sql.ip_server}, "/[./]/", "-")}-${sql.subnet}-$${azurerm_mssql_server.this.name}"
+    name                           = "psc-$${replace("${sql.ip_server}", "/[./]/", "-")}-${sql.subnet}-$${azurerm_mssql_server.this.name}"
     is_manual_connection           = false
     private_connection_resource_id = azurerm_mssql_server.this.id
     subresource_names              = ["sqlServer"]
   }
 
   ip_configuration {
-    name               = "pe-$${replace(${sql.ip_server}, "/[./]/", "-")}-${sql.subnet}-$${azurerm_mssql_server.this.name}"
+    name               = "pe-$${replace("${sql.ip_server}", "/[./]/", "-")}-${sql.subnet}-$${azurerm_mssql_server.this.name}"
     private_ip_address = "${sql.ip_server}"
     subresource_name   = "sqlServer"
     member_name        = "sqlServer"
