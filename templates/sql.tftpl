@@ -18,7 +18,7 @@ locals {
   tags                          = merge(local.sql_tags, local.tags)
 }
 
-resource "azurerm_mssql_database" "${lower(${sql.database_name})}" {
+resource "azurerm_mssql_database" "this" {
   name            = "sqldb-$${local.stage}-${sql.database_name}_$${local.env_num}"
   server_id       = azurerm_mssql_server.this.id
   collation       = "${sql.collation}"
