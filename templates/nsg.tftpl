@@ -1,5 +1,5 @@
 resource "azurerm_network_security_group" "this" {
-  name                = "nsg-${replace("${vnet_config.address_space}","/[./]/","-")}"
+  name                = "nsg-vnet-${replace("${vnet_config.address_space}","/[./]/","-")}-${local.default_location}"
   location            = local.default_location
   resource_group_name = azurerm_resource_group.network.name
 
