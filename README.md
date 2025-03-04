@@ -33,7 +33,7 @@ You need:
 | <a name="input_devops_project_name"></a> [devops\_project\_name](#input\_devops\_project\_name) | Name of the DevOps Project to create the service connections for. | `string` | n/a | yes |
 | <a name="input_devops_service_url"></a> [devops\_service\_url](#input\_devops\_service\_url) | Azure DevOps organization url. | `string` | n/a | yes |
 | <a name="input_devops_subscription_id"></a> [devops\_subscription\_id](#input\_devops\_subscription\_id) | Subscription ID of the DevOps Subscription. | `string` | n/a | yes |
-| <a name="input_env"></a> [env](#input\_env) | The `env` tag of the subscription . Can be `prd`, `dev`, `tst`, `qas`, `stg`, `int`, or `lab`. | `string` | n/a | yes |
+| <a name="input_env"></a> [env](#input\_env) | The `env` tag of the subscription . Can be `prd`, `dev`, `tst`, `qas`, `stg`, `int`, `lab` or `shr`. | `string` | n/a | yes |
 | <a name="input_iac"></a> [iac](#input\_iac) | The `iac` tag of subscription. Set to `true` if the subscription is managed by Infrastructure as Code (IaC) and `false` otherwise | `bool` | n/a | yes |
 | <a name="input_location"></a> [location](#input\_location) | The default location used for resources in this Landing Zone. | `string` | n/a | yes |
 | <a name="input_managed_by"></a> [managed\_by](#input\_managed\_by) | The `managedby` tag of the subscription. This should be the entity responsible for managing the infrastructure (e.g `q.beyond`). | `string` | n/a | yes |
