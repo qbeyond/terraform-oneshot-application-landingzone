@@ -109,10 +109,10 @@ variable "application_name" {
 
 variable "env" {
   type        = string
-  description = "The `env` tag of the subscription . Can be `prd`, `dev`, `tst`, `qas`, `stg`, `int`, or `lab`."
+  description = "The `env` tag of the subscription . Can be `prd`, `dev`, `tst`, `qas`, `stg`, `int`, `lab` or `shr`."
   validation {
-    condition     = contains(["prd", "dev", "tst", "qas", "stg", "int", "lab"], var.env)
-    error_message = "The environment should be either `prd`, `dev`, `tst`, `qas`, `stg`, `int`, or `lab`"
+    condition     = contains(["prd", "dev", "tst", "qas", "stg", "int", "lab", "shr"], var.env)
+    error_message = "The environment should be either `prd`, `dev`, `tst`, `qas`, `stg`, `int`, `lab` or `shr`"
   }
 }
 
