@@ -13,45 +13,37 @@ resource "azurerm_virtual_network" "this" {
   address_space       = ["${vnet_config.address_space}"]
   dns_servers         = local.dns_servers
   tags                = local.tags
-}
 
-resource "azurerm_subnet" "this" {
-  for_each             = local.subnets
-  name                 = "snet-$${replace(each.value, "/[./]/", "-")}-$${each.key}"
-  resource_group_name  = azurerm_resource_group.network.name
-  virtual_network_name = azurerm_virtual_network.this.name
-  address_prefixes     = [each.value]
-%{ if sql.create && sql.type == "managed" ~}
-  delegation {
-    name = "managedinstancedelegation"
+  dynamic "subnet" {
+    for_each = local.subnets
+    content {
+      name             = "snet-${replace(subnet.value, "/[./]/", "-")}-${subnet.key}"
+      address_prefixes = [subnet.value]
+      %{ if sql.create && sql.type == "managed" && subnet.key == sql.subnet ~}
+      security_group   = azurerm_network_security_group.db_managedinstance.id
+      %{ else ~}
+      security_group   = azurerm_network_security_group.this.id
+      %{ endif ~}
+      %{ if sql.create && sql.type == "managed" && subnet.key == sql.subnet ~}
+      delegation {
+        name = "managedinstancedelegation"
 
-    service_delegation {
-      name    = "Microsoft.Sql/managedInstances"
-      actions = ["Microsoft.Network/virtualNetworks/subnets/join/action", "Microsoft.Network/virtualNetworks/subnets/prepareNetworkPolicies/action", "Microsoft.Network/virtualNetworks/subnets/unprepareNetworkPolicies/action"]
+        service_delegation {
+          name    = "Microsoft.Sql/managedInstances"
+          actions = ["Microsoft.Network/virtualNetworks/subnets/join/action", "Microsoft.Network/virtualNetworks/subnets/prepareNetworkPolicies/action", "Microsoft.Network/virtualNetworks/subnets/unprepareNetworkPolicies/action"]
+        }
+      }
+      %{ endif ~}
     }
   }
-%{ endif ~}
 }
-
-%{ if vnet_config.nsg ~}resource "azurerm_subnet_network_security_group_association" "this" {
-  for_each                  = local.subnets
-  subnet_id                 = azurerm_subnet.this["$${each.key}"].id
-  network_security_group_id = azurerm_network_security_group.this.id
-}
-%{ endif ~}
-
 
 %{ if sql.create && sql.type == "managed" ~}
 resource "azurerm_network_security_group" "db_managedinstance" {
-  name                = "nsg-$${azurerm_subnet.this[${sql.subnet}].name}"
+  name                = "nsg-vnet-$${azurerm_subnet.this[${sql.subnet}].name}"
   location            = local.default_location
   resource_group_name = azurerm_resource_group.${sql.rg_key}.name
   tags                = merge(local.sql_tags, local.tags)
-}
-
-resource "azurerm_subnet_network_security_group_association" "db_managedinstance" {
-  subnet_id                 = azurerm_subnet.this[${sql.subnet}].id
-  network_security_group_id = azurerm_network_security_group.db_managedinstance.id
 }
 
 resource "azurerm_route_table" "db_managedinstance" {
