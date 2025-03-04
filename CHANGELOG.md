@@ -6,10 +6,33 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [3.0.0] - 2025-02-13
+
+### Changed
+
+- Rename `subscription_logical_name` to `application_name`.
+- Changed Resource Group creation with a map variable of resources groups.
+- Create network resource group in `main.tf` with variable map.
+- Subnets moved to local variable and change subnet creation.
+- Rename file `virtual_machine.tf` to `vm.tf` and change the code model.
+- Terraform and vm modules version to be added by variable.
+- Changed nsg model.
+- Delete deprecated variable.
+
+### Added
+
+- Set up variables in locals.tf.
+- Defaults resources groups in main.tf by variable.
+- NSG files templates and assign to subnets by boolean variable.
+- New code templates for VM.
+- SQL template.
+- README template.
+
 ## [2.0.2] - 2024-10-11
 
-- fix https://github.com/hashicorp/terraform-provider-azurerm/issues/27466
-  
+- fix [27466](https://github.com/hashicorp/terraform-provider-azurerm/issues/27466)
+
 ## [2.0.1] - 2024-05-14
 
 ### fixed
