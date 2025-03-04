@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [3.0.0] - 2025-02-13
+## [3.0.0] - 2025-03-04
 
 ### Changed
 
@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Terraform and vm modules version to be added by variable.
 - Changed nsg model.
 - Delete deprecated variable.
+- Fix version constraints.
 
 ### Added
 
