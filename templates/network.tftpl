@@ -4,6 +4,10 @@ locals {
     ${subnet_name} = "${address_prefix}"
 %{ endfor ~}
   }
+  subnet_ids = {
+    # Maps subnet logical name to id
+    for id in azurerm_virtual_network.vnet.subnet.*.id : reverse(split("-", id))[0] => id
+  }
 }
 
 resource "azurerm_virtual_network" "this" {

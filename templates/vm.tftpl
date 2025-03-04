@@ -2,7 +2,9 @@
   source              = "qbeyond/windows-vm/azurerm"
   version             = "${vm_win.version}"
   resource_group_name = azurerm_resource_group.${vm_win.rg_key}.name
-  subnet              = azurerm_subnet.this["${vm_win.subnet}"]
+  subnet = {
+    id = local.subnet_ids["${vm_win.subnet}"]
+  }
   
   virtual_machine_config = {
     hostname                          = ${upper("${vm_win.hostname}")}
@@ -78,7 +80,9 @@ module "${upper("${vm_ux.hostname}")}" {
   } 
 
   resource_group_name = azurerm_resource_group.${vm_ux.rg_key}.name
-  subnet              = azurerm_subnet.this["${vm_ux.subnet}"]
+  subnet = {
+    id = local.subnet_ids["${vm_ux.subnet}"]
+  }
   additional_network_interface_ids = []
   
   virtual_machine_config = {
