@@ -3,7 +3,8 @@
   version             = "${vm_win.version}"
   resource_group_name = azurerm_resource_group.${vm_win.rg_key}.name
   subnet = {
-    id = local.subnet_ids["${vm_win.subnet}"]
+    id               = local.subnet_ids["${vm_win.subnet}"]
+    address_prefixes = [local.subnets["${vm_win.subnet}"]]
   }
   
   virtual_machine_config = {
@@ -81,7 +82,8 @@ module "${upper("${vm_ux.hostname}")}" {
 
   resource_group_name = azurerm_resource_group.${vm_ux.rg_key}.name
   subnet = {
-    id = local.subnet_ids["${vm_ux.subnet}"]
+    id               = local.subnet_ids["${vm_ux.subnet}"]
+    address_prefixes = [local.subnets["${vm_ux.subnet}"]]
   }
   additional_network_interface_ids = []
   
