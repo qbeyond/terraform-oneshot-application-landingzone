@@ -20,7 +20,7 @@ You need:
 |------|---------|
 | <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | >=2.36.0 |
 | <a name="requirement_azuredevops"></a> [azuredevops](#requirement\_azuredevops) | >=0.4.0 |
-| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | >=3.46.0 |
+| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | >=3.90.0 |
 | <a name="requirement_http-full"></a> [http-full](#requirement\_http-full) | 1.3.1 |
 
 ## Inputs
@@ -69,7 +69,7 @@ No outputs.
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_service_connection_application"></a> [service\_connection\_application](#module\_service\_connection\_application) | qbeyond/service-connection/azuredevops | 1.0.1 |
+| <a name="module_service_connection_application"></a> [service\_connection\_application](#module\_service\_connection\_application) | qbeyond/service-connection/azuredevops | 1.0.2 |
 
         ## Resources by Files
             ### build_validation.tf
