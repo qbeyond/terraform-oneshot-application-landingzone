@@ -10,7 +10,7 @@ terraform {
     }
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = ">=3.46.0"
+      version = ">=3.90.0"
     }
     http-full = {
       source  = "salrashid123/http-full"
