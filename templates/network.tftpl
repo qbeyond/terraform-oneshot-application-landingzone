@@ -21,7 +21,7 @@ resource "azurerm_virtual_network" "this" {
   dynamic "subnet" {
     for_each = local.subnets
     content {
-      name             = "snet-${replace(subnet.value, "/[./]/", "-")}-${subnet.key}"
+      name             = "snet-$${replace(subnet.value, "/[./]/", "-")}-$${subnet.key}"
       address_prefixes = [subnet.value]
       %{ if sql.create && sql.type == "managed" && subnet.key == sql.subnet ~}
       security_group   = azurerm_network_security_group.db_managedinstance.id
