@@ -30,6 +30,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - SQL template.
 - README template.
 
+
+## [2.1.1] - 2025-05-30
+### Changed
+- Performed a dependency upgrade
+
+## [2.1.0] - 2025-03-04
+
+### Added
+
+- `env` variable now can also be set to `shr`
+
 ## [2.0.2] - 2024-10-11
 
 - fix [27466](https://github.com/hashicorp/terraform-provider-azurerm/issues/27466)
