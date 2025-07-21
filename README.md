@@ -21,9 +21,9 @@ You need:
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | >=2.36.0 |
-| <a name="requirement_azuredevops"></a> [azuredevops](#requirement\_azuredevops) | >=0.4.0 |
-| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | >=3.90.0 |
+| <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | ~> 2.39.0 |
+| <a name="requirement_azuredevops"></a> [azuredevops](#requirement\_azuredevops) | >=1.0.0 |
+| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | >= 4.0.0 |
 | <a name="requirement_http-full"></a> [http-full](#requirement\_http-full) | 1.3.1 |
 
 ## Inputs
@@ -106,9 +106,9 @@ Files.
 |------|------|
 | [azuredevops_resource_authorization.service_connection_permission_alz](https://registry.terraform.io/providers/microsoft/azuredevops/latest/docs/resources/resource_authorization) | resource |
 | [azuredevops_team.default](https://registry.terraform.io/providers/microsoft/azuredevops/latest/docs/data-sources/team) | data source |
-| [http-full_http.approval_and_check_alz](https://registry.terraform.io/providers/salrashid123/http-full/latest/docs/data-sources/http) | data source |
-| [http-full_http.environment_permission_alz](https://registry.terraform.io/providers/salrashid123/http-full/latest/docs/data-sources/http) | data source |
-| [http-full_http.environment_user_permission_alz](https://registry.terraform.io/providers/salrashid123/http-full/latest/docs/data-sources/http) | data source |
+| [http-full_http.approval_and_check_alz](https://registry.terraform.io/providers/salrashid123/http-full/1.3.1/docs/data-sources/http) | data source |
+| [http-full_http.environment_permission_alz](https://registry.terraform.io/providers/salrashid123/http-full/1.3.1/docs/data-sources/http) | data source |
+| [http-full_http.environment_user_permission_alz](https://registry.terraform.io/providers/salrashid123/http-full/1.3.1/docs/data-sources/http) | data source |
 
 ### pipeline.tf
 
