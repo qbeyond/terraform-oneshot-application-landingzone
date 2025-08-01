@@ -1,0 +1,37 @@
+# ALZ - q.beyond AG
+
+The Vnet of the ${application_name} environment has an address spaces ${vnet_config.address_space}
+
+It has one subnet created and in use.
+
+| Subnet address | Range of addresses | Useable IPs | Hosts | Used by subnet resource |
+|----------------|--------------------|-------------|-------|-------------------------|
+%{ for subnet_name, address_prefix in vnet_config.subnets ~}
+| ${address_prefix} | ${cidrhost("${address_prefix}", 0)} - ${cidrhost("${address_prefix}", -1)} | ${cidrhost("${address_prefix}", 4)} - ${cidrhost("${address_prefix}", -2)} | ${pow(2, 32 - tonumber(element(split("/", "${address_prefix}"), 1))) - 5} | ${subnet_name} |
+%{ endfor ~}
+
+%{ for subnet_name, address_prefix in vnet_config.subnets ~}
+## ${subnet_name}
+
+Range address: ${cidrhost("${address_prefix}", 0)} - ${cidrhost("${address_prefix}", -1)}
+
+IPs to use: ${cidrhost("${address_prefix}", 4)} - ${cidrhost("${address_prefix}", -2)}
+
+| Name | Use IP | System |
+|------|--------|--------|
+%{ if subnet_name == vm_ux.subnet && vm_ux.hostname != "" && (vm_win.subnet != subnet_name || vm_win.hostname == "") && create_virtual_machine_template ~}
+| ${vm_ux.hostname} | ${cidrhost("${address_prefix}", 4)} | ${subnet_name} |
+%{ endif ~}
+%{ if subnet_name == vm_win.subnet && vm_win.hostname != "" && (vm_ux.subnet != subnet_name || vm_ux.hostname == "") && create_virtual_machine_template ~}
+| ${vm_win.hostname} | ${cidrhost("${address_prefix}", 4)} | ${subnet_name} |
+%{ endif ~}
+%{ if subnet_name == vm_ux.subnet && subnet_name == vm_win.subnet && vm_ux.hostname != "" && vm_win.hostname != "" && create_virtual_machine_template ~}
+| ${vm_ux.hostname} | ${cidrhost("${address_prefix}", 4)} | ${subnet_name} |
+| ${vm_win.hostname} | ${cidrhost("${address_prefix}", 5)} | ${subnet_name} |
+%{ endif ~}
+%{ if sql.create && subnet_name == sql.subnet }%{ if (subnet_name == vm_ux.subnet || subnet_name == vm_win.subnet) && create_virtual_machine_template  ~} | ${lower("sql-${sql.cust}-${stage}-${application_name}-${env_num}")} | ${cidrhost("${address_prefix}", -2)} | ${subnet_name} |
+%{ else }| ${lower("sql-${sql.cust}-${stage}-${application_name}-${env_num}")} | ${cidrhost("${address_prefix}", 4)} | ${subnet_name} |
+%{ endif }
+%{ endif ~}
+
+%{ endfor ~}

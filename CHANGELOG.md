@@ -7,8 +7,34 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [2.1.1] - 2025-05-30
+## [3.0.0] - 2025-08-01
+
 ### Changed
+
+- Rename `subscription_logical_name` to `application_name`.
+- Subnets moved to local variable and change subnet creation.
+- Rename file `virtual_machine.tf` to `vm.tf` and change the code model.
+- Terraform and vm modules version to be added by variable.
+- Changed nsg model.
+- Delete deprecated variable.
+- Fix version constraints.
+- Network template.
+- Defaults resources groups in main template by variable.
+- Variables and variable group in azure-pipeline template by variable.
+- Updated tfvars with new data model.
+
+### Added
+
+- Set up variables in locals.tf.
+- NSG files templates and assign to subnets by boolean variable.
+- New code templates for VM.
+- SQL template.
+- README template.
+
+## [2.1.1] - 2025-05-30
+
+### Changed
+
 - Performed a dependency upgrade
 
 ## [2.1.0] - 2025-03-04
@@ -19,8 +45,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [2.0.2] - 2024-10-11
 
-- fix https://github.com/hashicorp/terraform-provider-azurerm/issues/27466
-  
+- fix [27466](https://github.com/hashicorp/terraform-provider-azurerm/issues/27466)
+
 ## [2.0.1] - 2024-05-14
 
 ### fixed

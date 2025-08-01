@@ -1,0 +1,129 @@
+locals {
+  sql_tags = {
+%{for tag_name, tag_value in sql.tags ~}
+    "${tag_name}" = "${tag_value}"
+%{ endfor ~}
+  }
+}
+%{if sql.type == "server" ~}resource "azurerm_mssql_server" "this" {
+  name                          = lower("sql-${sql.cust}-$${local.stage}-$${local.application_name}-$${local.env_num}")
+  resource_group_name           = azurerm_resource_group.${sql.rg_key}.name
+  location                      = local.default_location
+  version                       = "12.0"
+  administrator_login           = "sa_vbz"
+  administrator_login_password  = var.${application_name}_db_admin_pw
+  minimum_tls_version           = "1.2"
+  public_network_access_enabled = false
+  tags                          = merge(local.sql_tags, local.tags)
+}
+
+resource "azurerm_mssql_database" "this" {
+  name            = "sqldb-$${local.stage}-${sql.database_name}_$${local.env_num}"
+  server_id       = azurerm_mssql_server.this.id
+  collation       = "${sql.collation}"
+  sku_name        = "${sql.sku_name}"
+  max_size_gb     = ${sql.max_size_gb}
+  license_type    = "LicenseIncluded"
+  zone_redundant  = false
+  read_scale      = false
+  %{if sql.sku_name == "ElasticPool" ~}  elastic_pool_id = azurerm_mssql_elasticpool.this.id
+  %{ endif ~}
+tags            = merge(local.sql_tags, local.tags)
+  maintenance_configuration_name = "SQL_WestEurope_DB_2" # Friday-Sunday from 22:00h-6:00h
+}
+
+resource "azurerm_private_endpoint" "this" {
+  name                = "pe-$${replace("${sql_ip_address}", "/[./]/", "-")}-${sql.subnet}-$${azurerm_mssql_server.this.name}"
+  location            = local.default_location
+  resource_group_name = azurerm_resource_group.${sql.rg_key}.name
+  subnet_id           = azurerm_subnet.this["${sql.subnet}"].id
+
+  private_service_connection {
+    name                           = "psc-$${replace("${sql_ip_address}", "/[./]/", "-")}-${sql.subnet}-$${azurerm_mssql_server.this.name}"
+    is_manual_connection           = false
+    private_connection_resource_id = azurerm_mssql_server.this.id
+    subresource_names              = ["sqlServer"]
+  }
+
+  ip_configuration {
+    name               = "pe-$${replace("${sql_ip_address}", "/[./]/", "-")}-${sql.subnet}-$${azurerm_mssql_server.this.name}"
+    private_ip_address = "${sql_ip_address}"
+    subresource_name   = "sqlServer"
+    member_name        = "sqlServer"
+  }
+  tags = merge(local.sql_tags, local.tags)
+
+  lifecycle {
+    ignore_changes = [private_dns_zone_group]
+  }
+}%{ endif ~}
+
+%{if sql.sku_name == "ElasticPool" ~}resource "azurerm_mssql_elasticpool" "this"{
+  name                           = "sqlep-${sql.cust}-$${local.stage}-$${local.application_name}-$${local.env_num}"
+  resource_group_name            = azurerm_resource_group.${sql.rg_key}.name
+  location                       = local.default_location
+  server_name                    = azurerm_mssql_server.this.name
+  license_type                   = "LicenseIncluded"
+  max_size_gb                    = 275
+  zone_redundant                 = false
+  maintenance_configuration_name = "SQL_WestEurope_DB_2"
+  sku {
+    name     = "GP_Gen5"
+    tier     = "GeneralPurpose"
+    family   = "Gen5"
+    capacity = 2
+  }
+  per_database_settings {
+    min_capacity = 0.25
+    max_capacity = 2
+  }
+}%{ endif ~}
+%{if sql.type == "managed" ~}resource "azurerm_mssql_managed_instance" "this" {
+  name                           = lower("sqlmi-${sql.cust}-$${local.env}-$${local.application_name}-$${local.env_num}")
+  location                       = local.default_location
+  resource_group_name            = azurerm_resource_group.${sql.rg_key}.name
+  subnet_id                      = azurerm_subnet.this["${sql.subnet}"].id
+  license_type                   = "LicenseIncluded" # "BasePrice" is BYOL "Bring your Own License"
+  sku_name                       = "${sql.sku_name}"
+  collation                      = "${sql.collation}"
+  storage_size_in_gb             = ${sql.max_size_gb}
+  storage_account_type           = "LRS"
+  vcores                         = 8
+  timezone_id                    = "UTC"
+  administrator_login            = "sa_vbz"
+  administrator_login_password   = var.${application_name}_db_admin_pw
+  maintenance_configuration_name = "SQL_WestEurope_MI_2" # Friday-Sunday from 22:00h-6:00h
+  proxy_override                 = "Proxy"
+  tags                           = merge(local.sql_tags, local.tags)
+
+  depends_on = [
+    azurerm_subnet_network_security_group_association.db_managedinstance,
+    azurerm_subnet_route_table_association.db_managedinstance,
+  ]
+}
+
+resource "azurerm_private_endpoint" "this" {
+  name                = "pe-$${replace(${sql_ip_address}, "/[./]/", "-")}-${sql.subnet}-$${azurerm_mssql_managed_instance.this.name}"
+  location            = local.default_location
+  resource_group_name = azurerm_resource_group.${sql.rg_key}.name
+  subnet_id           = azurerm_subnet.this["${sql.subnet}"].id
+
+  private_service_connection {
+    name                           = "psc-$${replace(${sql_ip_address}, "/[./]/", "-")}-${sql.subnet}-$${azurerm_mssql_managed_instance.this.name}"
+    is_manual_connection           = false
+    private_connection_resource_id = azurerm_mssql_managed_instance.this.id
+    subresource_names              = ["managedInstance"]
+  }
+
+  ip_configuration {
+    name               = "pe-$${replace(${sql_ip_address}, "/[./]/", "-")}-${sql.subnet}-$${azurerm_mssql_managed_instance.this.name}"
+    private_ip_address = "${sql_ip_address}"
+    subresource_name   = "managedInstance"
+    member_name        = "managedInstance"
+  }
+  tags = merge(local.sql_tags, local.tags)
+
+  lifecycle {
+    ignore_changes = [private_dns_zone_group]
+  }
+}%{ endif ~}

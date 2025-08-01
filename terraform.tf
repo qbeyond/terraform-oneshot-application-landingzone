@@ -6,7 +6,7 @@ terraform {
     }
     azuread = {
       source  = "hashicorp/azuread"
-      version = ">=2.36.0"
+      version = "~> 2.39.0"
     }
     azurerm = {
       source  = "hashicorp/azurerm"
@@ -21,8 +21,7 @@ terraform {
 
 provider "azurerm" {
   features {}
-  subscription_id            = var.devops_subscription_id
-  skip_provider_registration = var.skip_provider_registration
+  subscription_id = var.devops_subscription_id
 }
 
 provider "azuread" {

@@ -1,4 +1,7 @@
 locals {
-  default_location         = "${location}"
-  subsciption_logical_name = "${subscription_logical_name}"
+  default_location = "${location}"
+  dns_servers      = ["${dns_servers}"]
+  stage            = "${stage}"
+  application_name = "${application_name}"
+  env_num          = "${env_num}"
 }

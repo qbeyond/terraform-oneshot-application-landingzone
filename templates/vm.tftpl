@@ -1,0 +1,141 @@
+%{ if vm_win.hostname != "" ~}module "${upper("${vm_win.hostname}")}" {
+  source              = "qbeyond/windows-vm/azurerm"
+  version             = "${vm_win.version}"
+  resource_group_name = azurerm_resource_group.${vm_win.rg_key}.name
+  subnet = {
+    id               = local.subnet_ids["${vm_win.subnet}"]
+    address_prefixes = [local.subnets["${vm_win.subnet}"]]
+  }
+  
+  virtual_machine_config = {
+    hostname                          = ${upper("${vm_win.hostname}")}
+    size                              = "Standard_B2ms"
+    location                          = local.default_location
+    os_sku                            = "2022-datacenter-azure-edition"
+    os_version                        = "latest"
+    os_disk_caching                   = "ReadWrite"
+    os_disk_size_gb                   = 128
+    os_disk_storage_type              = "Premium_LRS"
+    os_disk_write_accelerator_enabled = false
+    admin_username                    = "loc_sysadmin"
+    timezone                          = "W. Europe Standard Time"
+    zone                              = null
+    availability_set_id               = null
+    proximity_placement_group_id      = null  
+    patch_assessment_mode             = "AutomaticByPlatform"
+    patch_mode                        = "AutomaticByPlatform"
+    bypass_platform_safety_checks_on_user_schedule_enabled = true
+  }
+  
+  admin_password = var.${upper("${vm_win.hostname}")}_password
+  severity_group = "01-third-saturday-0200-XCSUFEDTG-reboot"
+  update_allowed = true
+  
+  data_disks = {
+    "Data00" = {
+      lun                        = 0
+      disk_size_gb               = 512
+      caching                    = "ReadWrite"
+      create_option              = "Empty"
+      source_resource_id         = null
+      storage_account_type       = "StandardSSD_LRS"
+      write_accelerator_enabled  = false
+      on_demand_bursting_enabled = false
+    }
+  }
+
+  nic_config = {
+    private_ip                    = "${cidrhost("${vnet_config.subnets["${vm_win.subnet}"]}", (vm_ux.hostname != "" && vm_ux.subnet == vm_win.subnet) ? 5 : 4)}"
+    dns_servers                   = local.dns_servers
+    enable_accelerated_networking = false
+    nsg                           = null
+  }
+  
+  public_ip_config = {
+    enabled           = false
+    allocation_method = "Static"
+  }
+
+  name_overrides = {
+    nic             = null
+    nic_ip_config   = null
+    public_ip       = null
+    virtual_machine = null
+    os_disk         = null
+    data_disks      = null
+  }
+
+  tags = merge({}, local.tags)
+}
+%{ endif ~}
+%{ if vm_ux.hostname != "" ~}
+module "${upper("${vm_ux.hostname}")}" {
+  source           = "qbeyond/linux-vm/azurerm"
+  version          = "${vm_ux.version}"
+  admin_username   = "loc_sysadmin"
+
+  admin_credential = {
+    admin_password = %{ if vm_ux.public_key_name != "" }null%{ else }var.${upper("${vm_ux.hostname}")}_password %{ endif }
+    public_key     = %{ if vm_ux.public_key_name != "" }file("${vm_ux.public_key_name}") %{ else }null %{ endif }
+  } 
+
+  resource_group_name = azurerm_resource_group.${vm_ux.rg_key}.name
+
+  subnet = {
+    id               = local.subnet_ids["${vm_ux.subnet}"]
+    address_prefixes = [local.subnets["${vm_ux.subnet}"]]
+  }
+  additional_network_interface_ids = []
+  
+  virtual_machine_config = {
+    hostname                          = "${upper("${vm_ux.hostname}")}"
+    size                              = "Standard_D4s_v5"
+    location                          = local.default_location
+    os_sku                            = "ol88-lvm-gen2"
+    os_offer                          = "Oracle-Linux"
+    os_version                        = "8.8.5"
+    os_publisher                      = "Oracle"
+    os_disk_caching                   = "ReadWrite"
+    os_disk_size_gb                   = 64
+    os_disk_storage_type              = "Premium_LRS"
+    os_disk_write_accelerator_enabled = false
+    zone                              = null 
+    availability_set_id               = null
+    proximity_placement_group_id      = null
+    severity_group                    = ""
+    update_allowed                    = false
+  }
+
+  data_disks = {
+    "Data00" = {
+      lun                        = 0
+      disk_size_gb               = 512
+      caching                    = "ReadWrite"
+      create_option              = "Empty"
+      source_resource_id         = null
+      storage_account_type       = "Premium_LRS"
+      write_accelerator_enabled  = false
+      on_demand_bursting_enabled = false
+    }
+  }
+  
+  nic_config = {
+    private_ip                    = "${cidrhost("${vnet_config.subnets["${vm_ux.subnet}"]}", 4)}"
+    dns_servers                   = local.dns_servers
+    enable_accelerated_networking = false
+    nsg                           = null
+  }
+  
+  public_ip_config = null
+  
+  name_overrides = {
+    nic             = null
+    nic_ip_config   = null
+    public_ip       = null
+    virtual_machine = null
+    os_disk         = null
+    data_disks      = null
+  }
+
+  tags = merge({}, local.tags)
+}%{ endif ~}
