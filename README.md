@@ -6,6 +6,7 @@ This module is intended for one-shot deployments only!
 
 This module provides a oneshot deployment for a new application landing zone.
 It creates the service connection, optionally moves the subscription to a new management group, creates a build validation policy and creates a new repository with the first pipeline settings and terraform files.
+It configures the feature/init files automatically via terraform.tfvars
 
 ## Prerequisites
 

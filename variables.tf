@@ -126,7 +126,6 @@ variable "sql" {
     rg_key         = string
     type           = string
     subnet         = string
-    ip_server      = string
     database_name  = string
     collation      = string
     sku_name       = string
@@ -136,7 +135,7 @@ variable "sql" {
   description = "SQL configuration."
 
   validation {
-    condition     = var.sql.create == false || (var.sql.create == true && var.sql.cust != "" && var.sql.ip_server != "" && var.sql.database_name != "" && var.sql.collation != "")
+    condition     = var.sql.create == false || (var.sql.create == true && var.sql.cust != "" && var.sql.database_name != "" && var.sql.collation != "")
     error_message = "To create a SQL Server, may not be empty."
   }
   validation {

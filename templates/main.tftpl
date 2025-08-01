@@ -2,5 +2,6 @@
   name     = "rg-$${local.application_name}${rg_name}-$${local.stage}-$${local.env_num}"
   location = local.default_location
   tags     = local.tags
-}  
+}
+
 %{ endfor ~}

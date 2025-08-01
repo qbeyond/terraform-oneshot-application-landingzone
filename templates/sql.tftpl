@@ -5,7 +5,6 @@ locals {
 %{ endfor ~}
   }
 }
-
 %{if sql.type == "server" ~}resource "azurerm_mssql_server" "this" {
   name                          = lower("sql-${sql.cust}-$${local.stage}-$${local.application_name}-$${local.env_num}")
   resource_group_name           = azurerm_resource_group.${sql.rg_key}.name
@@ -27,27 +26,28 @@ resource "azurerm_mssql_database" "this" {
   license_type    = "LicenseIncluded"
   zone_redundant  = false
   read_scale      = false
-%{if sql.sku_name == "ElasticPool" ~}  elastic_pool_id = azurerm_mssql_elasticpool.this.id%{ endif ~}
-  tags            = merge(local.sql_tags, local.tags)
+  %{if sql.sku_name == "ElasticPool" ~}  elastic_pool_id = azurerm_mssql_elasticpool.this.id
+  %{ endif ~}
+tags            = merge(local.sql_tags, local.tags)
   maintenance_configuration_name = "SQL_WestEurope_DB_2" # Friday-Sunday from 22:00h-6:00h
 }
 
 resource "azurerm_private_endpoint" "this" {
-  name                = "pe-$${replace("${sql.ip_server}", "/[./]/", "-")}-${sql.subnet}-$${azurerm_mssql_server.this.name}"
+  name                = "pe-$${replace("${sql_ip_address}", "/[./]/", "-")}-${sql.subnet}-$${azurerm_mssql_server.this.name}"
   location            = local.default_location
   resource_group_name = azurerm_resource_group.${sql.rg_key}.name
   subnet_id           = azurerm_subnet.this["${sql.subnet}"].id
 
   private_service_connection {
-    name                           = "psc-$${replace("${sql.ip_server}", "/[./]/", "-")}-${sql.subnet}-$${azurerm_mssql_server.this.name}"
+    name                           = "psc-$${replace("${sql_ip_address}", "/[./]/", "-")}-${sql.subnet}-$${azurerm_mssql_server.this.name}"
     is_manual_connection           = false
     private_connection_resource_id = azurerm_mssql_server.this.id
     subresource_names              = ["sqlServer"]
   }
 
   ip_configuration {
-    name               = "pe-$${replace("${sql.ip_server}", "/[./]/", "-")}-${sql.subnet}-$${azurerm_mssql_server.this.name}"
-    private_ip_address = "${sql.ip_server}"
+    name               = "pe-$${replace("${sql_ip_address}", "/[./]/", "-")}-${sql.subnet}-$${azurerm_mssql_server.this.name}"
+    private_ip_address = "${sql_ip_address}"
     subresource_name   = "sqlServer"
     member_name        = "sqlServer"
   }
@@ -78,7 +78,6 @@ resource "azurerm_private_endpoint" "this" {
     max_capacity = 2
   }
 }%{ endif ~}
-
 %{if sql.type == "managed" ~}resource "azurerm_mssql_managed_instance" "this" {
   name                           = lower("sqlmi-${sql.cust}-$${local.env}-$${local.application_name}-$${local.env_num}")
   location                       = local.default_location
@@ -104,21 +103,21 @@ resource "azurerm_private_endpoint" "this" {
 }
 
 resource "azurerm_private_endpoint" "this" {
-  name                = "pe-$${replace(${sql.ip_server}, "/[./]/", "-")}-${sql.subnet}-$${azurerm_mssql_managed_instance.this.name}"
+  name                = "pe-$${replace(${sql_ip_address}, "/[./]/", "-")}-${sql.subnet}-$${azurerm_mssql_managed_instance.this.name}"
   location            = local.default_location
   resource_group_name = azurerm_resource_group.${sql.rg_key}.name
   subnet_id           = azurerm_subnet.this["${sql.subnet}"].id
 
   private_service_connection {
-    name                           = "psc-$${replace(${sql.ip_server}, "/[./]/", "-")}-${sql.subnet}-$${azurerm_mssql_managed_instance.this.name}"
+    name                           = "psc-$${replace(${sql_ip_address}, "/[./]/", "-")}-${sql.subnet}-$${azurerm_mssql_managed_instance.this.name}"
     is_manual_connection           = false
     private_connection_resource_id = azurerm_mssql_managed_instance.this.id
     subresource_names              = ["managedInstance"]
   }
 
   ip_configuration {
-    name               = "pe-$${replace(${sql.ip_server}, "/[./]/", "-")}-${sql.subnet}-$${azurerm_mssql_managed_instance.this.name}"
-    private_ip_address = "${sql.ip_server}"
+    name               = "pe-$${replace(${sql_ip_address}, "/[./]/", "-")}-${sql.subnet}-$${azurerm_mssql_managed_instance.this.name}"
+    private_ip_address = "${sql_ip_address}"
     subresource_name   = "managedInstance"
     member_name        = "managedInstance"
   }

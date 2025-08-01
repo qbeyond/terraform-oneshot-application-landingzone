@@ -7,24 +7,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [3.0.0] - 2025-03-04
+## [3.0.0] - 2025-08-01
 
 ### Changed
 
 - Rename `subscription_logical_name` to `application_name`.
-- Changed Resource Group creation with a map variable of resources groups.
-- Create network resource group in `main.tf` with variable map.
 - Subnets moved to local variable and change subnet creation.
 - Rename file `virtual_machine.tf` to `vm.tf` and change the code model.
 - Terraform and vm modules version to be added by variable.
 - Changed nsg model.
 - Delete deprecated variable.
 - Fix version constraints.
+- Network template.
+- Defaults resources groups in main template by variable.
+- Variables and variable group in azure-pipeline template by variable.
+- Updated tfvars with new data model.
 
 ### Added
 
 - Set up variables in locals.tf.
-- Defaults resources groups in main.tf by variable.
 - NSG files templates and assign to subnets by boolean variable.
 - New code templates for VM.
 - SQL template.

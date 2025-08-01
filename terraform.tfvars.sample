@@ -58,7 +58,6 @@ sql = {
   rg_key        = "database"      
   type          = "server"        # type: server or managed
   subnet        = "Database"
-  ip_server     = "XXX.XXX.XXX.XXX"
   database_name = "cust_db_data"
   collation     = "Latin1_General_CI_AS"
   sku_name      = "S3"

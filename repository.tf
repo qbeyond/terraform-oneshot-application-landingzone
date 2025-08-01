@@ -143,13 +143,14 @@ resource "azuredevops_git_repository_file" "readme" {
   repository_id = azuredevops_git_repository.landing_zone.id
   file          = "readme.md"
   content = templatefile("${path.module}/templates/README.tftpl", {
-    vnet_config      = var.vnet_config
-    vm_win           = var.vm_win
-    vm_ux            = var.vm_ux
-    sql              = var.sql
-    stage            = split("-", data.azurerm_subscription.this.display_name)[0]
-    application_name = split("-", data.azurerm_subscription.this.display_name)[1]
-    env_num          = split("-", data.azurerm_subscription.this.display_name)[2]
+    vnet_config                     = var.vnet_config
+    vm_win                          = var.vm_win
+    vm_ux                           = var.vm_ux
+    sql                             = var.sql
+    stage                           = split("-", data.azurerm_subscription.this.display_name)[0]
+    application_name                = split("-", data.azurerm_subscription.this.display_name)[1]
+    env_num                         = split("-", data.azurerm_subscription.this.display_name)[2]
+    create_virtual_machine_template = var.create_virtual_machine_template
   })
   branch              = "refs/heads/${azuredevops_git_repository_branch.init.name}"
   commit_message      = "Add readme.md"
@@ -185,6 +186,10 @@ resource "azuredevops_git_repository_file" "sql" {
   content = templatefile("${path.module}/templates/sql.tftpl", {
     sql              = var.sql
     application_name = lower(split("-", data.azurerm_subscription.this.display_name)[1])
+    sql_ip_address   = cidrhost(var.vnet_config.subnets[var.sql.subnet], (
+      (var.create_virtual_machine_template && var.vm_win.hostname != "" && var.vm_win.subnet == var.sql.subnet) ||
+      (var.create_virtual_machine_template && var.vm_ux.hostname != "" && var.vm_ux.subnet == var.sql.subnet)
+    ) ? -2 : 4)
   })
   branch              = "refs/heads/${azuredevops_git_repository_branch.init.name}"
   commit_message      = "Add sql.tf"
@@ -200,11 +205,12 @@ resource "azuredevops_git_repository_file" "variables" {
   repository_id = azuredevops_git_repository.landing_zone.id
   file          = "variables.tf"
   content = templatefile("${path.module}/templates/variables.tftpl", {
-    vm_win_hostname       = upper(var.vm_win.hostname)
-    vm_ux_hostname        = upper(var.vm_ux.hostname)
-    vm_ux_public_key_name = var.vm_ux.public_key_name
-    sql                   = var.sql
-    application_name      = lower(split("-", data.azurerm_subscription.this.display_name)[1])
+    vm_win_hostname                 = upper(var.vm_win.hostname)
+    vm_ux_hostname                  = upper(var.vm_ux.hostname)
+    vm_ux_public_key_name           = var.vm_ux.public_key_name
+    sql                             = var.sql
+    application_name                = lower(split("-", data.azurerm_subscription.this.display_name)[1])
+    create_virtual_machine_template = var.create_virtual_machine_template
   })
   branch              = "refs/heads/${azuredevops_git_repository_branch.init.name}"
   commit_message      = "Add variables template file"
