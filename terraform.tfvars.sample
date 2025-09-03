@@ -37,7 +37,7 @@ terraform_version = ""
 
 create_virtual_machine_template = false
 vm_ux = {
-  version         = "1.4.0"
+  version         = "2.0.1"
   hostname        = "custapp000"
   rg_key          = "database"
   subnet          = "Database"

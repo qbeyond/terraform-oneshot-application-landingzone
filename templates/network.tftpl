@@ -4,17 +4,19 @@ locals {
     ${subnet_name} = "${address_prefix}"
 %{ endfor ~}
   }
+  
   subnet_ids = {
     # Maps subnet logical name to id
     for id in azurerm_virtual_network.this.subnet.*.id : reverse(split("-", id))[0] => id
   }
+
   subnet_info = {
-  for subnet in azurerm_virtual_network.this.subnet :
-    reverse(split("-", subnet.name))[0] => {
-      id               = subnet.id
-      name             = subnet.name
-      address_prefixes = subnet.address_prefixes
-    }
+    for subnet in azurerm_virtual_network.this.subnet :
+      reverse(split("-", subnet.name))[0] => {
+        id               = subnet.id
+        name             = subnet.name
+        address_prefixes = subnet.address_prefixes
+      }
   }
 }
 
@@ -27,9 +29,7 @@ resource "azurerm_virtual_network" "this" {
   tags                = local.tags
   %{ if !(sql.create && sql.type == "managed") ~}
 dynamic "subnet" {
-    for_each = {
-      local.subnets
-    }
+    for_each = local.subnets
     content {
       name             = "snet-$${replace(subnet.value, "/[./]/", "-")}-$${subnet.key}"
       address_prefixes = [subnet.value]

@@ -1,5 +1,5 @@
 %{ for rg, rg_name in rg_config }resource "azurerm_resource_group" "${rg}" {
-  name     = "rg-$${local.application_name}${rg_name}-$${local.stage}-$${local.env_num}"
+  name     = "rg-$${local.application_name}-${rg_name}-$${local.stage}-$${local.env_num}"
   location = local.default_location
   tags     = local.tags
 }
