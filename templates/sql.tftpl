@@ -14,7 +14,7 @@ locals {
   administrator_login_password  = var.${application_name}_db_admin_pw
   minimum_tls_version           = "1.2"
   public_network_access_enabled = false
-  tags                          = merge(local.sql_tags, local.tags)
+  tags                          = merge(local.tags, local.sql_tags)
 }
 
 resource "azurerm_mssql_database" "this" {
@@ -51,7 +51,7 @@ resource "azurerm_private_endpoint" "this" {
     subresource_name   = "sqlServer"
     member_name        = "sqlServer"
   }
-  tags = merge(local.sql_tags, local.tags)
+  tags = merge(local.tags, local.sql_tags)
 
   lifecycle {
     ignore_changes = [private_dns_zone_group]
@@ -94,7 +94,7 @@ resource "azurerm_private_endpoint" "this" {
   administrator_login_password   = var.${application_name}_db_admin_pw
   maintenance_configuration_name = "SQL_WestEurope_MI_2" # Friday-Sunday from 22:00h-6:00h
   proxy_override                 = "Proxy"
-  tags                           = merge(local.sql_tags, local.tags)
+  tags                           = merge(local.tags, local.sql_tags)
 
   depends_on = [
     azurerm_subnet_network_security_group_association.db_managedinstance,
@@ -121,7 +121,7 @@ resource "azurerm_private_endpoint" "this" {
     subresource_name   = "managedInstance"
     member_name        = "managedInstance"
   }
-  tags = merge(local.sql_tags, local.tags)
+  tags = merge(local.tags, local.sql_tags)
 
   lifecycle {
     ignore_changes = [private_dns_zone_group]
