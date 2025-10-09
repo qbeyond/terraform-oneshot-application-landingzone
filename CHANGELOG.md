@@ -7,7 +7,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.0.3]
+
+### Changed
+
+- Changed windows and linux VMs modules version
+
+### Fixed
+
+- Fixed some typo errors
+
+## [3.0.2]
+
+### Fixed
+
+- Fixed some format and code errors
+
 ## [3.0.1] - 2025-08-27
+
+### Changed
 
 - terraform.tftpl azurerm version moved to ~> 4.0
 
@@ -49,11 +67,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [2.0.2] - 2024-10-11
 
+### Fixed 
+
 - fix [27466](https://github.com/hashicorp/terraform-provider-azurerm/issues/27466)
 
 ## [2.0.1] - 2024-05-14
 
-### fixed
+### Fixed
 
 - fixed condition in additional_tags variable
 
