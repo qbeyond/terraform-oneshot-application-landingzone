@@ -11,7 +11,7 @@ resources:
       type: github
       name: qbeyond/iacwh-template-pipelines
       endpoint: GithubServiceConnection
-      ref: "refs/tags/v1.1.0"
+      ref: "refs/tags/v1.2.1"
 
 stages:
 - template: terraform-deploy.yml@iacwh-template-pipelines  # Template reference
@@ -19,6 +19,7 @@ stages:
     repository: self                                       # if referencing this template multiple times, specify repo name
     AzureRMServiceConnectiontfState: '${service_connection_tf_state}'
     AzureRMServiceConnection: '${service_connection}'
+    azureRmUseIdTokenGeneration: true # This is needed when using a Service Principal with federated credentails with an OLD AZAPI privider (Older than 2.0) or OLD AzureRM provider (version >3.80)
     storage_account_resource_group_name: '${storage_account_resource_group_name}'
     terraformVersion: '${terraform_version}'
     storage_account_name: '${storage_account_name}'
