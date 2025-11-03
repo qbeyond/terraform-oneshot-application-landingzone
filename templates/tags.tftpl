@@ -12,7 +12,7 @@ data "azurerm_subscription" "current" {
 #Apply tags to subscription
 module "subscription_tags" {
   source   = "qbeyond/subscription-tags/azapi"
-  version  = "2.0.1"
+  version  = "${module_version_tags}"
   subscription_id = data.azurerm_subscription.current.subscription_id
   tags = local.tags
 }
