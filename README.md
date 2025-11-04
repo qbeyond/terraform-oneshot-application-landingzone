@@ -22,7 +22,7 @@ You need:
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | ~> 2.39.0 |
+| <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | ~>  |
 | <a name="requirement_azuredevops"></a> [azuredevops](#requirement\_azuredevops) | >=0.4.0 |
 | <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | >=3.90.0 |
 | <a name="requirement_http-full"></a> [http-full](#requirement\_http-full) | 1.3.1 |
@@ -46,7 +46,7 @@ You need:
 | <a name="input_stage"></a> [stage](#input\_stage) | Name of the current stage. | `string` | n/a | yes |
 | <a name="input_subscription_id"></a> [subscription\_id](#input\_subscription\_id) | Subscription ID of the Landing Zone Subscription. | `string` | n/a | yes |
 | <a name="input_tenant_id"></a> [tenant\_id](#input\_tenant\_id) | Tenant ID of the Customer. | `string` | n/a | yes |
-| <a name="input_terraform_state_config"></a> [terraform\_state\_config](#input\_terraform\_state\_config) | The configuration of the Terraform state. The state will be saved in the given storage account in the DevOps subscription using the backend service connection. | <pre>object({<br/>    resource_group_name        = string<br/>    storage_account_name       = string<br/>    backend_service_connection = string<br/>  })</pre> | n/a | yes |
+| <a name="input_terraform_state_config"></a> [terraform\_state\_config](#input\_terraform\_state\_config) | The configuration of the Terraform state. The state will be saved in the given storage account in the DevOps subscription using the backend service connection. | <pre>object({<br/>    resource_group_name        = string<br/>    storage_account_id       = string<br/>    backend_service_connection = string<br/>  })</pre> | n/a | yes |
 | <a name="input_terraform_version"></a> [terraform\_version](#input\_terraform\_version) | Terraform version to install in the DevOps pipeline. | `string` | n/a | yes |
 | <a name="input_additional_tags"></a> [additional\_tags](#input\_additional\_tags) | A mapping of tags to add to the subscription in addition to the default tags. | `map(string)` | `{}` | no |
 | <a name="input_create_virtual_machine_template"></a> [create\_virtual\_machine\_template](#input\_create\_virtual\_machine\_template) | Set to true to create a template for creating a windows vm. | `bool` | `false` | no |
