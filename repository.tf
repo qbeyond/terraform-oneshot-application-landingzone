@@ -79,7 +79,10 @@ resource "azuredevops_git_repository_file" "locals" {
 resource "azuredevops_git_repository_file" "terraform" {
   repository_id = azuredevops_git_repository.landing_zone.id
   file          = "terraform.tf"
-  content = templatefile("${path.module}/templates/terraform.tftpl", {})
+  content = templatefile("${path.module}/templates/terraform.tftpl", {
+    azurerm_version = var.azurerm_version
+    azapi_version   = var.azapi_version
+  })
   branch              = "refs/heads/${azuredevops_git_repository_branch.init.name}"
   commit_message      = "Add terraform.tf"
   overwrite_on_create = true

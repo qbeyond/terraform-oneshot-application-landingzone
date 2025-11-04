@@ -7,7 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [3.0.3]
+## [3.1.0] - 2025-11-05
+
+### Changed
+
+- Upgrade versions of provider, now support AzureRM 4.
+- Support change azapi and azurerm version by variable.
+- Upgrade auzredevops and adapted code to support new resource connection.
+
+### Fixed
+
+- Local variable only when configure database management.
+
+## [3.0.3] - 2025-09-12
 
 ### Changed
 
@@ -17,7 +29,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Fixed some typo errors
 
-## [3.0.2]
+## [3.0.2] - 2025-09-03
 
 ### Fixed
 
