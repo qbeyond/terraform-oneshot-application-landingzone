@@ -64,11 +64,11 @@ data "http" "environment_permission_alz" {
   )
 }
 
-resource "azuredevops_resource_authorization" "service_connection_permission_alz" {
-  project_id    = data.azuredevops_project.this.id
-  definition_id = azuredevops_build_definition.this.id
-  resource_id   = module.service_connection_application.service_endpoint.id
-  authorized    = true
+resource "azuredevops_pipeline_authorization" "service_connection_permission_alz" {
+  project_id  = data.azuredevops_project.this.id
+  pipeline_id = azuredevops_build_definition.this.id
+  resource_id = module.service_connection_application.service_endpoint.id
+  type        = "endpoint"
 }
 
 data "http" "environment_user_permission_alz" {
