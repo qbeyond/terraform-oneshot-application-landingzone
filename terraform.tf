@@ -2,15 +2,15 @@ terraform {
   required_providers {
     azuredevops = {
       source  = "microsoft/azuredevops"
-      version = "~> 1.11.2"
+      version = "~> 1.11"
     }
     azuread = {
       source  = "hashicorp/azuread"
-      version = "~> 3.4.0"
+      version = "~> 3.4"
     }
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "~> 4.40.0"
+      version = "~> 4.40"
     }
     http-full = {
       source  = "salrashid123/http-full"
