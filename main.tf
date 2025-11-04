@@ -10,12 +10,12 @@ resource "azurerm_management_group_subscription_association" "target" {
 }
 
 data "azurerm_storage_account" "terraform_state" {
-  name                = var.terraform_state_config.storage_account_name
+  name                = var.terraform_state_config.storage_account_id
   resource_group_name = var.terraform_state_config.resource_group_name
 }
 
 resource "azurerm_storage_container" "landing_zone" {
   name                  = lower(data.azurerm_subscription.this.display_name)
-  storage_account_name  = data.azurerm_storage_account.terraform_state.name
+  storage_account_id    = data.azurerm_storage_account.terraform_state.id
   container_access_type = "private"
 }
