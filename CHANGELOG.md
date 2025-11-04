@@ -79,7 +79,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [2.0.2] - 2024-10-11
 
-### Fixed 
+### Fixed
 
 - fix [27466](https://github.com/hashicorp/terraform-provider-azurerm/issues/27466)
 
