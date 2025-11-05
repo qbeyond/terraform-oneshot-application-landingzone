@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.0.4] - 2025-11-04
+
+### Changed
+
+- http requests are now replaced with real terraform resources -> approvals and checks will not need to be deleted before deployment
+- updated version of azuread
+
 ## [3.0.3]
 
 ### Changed
