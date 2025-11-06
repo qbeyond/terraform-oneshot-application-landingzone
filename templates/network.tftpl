@@ -55,7 +55,8 @@ dynamic "subnet" {
     }%{ else ~}
 security_group = azurerm_network_security_group.this.id %{ endif }
   }
-%{ endfor }%{ endif ~}}
+%{ endfor }%{ endif }
+}
 
 %{ if sql.create && sql.type == "managed" ~}
 resource "azurerm_network_security_group" "db_managedinstance" {
