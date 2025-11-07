@@ -8,7 +8,7 @@ devops_project_name    = ""
 
 terraform_state_config = {
   resource_group_name        = ""
-  storage_account_name       = ""
+  storage_account_id       = ""
   backend_service_connection = ""
 }
 
@@ -37,7 +37,7 @@ terraform_version = ""
 
 create_virtual_machine_template = false
 vm_ux = {
-  version         = "2.1.0" # Check for the last version in https://github.com/qbeyond/terraform-azurerm-linux-vm
+  version         = "2.1.1" # Check for the last version in https://github.com/qbeyond/terraform-azurerm-linux-vm
   hostname        = "custapp000"
   rg_key          = "database"
   subnet          = "Database"
@@ -45,7 +45,7 @@ vm_ux = {
 }
 
 vm_win = {
-  version  = "6.1.0" # Check for the last version in https://github.com/qbeyond/terraform-azurerm-windows-vm
+  version  = "6.1.1" # Check for the last version in https://github.com/qbeyond/terraform-azurerm-windows-vm
   hostname = "custapp001"
   rg_key   = "application"
   subnet   = "ApplicationServer"
@@ -69,6 +69,8 @@ sql = {
 }
 
 #tags
+
+module_version_tags = "2.1.0"
 
 ## default
 

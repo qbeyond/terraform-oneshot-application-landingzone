@@ -7,7 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [3.0.3]
+=======
+## [3.1.0] - 2025-11-07
+
+### Changed
+
+- Upgrade versions of provider, now support AzureRM 4.
+- Support change azapi and azurerm version by variable.
+- Upgrade auzredevops and adapted code to support new resource connection.
+- http requests are now replaced with real terraform resources -> approvals and checks will not need to be deleted before deployment
+
+### Fixed
+
+- Local variable only when configure database management.
+
+## [3.0.3] - 2025-09-12
+>>>>>>> Feature/add_module_tags
 
 ### Changed
 
@@ -17,7 +32,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Fixed some typo errors
 
-## [3.0.2]
+## [3.0.2] - 2025-09-03
 
 ### Fixed
 
@@ -67,7 +82,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [2.0.2] - 2024-10-11
 
-### Fixed 
+### Fixed
 
 - fix [27466](https://github.com/hashicorp/terraform-provider-azurerm/issues/27466)
 

@@ -20,7 +20,7 @@ resource "azuredevops_git_repository_file" "pipeline" {
     service_connection_tf_state         = var.terraform_state_config.backend_service_connection
     service_connection                  = module.service_connection_application.service_endpoint.service_endpoint_name
     storage_account_resource_group_name = var.terraform_state_config.resource_group_name
-    storage_account_name                = var.terraform_state_config.storage_account_name
+    storage_account_id                  = var.terraform_state_config.storage_account_id
     container_name                      = lower(data.azurerm_subscription.this.display_name)
     environment                         = azuredevops_environment.alz.name
     stage                               = var.stage
@@ -79,7 +79,10 @@ resource "azuredevops_git_repository_file" "locals" {
 resource "azuredevops_git_repository_file" "terraform" {
   repository_id = azuredevops_git_repository.landing_zone.id
   file          = "terraform.tf"
-  content = templatefile("${path.module}/templates/terraform.tftpl", {})
+  content = templatefile("${path.module}/templates/terraform.tftpl", {
+    azurerm_version = var.azurerm_version
+    azapi_version   = var.azapi_version
+  })
   branch              = "refs/heads/${azuredevops_git_repository_branch.init.name}"
   commit_message      = "Add terraform.tf"
   overwrite_on_create = true
@@ -93,7 +96,8 @@ resource "azuredevops_git_repository_file" "tags" {
   repository_id = azuredevops_git_repository.landing_zone.id
   file          = "tags.tf"
   content = templatefile("${path.module}/templates/tags.tftpl", {
-    tags = local.tags
+    module_version_tags = var.module_version_tags
+    tags                = local.tags
   })
   branch              = "refs/heads/${azuredevops_git_repository_branch.init.name}"
   commit_message      = "Add tags.tf"
@@ -141,7 +145,7 @@ resource "azuredevops_git_repository_file" "nsg" {
 resource "azuredevops_git_repository_file" "readme" {
   count         = var.vnet_config == null ? 0 : 1
   repository_id = azuredevops_git_repository.landing_zone.id
-  file          = "readme.md"
+  file          = "README.md"
   content = templatefile("${path.module}/templates/README.tftpl", {
     vnet_config                     = var.vnet_config
     vm_win                          = var.vm_win
@@ -186,7 +190,7 @@ resource "azuredevops_git_repository_file" "sql" {
   content = templatefile("${path.module}/templates/sql.tftpl", {
     sql              = var.sql
     application_name = lower(split("-", data.azurerm_subscription.this.display_name)[1])
-    sql_ip_address   = cidrhost(var.vnet_config.subnets[var.sql.subnet], (
+    sql_ip_address = cidrhost(var.vnet_config.subnets[var.sql.subnet], (
       (var.create_virtual_machine_template && var.vm_win.hostname != "" && var.vm_win.subnet == var.sql.subnet) ||
       (var.create_virtual_machine_template && var.vm_ux.hostname != "" && var.vm_ux.subnet == var.sql.subnet)
     ) ? -2 : 4)
@@ -201,7 +205,7 @@ resource "azuredevops_git_repository_file" "sql" {
 }
 
 resource "azuredevops_git_repository_file" "variables" {
-  count = (var.create_virtual_machine_template == true && (var.vm_win.hostname != "" || (var.vm_ux.hostname != "" && var.vm_ux.public_key_name == "" ))) || (var.sql.create) ? 1 : 0
+  count         = (var.create_virtual_machine_template == true && (var.vm_win.hostname != "" || (var.vm_ux.hostname != "" && var.vm_ux.public_key_name == ""))) || (var.sql.create) ? 1 : 0
   repository_id = azuredevops_git_repository.landing_zone.id
   file          = "variables.tf"
   content = templatefile("${path.module}/templates/variables.tftpl", {

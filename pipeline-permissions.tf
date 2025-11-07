@@ -10,79 +10,47 @@ data "azuredevops_team" "default" {
   name       = "${data.azuredevops_project.this.name} Team"
 }
 
-data "http" "approval_and_check_alz" {
-  provider = http-full
-  method   = "POST"
-  url      = "${var.devops_service_url}/${data.azuredevops_project.this.id}/_apis/pipelines/checks/configurations?api-version=7.0-preview.1"
+resource "azuredevops_check_approval" "this" {
+  project_id           = data.azuredevops_project.this.id
+  target_resource_id   = azuredevops_environment.alz.id
+  target_resource_type = "environment"
 
-  request_headers = local.request_headers
+  minimum_required_approvers = 1
+  requester_can_approve      = true
+  approvers                  = [data.azuredevops_team.default.id]
 
-  request_body = jsonencode(
-    {
-      type = {
-        id   = "8c6f20a7-a545-4486-9777-f762fafe0d4d"
-        name = "Approval"
-      }
-      settings = {
-        approvers = [
-          {
-            displayName = data.azuredevops_team.default.name,
-            id          = data.azuredevops_team.default.id
-          }
-        ]
-        executionOrder            = "anyOrder"
-        instructions              = ""
-        blockedApprovers          = []
-        minRequiredApprovers      = 1
-        requesterCannotBeApprover = false
-      }
-      resource = {
-        type = "environment"
-        id   = azuredevops_environment.alz.id
-        name = azuredevops_environment.alz.name
-      }
-      timeout = 43200
-    }
-  )
-}
-
-data "http" "environment_permission_alz" {
-  provider = http-full
-  method   = "PATCH"
-  url      = "${var.devops_service_url}/${data.azuredevops_project.this.id}/_apis/pipelines/pipelinepermissions/environment/${azuredevops_environment.alz.id}?api-version=7.0-preview.1"
-
-  request_headers = local.request_headers
-  request_body = jsonencode(
-    {
-      pipelines = [
-        {
-          id         = azuredevops_build_definition.this.id
-          authorized = true
-        }
-      ]
-    }
-  )
-}
-
-resource "azuredevops_resource_authorization" "service_connection_permission_alz" {
-  project_id    = data.azuredevops_project.this.id
-  definition_id = azuredevops_build_definition.this.id
-  resource_id   = module.service_connection_application.service_endpoint.id
-  authorized    = true
-}
-
-data "http" "environment_user_permission_alz" {
-  provider = http-full
-  method   = "PUT"
-  url      = "${var.devops_service_url}/_apis/securityroles/scopes/distributedtask.environmentreferencerole/roleassignments/resources/${data.azuredevops_project.this.id}_${azuredevops_environment.alz.id}?api-version=7.0-preview.1"
-
-  request_headers = local.request_headers
-  request_body = jsonencode(
-    [
-      {
-        userId   = data.azuredevops_team.default.id
-        roleName = "Administrator"
-      }
+  timeout = 43200
+  lifecycle {
+    ignore_changes = [
+      approvers
     ]
-  )
+  }
+}
+
+resource "azuredevops_pipeline_authorization" "environment_permission_alz" {
+  project_id  = data.azuredevops_project.this.id
+  resource_id = azuredevops_environment.alz.id
+  pipeline_id = azuredevops_build_definition.this.id
+  type        = "environment"
+}
+
+# Allow the Service connection to be used by the pipeline (Build Definition)
+resource "azuredevops_pipeline_authorization" "service_connection_permission_alz" {
+  project_id  = data.azuredevops_project.this.id
+  resource_id = module.service_connection_application.service_endpoint.id
+  pipeline_id = azuredevops_build_definition.this.id
+  type        = "endpoint"
+}
+
+# Administrative permissions for the group every time a new environment is created
+resource "azuredevops_securityrole_assignment" "environment_admin" {
+  scope       = "distributedtask.environmentreferencerole"
+  resource_id = "${data.azuredevops_project.this.id}_${azuredevops_environment.alz.id}"
+  identity_id = data.azuredevops_team.default.id
+  role_name   = "Administrator"
+  lifecycle {
+    ignore_changes = [
+      identity_id
+    ]
+  }
 }
