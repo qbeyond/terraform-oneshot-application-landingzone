@@ -215,7 +215,7 @@ variable "terraform_version" {
   description = "Terraform version to install in the DevOps pipeline."
   validation {
     error_message = "Must be valid semantic version."
-    condition     = can(regex("^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)", var.terraform_version))
+    condition     = can(regex("^(?:[0-9]|[1-9][0-9])\\.(?:[0-9]|[1-9][0-9])\\.(?:[0-9]|[1-9][0-9])$", var.terraform_version))
   }
 }
 
@@ -301,4 +301,38 @@ variable "vnet_config" {
   ```
   DOC
   default     = null
+}
+
+
+variable "azurerm_version" {
+  type        = string
+  description = "Version of the azurerm in MAJOR.MINOR where each number is 1..99 (e.g. 2.0)."
+
+  validation {
+    condition     = can(regex("^(?:[0-9]|[1-9][0-9])\\.(?:[0-9]|[1-9][0-9])$", var.azurerm_version))
+    error_message = "azurerm_version must be MAJOR.MINOR with each part between 1 and 99 (e.g. 2.0)."
+  }
+  default = "4.0"
+}
+
+variable "azapi_version" {
+  type        = string
+  description = "Version of the azapi in MAJOR.MINOR where each number is 1..99 (e.g. 2.0)."
+
+  validation {
+    condition     = can(regex("^(?:[0-9]|[1-9][0-9])\\.(?:[0-9]|[1-9][0-9])$", var.azapi_version))
+    error_message = "azapi_version must be MAJOR.MINOR with each part between 1 and 99 (e.g. 2.0)."
+  }
+  default = "2.7"
+}
+
+variable "module_version_tags" {
+  type        = string
+  description = "Version of the subscription-tags module in MAJOR.MINOR.PATCH where each number is 1..99 (e.g. 2.0.2)."
+
+  validation {
+    condition     = can(regex("^(?:[0-9]|[1-9][0-9])\\.(?:[0-9]|[1-9][0-9])\\.(?:[0-9]|[1-9][0-9])$", var.module_version_tags))
+    error_message = "module_version_tags must be MAJOR.MINOR.PATCH with each part between 1 and 99 (e.g. 2.0.2)."
+  }
+  default = "2.1.0"
 }

@@ -70,6 +70,8 @@ sql = {
 
 #tags
 
+module_version_tags = "2.1.0"
+
 ## default
 
 business_service_number = "12345"

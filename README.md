@@ -22,10 +22,10 @@ You need:
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | ~>  |
-| <a name="requirement_azuredevops"></a> [azuredevops](#requirement\_azuredevops) | >=0.4.0 |
-| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | >=3.90.0 |
-| <a name="requirement_http-full"></a> [http-full](#requirement\_http-full) | 1.3.1 |
+| <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | ~> 3.4 |
+| <a name="requirement_azuredevops"></a> [azuredevops](#requirement\_azuredevops) | ~> 1.11 |
+| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | ~> 4.40 |
+| <a name="requirement_http-full"></a> [http-full](#requirement\_http-full) | ~> 1.3 |
 
 ## Inputs
 
@@ -49,8 +49,11 @@ You need:
 | <a name="input_terraform_state_config"></a> [terraform\_state\_config](#input\_terraform\_state\_config) | The configuration of the Terraform state. The state will be saved in the given storage account in the DevOps subscription using the backend service connection. | <pre>object({<br/>    resource_group_name        = string<br/>    storage_account_id       = string<br/>    backend_service_connection = string<br/>  })</pre> | n/a | yes |
 | <a name="input_terraform_version"></a> [terraform\_version](#input\_terraform\_version) | Terraform version to install in the DevOps pipeline. | `string` | n/a | yes |
 | <a name="input_additional_tags"></a> [additional\_tags](#input\_additional\_tags) | A mapping of tags to add to the subscription in addition to the default tags. | `map(string)` | `{}` | no |
+| <a name="input_azapi_version"></a> [azapi\_version](#input\_azapi\_version) | Version of the azapi in MAJOR.MINOR where each number is 1..99 (e.g. 2.0). | `string` | `"2.7"` | no |
+| <a name="input_azurerm_version"></a> [azurerm\_version](#input\_azurerm\_version) | Version of the azurerm in MAJOR.MINOR where each number is 1..99 (e.g. 2.0). | `string` | `"4.0"` | no |
 | <a name="input_create_virtual_machine_template"></a> [create\_virtual\_machine\_template](#input\_create\_virtual\_machine\_template) | Set to true to create a template for creating a windows vm. | `bool` | `false` | no |
 | <a name="input_management_group_id"></a> [management\_group\_id](#input\_management\_group\_id) | Management Group ID where to move the subscription. Optional Parameter if association already done. | `string` | `""` | no |
+| <a name="input_module_version_tags"></a> [module\_version\_tags](#input\_module\_version\_tags) | Version of the subscription-tags module in MAJOR.MINOR.PATCH where each number is 1..99 (e.g. 2.0.2). | `string` | `"2.1.0"` | no |
 | <a name="input_rg_config"></a> [rg\_config](#input\_rg\_config) | Resources groups to create. Use 'rg' as the key and resources group name as the value. | `map(string)` | `{}` | no |
 | <a name="input_vm_ux"></a> [vm\_ux](#input\_vm\_ux) | <pre>To provide a Linux virtual machine, please provide the following values: <br/>  version: Linux module version that provide vm resource.<br/>  hostname: VM hostname.<br/>  rg_key: Resource group key name of resource defined in rg_config variable.<br/>  subnet: Subnet key name defined in vnet_config.subnets map.</pre> | <pre>object({<br/>    version         = string<br/>    hostname        = string<br/>    rg_key          = string<br/>    subnet          = string<br/>    public_key_name = optional(string)<br/>  })</pre> | `null` | no |
 | <a name="input_vm_win"></a> [vm\_win](#input\_vm\_win) | <pre>To provide a Windows virtual machine, please provide the following values: <br/>  version: Windows module version that provide vm resource.<br/>  hostname: VM hostname.<br/>  rg_key: Resource group key name of resource defined in rg_config variable.<br/>  subnet: Subnet key name defined in vnet_config.subnets map.</pre> | <pre>object({<br/>    version  = string<br/>    hostname = string<br/>    rg_key   = string<br/>    subnet   = string<br/>  })</pre> | `null` | no |
@@ -70,7 +73,7 @@ No outputs.
 | [azuredevops_git_repository](https://registry.terraform.io/providers/microsoft/azuredevops/latest/docs/resources/git_repository) | 1 |
 | [azuredevops_git_repository_branch](https://registry.terraform.io/providers/microsoft/azuredevops/latest/docs/resources/git_repository_branch) | 1 |
 | [azuredevops_git_repository_file](https://registry.terraform.io/providers/microsoft/azuredevops/latest/docs/resources/git_repository_file) | 12 |
-| [azuredevops_resource_authorization](https://registry.terraform.io/providers/microsoft/azuredevops/latest/docs/resources/resource_authorization) | 1 |
+| [azuredevops_pipeline_authorization](https://registry.terraform.io/providers/microsoft/azuredevops/latest/docs/resources/pipeline_authorization) | 1 |
 | [azurerm_management_group_subscription_association](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/management_group_subscription_association) | 1 |
 | [azurerm_storage_container](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_container) | 1 |
 
@@ -80,7 +83,7 @@ No outputs.
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_service_connection_application"></a> [service\_connection\_application](#module\_service\_connection\_application) | qbeyond/service-connection/azuredevops | 1.0.2 |
+| <a name="module_service_connection_application"></a> [service\_connection\_application](#module\_service\_connection\_application) | qbeyond/service-connection/azuredevops | 2.0.1 |
 
 ## Resources by Files
 
@@ -105,11 +108,11 @@ Files.
 
 | Name | Type |
 |------|------|
-| [azuredevops_resource_authorization.service_connection_permission_alz](https://registry.terraform.io/providers/microsoft/azuredevops/latest/docs/resources/resource_authorization) | resource |
+| [azuredevops_pipeline_authorization.service_connection_permission_alz](https://registry.terraform.io/providers/microsoft/azuredevops/latest/docs/resources/pipeline_authorization) | resource |
 | [azuredevops_team.default](https://registry.terraform.io/providers/microsoft/azuredevops/latest/docs/data-sources/team) | data source |
-| [http-full_http.approval_and_check_alz](https://registry.terraform.io/providers/salrashid123/http-full/1.3.1/docs/data-sources/http) | data source |
-| [http-full_http.environment_permission_alz](https://registry.terraform.io/providers/salrashid123/http-full/1.3.1/docs/data-sources/http) | data source |
-| [http-full_http.environment_user_permission_alz](https://registry.terraform.io/providers/salrashid123/http-full/1.3.1/docs/data-sources/http) | data source |
+| [http-full_http.approval_and_check_alz](https://registry.terraform.io/providers/salrashid123/http-full/latest/docs/data-sources/http) | data source |
+| [http-full_http.environment_permission_alz](https://registry.terraform.io/providers/salrashid123/http-full/latest/docs/data-sources/http) | data source |
+| [http-full_http.environment_user_permission_alz](https://registry.terraform.io/providers/salrashid123/http-full/latest/docs/data-sources/http) | data source |
 
 ### pipeline.tf
 
