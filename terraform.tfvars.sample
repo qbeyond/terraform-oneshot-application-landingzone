@@ -8,7 +8,7 @@ devops_project_name    = ""
 
 terraform_state_config = {
   resource_group_name        = ""
-  storage_account_id       = ""
+  storage_account_name       = ""
   backend_service_connection = ""
 }
 

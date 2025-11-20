@@ -204,7 +204,7 @@ variable "tenant_id" {
 variable "terraform_state_config" {
   type = object({
     resource_group_name        = string
-    storage_account_id         = string
+    storage_account_name       = string
     backend_service_connection = string
   })
   description = "The configuration of the Terraform state. The state will be saved in the given storage account in the DevOps subscription using the backend service connection."
