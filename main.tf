@@ -10,7 +10,7 @@ resource "azurerm_management_group_subscription_association" "target" {
 }
 
 data "azurerm_storage_account" "terraform_state" {
-  name                = var.terraform_state_config.storage_account_id
+  name                = var.terraform_state_config.storage_account_name
   resource_group_name = var.terraform_state_config.resource_group_name
 }
 

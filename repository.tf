@@ -20,7 +20,7 @@ resource "azuredevops_git_repository_file" "pipeline" {
     service_connection_tf_state         = var.terraform_state_config.backend_service_connection
     service_connection                  = module.service_connection_application.service_endpoint.service_endpoint_name
     storage_account_resource_group_name = var.terraform_state_config.resource_group_name
-    storage_account_id                  = var.terraform_state_config.storage_account_id
+    storage_account_name                = var.terraform_state_config.storage_account_name
     container_name                      = lower(data.azurerm_subscription.this.display_name)
     environment                         = azuredevops_environment.alz.name
     stage                               = var.stage
