@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.2.0] - 2025-11-24
+
+### Added
+
+- added variable for backend storage account id. When using this variable, the new service connection get storage permissions on the backend storage account which is needed when using later version of azure pipeline tasks
+
 ## [3.1.1] - 2025-11-20
 
 ### Fixed
