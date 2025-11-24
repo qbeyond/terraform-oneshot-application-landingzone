@@ -51,6 +51,7 @@ You need:
 | <a name="input_additional_tags"></a> [additional\_tags](#input\_additional\_tags) | A mapping of tags to add to the subscription in addition to the default tags. | `map(string)` | `{}` | no |
 | <a name="input_azapi_version"></a> [azapi\_version](#input\_azapi\_version) | Version of the azapi in MAJOR.MINOR where each number is 1..99 (e.g. 2.0). | `string` | `"2.7"` | no |
 | <a name="input_azurerm_version"></a> [azurerm\_version](#input\_azurerm\_version) | Version of the azurerm in MAJOR.MINOR where each number is 1..99 (e.g. 2.0). | `string` | `"4.0"` | no |
+| <a name="input_backend_storage_id"></a> [backend\_storage\_id](#input\_backend\_storage\_id) | Resource Id of the backend storage account | `string` | `null` | no |
 | <a name="input_create_virtual_machine_template"></a> [create\_virtual\_machine\_template](#input\_create\_virtual\_machine\_template) | Set to true to create a template for creating a windows vm. | `bool` | `false` | no |
 | <a name="input_management_group_id"></a> [management\_group\_id](#input\_management\_group\_id) | Management Group ID where to move the subscription. Optional Parameter if association already done. | `string` | `""` | no |
 | <a name="input_module_version_tags"></a> [module\_version\_tags](#input\_module\_version\_tags) | Version of the subscription-tags module in MAJOR.MINOR.PATCH where each number is 1..99 (e.g. 2.0.2). | `string` | `"2.1.0"` | no |
