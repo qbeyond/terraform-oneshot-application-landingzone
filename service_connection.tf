@@ -6,4 +6,8 @@ module "service_connection_application" {
   display_name         = data.azurerm_subscription.this.display_name
   azure_devops_project = data.azuredevops_project.this
   tenant_id            = var.tenant_id
+  role_assignments = concat([
+    { role = "Owner", scope = "/subscriptions/${azurerm_subscription.this.subscription_id}" },
+    { role = "Storage Blob Data Contributor", scope = "/subscriptions/${azurerm_subscription.this.subscription_id}" },
+  ], local.addtional_role_assignments)
 }

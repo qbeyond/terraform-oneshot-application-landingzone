@@ -119,6 +119,12 @@ variable "rg_config" {
   }
 }
 
+variable "backend_storage_id" {
+  type        = string
+  default     = null
+  description = "Resource Id of the backend storage account"
+}
+
 variable "sql" {
   type = object({
     create        = bool

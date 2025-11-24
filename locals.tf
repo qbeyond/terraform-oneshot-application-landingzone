@@ -7,4 +7,9 @@ locals {
     "managedby"               = var.managed_by
     "alerting"                = var.alerting
   })
+
+  addtional_role_assignments = var.backend_storage_id == null ? [] : [
+    { role = "Storage Blob Data Contributor", scope = var.backend_storage_id }
+  ]
+
 }
