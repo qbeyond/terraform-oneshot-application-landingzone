@@ -7,11 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.3.0] - 2026-01-07
+
+### Added
+
+- Locks to prevent delete resources in subscription level.
+
 ## [3.2.0] - 2025-11-24
 
 ### Added
 
-- added variable for backend storage account id. When using this variable, the new service connection get storage permissions on the backend storage account which is needed when using later version of azure pipeline tasks
+- Added variable for backend storage account id. When using this variable, the new service connection get storage permissions on the backend storage account which is needed when using later version of azure pipeline tasks
 
 ## [3.1.1] - 2025-11-20
 
@@ -33,7 +39,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Local variable only when configure database management.
 
 ## [3.0.3] - 2025-09-12
->>>>>>> Feature/add_module_tags
+
+Feature/add_module_tags
 
 ### Changed
 
