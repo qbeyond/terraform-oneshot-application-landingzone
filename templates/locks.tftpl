@@ -1,7 +1,7 @@
 resource "azurerm_management_lock" "this" {
  
   name       = "PreventDeleting"
-  scope      = "/subscriptions/${data.azurerm_subscription.current.subscription_id}"
+  scope      = "/subscriptions/$${data.azurerm_subscription.current.subscription_id}"
   lock_level = "CanNotDelete"
   notes      = "Items can't be deleted in this subscription. Before deleting resources, please remove this lock."
 }
