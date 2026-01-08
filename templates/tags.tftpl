@@ -6,13 +6,12 @@ locals {
 }
 }
 
-data "azurerm_subscription" "current" {
-}
+data "azurerm_subscription" "current" {}
 
 #Apply tags to subscription
 module "subscription_tags" {
-  source   = "qbeyond/subscription-tags/azapi"
-  version  = "${module_version_tags}"
+  source          = "qbeyond/subscription-tags/azapi"
+  version         = "${module_version_tags}"
   subscription_id = data.azurerm_subscription.current.subscription_id
-  tags = local.tags
+  tags            = local.tags
 }

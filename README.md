@@ -74,7 +74,7 @@ No outputs.
 | [azuredevops_environment](https://registry.terraform.io/providers/microsoft/azuredevops/latest/docs/resources/environment) | 1 |
 | [azuredevops_git_repository](https://registry.terraform.io/providers/microsoft/azuredevops/latest/docs/resources/git_repository) | 1 |
 | [azuredevops_git_repository_branch](https://registry.terraform.io/providers/microsoft/azuredevops/latest/docs/resources/git_repository_branch) | 1 |
-| [azuredevops_git_repository_file](https://registry.terraform.io/providers/microsoft/azuredevops/latest/docs/resources/git_repository_file) | 12 |
+| [azuredevops_git_repository_file](https://registry.terraform.io/providers/microsoft/azuredevops/latest/docs/resources/git_repository_file) | 13 |
 | [azuredevops_pipeline_authorization](https://registry.terraform.io/providers/microsoft/azuredevops/latest/docs/resources/pipeline_authorization) | 2 |
 | [azuredevops_securityrole_assignment](https://registry.terraform.io/providers/microsoft/azuredevops/latest/docs/resources/securityrole_assignment) | 1 |
 | [azurerm_management_group_subscription_association](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/management_group_subscription_association) | 1 |
@@ -132,6 +132,7 @@ Files.
 | [azuredevops_git_repository_branch.init](https://registry.terraform.io/providers/microsoft/azuredevops/latest/docs/resources/git_repository_branch) | resource |
 | [azuredevops_git_repository_file.gitignore](https://registry.terraform.io/providers/microsoft/azuredevops/latest/docs/resources/git_repository_file) | resource |
 | [azuredevops_git_repository_file.locals](https://registry.terraform.io/providers/microsoft/azuredevops/latest/docs/resources/git_repository_file) | resource |
+| [azuredevops_git_repository_file.locks](https://registry.terraform.io/providers/microsoft/azuredevops/latest/docs/resources/git_repository_file) | resource |
 | [azuredevops_git_repository_file.main](https://registry.terraform.io/providers/microsoft/azuredevops/latest/docs/resources/git_repository_file) | resource |
 | [azuredevops_git_repository_file.network](https://registry.terraform.io/providers/microsoft/azuredevops/latest/docs/resources/git_repository_file) | resource |
 | [azuredevops_git_repository_file.nsg](https://registry.terraform.io/providers/microsoft/azuredevops/latest/docs/resources/git_repository_file) | resource |

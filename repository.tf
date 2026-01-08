@@ -225,6 +225,19 @@ resource "azuredevops_git_repository_file" "variables" {
   }
 }
 
+resource "azuredevops_git_repository_file" "locks" {
+  repository_id = azuredevops_git_repository.landing_zone.id
+  file                = "locks.tf"
+  content             = templatefile("${path.module}/templates/locks.tftpl", {})
+  branch              = "refs/heads/${azuredevops_git_repository_branch.init.name}"
+  commit_message      = "Add locks.tf"
+  overwrite_on_create = true
+
+  lifecycle {
+    ignore_changes = [commit_message]
+  }
+}
+
 resource "azuredevops_git_repository_file" "gitignore" {
   repository_id       = azuredevops_git_repository.landing_zone.id
   file                = ".gitignore"
