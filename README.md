@@ -41,7 +41,7 @@ You need:
 | <a name="input_iac"></a> [iac](#input\_iac) | The `iac` tag of subscription. Set to `true` if the subscription is managed by Infrastructure as Code (IaC) and `false` otherwise | `bool` | n/a | yes |
 | <a name="input_location"></a> [location](#input\_location) | The default location used for resources in this Landing Zone. | `string` | n/a | yes |
 | <a name="input_managed_by"></a> [managed\_by](#input\_managed\_by) | The `managedby` tag of the subscription. This should be the entity responsible for managing the infrastructure (e.g `q.beyond`). | `string` | n/a | yes |
-| <a name="input_personal_access_token"></a> [personal\_access\_token](#input\_personal\_access\_token) | [Personal access token](https://learn.microsoft.com/en-us/azure/devops/organizations/accounts/use-personal-access-tokens-to-authenticate?view=azure-devops&tabs=Windows#create-a-pat) used for authentication to the Azure DevOps organization. Is only used during the oneshot deployment. You require the following scopes: `Code`=`Full`, `Environment`=`Read & manage`, `Identity`=`Read & manage`, `Pipeline Resources`=`Use and manage`, `Project and Team`=`Read, write, & manage`, `Security`=`Manage`, `Service Connections`=`Read, query, & manage`,`Variable Groups`=`Read, create, & manage` | `string` | n/a | yes |
+| <a name="input_personal_access_token"></a> [personal\_access\_token](#input\_personal\_access\_token) | [Personal access token](https://learn.microsoft.com/en-us/azure/devops/organizations/accounts/use-personal-access-tokens-to-authenticate?view=azure-devops&tabs=Windows#create-a-pat) used for authentication to the Azure DevOps organization. Is only used during the oneshot deployment. You require the following scopes: `Build`=`Read & execute`, `Code`=`Full`, `Environment`=`Read & manage`, `Graph`=`Read`, `Identity`=`Read & manage`, `Pipeline Resources`=`Use and manage`, `Project and Team`=`Read, write, & manage`, `Security`=`Manage`, `Service Connections`=`Read, query, & manage`,`Variable Groups`=`Read, create, & manage` | `string` | n/a | yes |
 | <a name="input_sql"></a> [sql](#input\_sql) | SQL configuration. | <pre>object({<br/>    create        = bool<br/>    cust          = string<br/>    rg_key        = string<br/>    type          = string<br/>    subnet        = string<br/>    database_name = string<br/>    collation     = string<br/>    sku_name      = string<br/>    max_size_gb   = number<br/>    tags          = map(string)<br/>  })</pre> | n/a | yes |
 | <a name="input_stage"></a> [stage](#input\_stage) | Name of the current stage. | `string` | n/a | yes |
 | <a name="input_subscription_id"></a> [subscription\_id](#input\_subscription\_id) | Subscription ID of the Landing Zone Subscription. | `string` | n/a | yes |
@@ -67,7 +67,7 @@ No outputs.
 ## Resource types
 
 | Type | Used |
-|------|-------|
+| - | - |
 | [azuredevops_branch_policy_build_validation](https://registry.terraform.io/providers/microsoft/azuredevops/latest/docs/resources/branch_policy_build_validation) | 1 |
 | [azuredevops_build_definition](https://registry.terraform.io/providers/microsoft/azuredevops/latest/docs/resources/build_definition) | 1 |
 | [azuredevops_check_approval](https://registry.terraform.io/providers/microsoft/azuredevops/latest/docs/resources/check_approval) | 1 |
@@ -95,13 +95,13 @@ Files.
 ### build_validation.tf
 
 | Name | Type |
-|------|------|
+| - | - |
 | [azuredevops_branch_policy_build_validation.this](https://registry.terraform.io/providers/microsoft/azuredevops/latest/docs/resources/branch_policy_build_validation) | resource |
 
 ### main.tf
 
 | Name | Type |
-|------|------|
+| - | - |
 | [azurerm_management_group_subscription_association.target](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/management_group_subscription_association) | resource |
 | [azurerm_storage_container.landing_zone](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_container) | resource |
 | [azurerm_management_group.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/management_group) | data source |
@@ -110,7 +110,7 @@ Files.
 ### pipeline-permissions.tf
 
 | Name | Type |
-|------|------|
+| - | - |
 | [azuredevops_check_approval.this](https://registry.terraform.io/providers/microsoft/azuredevops/latest/docs/resources/check_approval) | resource |
 | [azuredevops_pipeline_authorization.environment_permission_alz](https://registry.terraform.io/providers/microsoft/azuredevops/latest/docs/resources/pipeline_authorization) | resource |
 | [azuredevops_pipeline_authorization.service_connection_permission_alz](https://registry.terraform.io/providers/microsoft/azuredevops/latest/docs/resources/pipeline_authorization) | resource |
@@ -120,14 +120,14 @@ Files.
 ### pipeline.tf
 
 | Name | Type |
-|------|------|
+| - | - |
 | [azuredevops_build_definition.this](https://registry.terraform.io/providers/microsoft/azuredevops/latest/docs/resources/build_definition) | resource |
 | [azuredevops_environment.alz](https://registry.terraform.io/providers/microsoft/azuredevops/latest/docs/resources/environment) | resource |
 
 ### repository.tf
 
 | Name | Type |
-|------|------|
+| - | - |
 | [azuredevops_git_repository.landing_zone](https://registry.terraform.io/providers/microsoft/azuredevops/latest/docs/resources/git_repository) | resource |
 | [azuredevops_git_repository_branch.init](https://registry.terraform.io/providers/microsoft/azuredevops/latest/docs/resources/git_repository_branch) | resource |
 | [azuredevops_git_repository_file.gitignore](https://registry.terraform.io/providers/microsoft/azuredevops/latest/docs/resources/git_repository_file) | resource |
@@ -147,7 +147,7 @@ Files.
 ### terraform.tf
 
 | Name | Type |
-|------|------|
+| - | - |
 | [azuredevops_project.this](https://registry.terraform.io/providers/microsoft/azuredevops/latest/docs/data-sources/project) | data source |
 | [azurerm_subscription.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/subscription) | data source |
 <!-- END_TF_DOCS -->
