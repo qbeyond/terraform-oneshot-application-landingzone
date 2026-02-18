@@ -55,7 +55,7 @@ content: |-
   {{ indent 0 "#" }} Resource types
 
   | Type | Used |
-  |------|-------|
+  | - | - |
   {{- range $type,$resources := $resourceTypes }}
   {{- $url := (first $resources).URL -}}
   {{- $type = ternary $url (printf "[%s](%s)" $type $url) $type }}
@@ -82,7 +82,7 @@ content: |-
   {{ indent 0 "#" }}# {{ $fileName }}
 
   | Name | Type |
-  |------|------|
+  | - | - |
   {{- range $resources -}}
   {{- $isResource := and $.Config.Sections.Resources ( eq "resource" (printf "%s" .GetMode)) }}
   {{- $isDataResource := and $.Config.Sections.DataSources ( eq "data source" (printf "%s" .GetMode)) }}
