@@ -9,5 +9,5 @@ module "service_connection_application" {
   role_assignments = concat([
     { role = "Owner", scope = "/subscriptions/${var.subscription_id}" },
     { role = "Storage Blob Data Contributor", scope = "/subscriptions/${var.subscription_id}" },
-  ], local.addtional_role_assignments)
+  ], local.additional_role_assignments)
 }
