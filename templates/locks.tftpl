@@ -1,7 +1,8 @@
-resource "azurerm_management_lock" "this" {
- 
+%{ for rg, rg_name in rg_config }resource "azurerm_management_lock" "${rg}_lock" {
   name       = "PreventDeleting"
-  scope      = "/subscriptions/$${data.azurerm_subscription.current.subscription_id}"
+  scope      = azurerm_resource_group.${rg}.id
   lock_level = "CanNotDelete"
-  notes      = "Items can't be deleted in this subscription. Before deleting resources, please remove this lock."
+  notes      = "Items can't be deleted in this resource group. Before deleting resources, please remove this lock."
 }
+
+%{ endfor ~}
