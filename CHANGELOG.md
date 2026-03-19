@@ -7,9 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [3.4.0] - 2026-03-17
+## [3.4.1] - 2026-03-19
 
 ### Fixed
+
+- Fixed locks template
+
+## [3.4.0] - 2026-03-17
+
+### Added
 
 - Added default permission for subscription service principal over tfstate storage account
 
