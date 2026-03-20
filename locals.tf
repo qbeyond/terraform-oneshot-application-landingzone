@@ -10,7 +10,7 @@ locals {
 
   additional_role_assignments = var.backend_storage_id == null ? [
     { role = "Reader", scope = data.azurerm_storage_account.terraform_state.id },
-    { role = "Storage Blob Data Contributor", scope = data.azurerm_storage_account.terraform_state.id }
+    { role = "Storage Account Contributor", scope = data.azurerm_storage_account.terraform_state.id }
   ] : [
     { role = "Storage Blob Data Contributor", scope = var.backend_storage_id }
   ]
